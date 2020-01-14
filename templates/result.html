@@ -1,0 +1,250 @@
+<!doctype html>
+<html>
+
+<head>
+    <script type="text/javascript" src="/static/polar.js"></script>
+	<style type="text/css">
+		body {
+			margin: 2em 5em;
+			font-family:Georgia, "Times New Roman", Times, serif;
+		}
+		h1, legend {
+			font-family:Arial, Helvetica, sans-serif;
+		}
+        h1{
+            margin-top: 40px;
+        }
+		label, input, select {
+			display:block;
+		}
+		input, select {
+			margin-bottom: 1em;
+		}
+		fieldset {
+			margin-bottom: 2em;
+			padding: 1em;
+		}
+		fieldset fieldset {
+			margin-top: 1em;
+			margin-bottom: 1em;
+		}
+		input[type="checkbox"] {
+			display:inline;
+		}
+		.range {
+			margin-bottom:1em;
+		}	
+		.card-type input, .card-type label {
+			display:inline-block;
+		}
+	</style>
+</head>
+
+   	<body>
+
+    	<!-- <h1>Hello {{ name }}</h1> -->
+        <div>
+            <!-- <h1> Analysis Result </h1> -->
+            <h1>Body Composition</h1>
+            <ul>
+                <li>BMI: <span id='bmi'>{{bmi}}</span></li>
+                <li>Body Fat: <span id='bf'>{{bf}}</span>%</li>
+                <li>Waist-to-Hip Ratio: <span id='wthr'>{{wthr}}</span></li>
+                <li>Gender: <span id='gender'>{{gender}}</span></li>
+            </ul>
+            
+        </div>
+        <hr/>
+
+        <div>
+            <h1>Balance</h1>
+            <div style="float:left">
+                <ul>
+                    <h2>Left foot</h2>
+                    <li>Anterior Absolute Score: <span id='laas'>{{laas}}</span>(cm)</li>
+                    <li>Posterolateral Absolute Score: <span id='lpas'>{{lpas}}</span>(cm)</li>
+                    <li>Posteromedial Absolute Score: <span id='lpas2'>{{lpas2}}</span>(cm)</li>
+                    <li>Composite Score: <span id='cs2'>{{cs2}}</span>(cm)</li>
+                </ul>
+                <div style="width:700px;margin-left: -120px;">
+                    <canvas id="myChart21"></canvas>        
+                </div>
+            </div>
+
+            <div style="float:left">
+                <ul>
+                    <h2>Right foot</h2>
+                    <li>Anterior Absolute Score: <span id='raas'>{{raas}}</span>(cm)</li>
+                    <li>Posterolateral Absolute Score: <span id='rpas'>{{rpas}}</span>(cm)</li>
+                    <li>Posteromedial Absolute Score: <span id='rpas2'>{{rpas2}}</span>(cm)</li>
+                    <li>Composite Score: <span id='cs3'>{{cs3}}</span>(cm)</li>
+                </ul>
+                <div style="width:700px;margin-left: -120px;">
+                    <canvas id="myChart22"></canvas>        
+                </div>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+        <hr/>
+
+        <div>
+            <!-- <h1> Analysis Result </h1> -->
+            <h1>Cardiopulmonary Fitness</h1>
+            <!-- <ul>
+                <li></li>
+            </ul>
+            <div style="width:700px;margin-left: -120px;">
+                <canvas id="myChart3"></canvas>        
+            </div> -->
+        </div>
+        <hr/>
+   		
+        <div>
+            <!-- <h1> Analysis Result </h1> -->
+            <h1>Muscular Fitness</h1>
+            <ul>
+                <li>Bench Press Weight Ratio: <span id='bpwr'>{{bpwr}}</span></li>
+                <li>Pulldown Weight Ratio: <span id='pwr'>{{pwr}}</span></li>
+                <li>Leg Press Weight Ratio: <span id='lpwr'>{{lpwr}}</span></li>
+                <li>Combined Dynamometer: <span id='cd'>{{cd}}</span> (lb)</li>
+            </ul>
+            <!-- <img src="/static/polar_MuscularFitness.png"> -->
+            <div style="width:700px;margin-left: -120px;">
+                <canvas id="myChart4"></canvas>        
+            </div>
+        </div>
+        <hr/>
+
+        <div>
+            <!-- <h1> Analysis Result </h1> -->
+            <h1>Range of Motion</h1>
+            <!-- <ul>
+                <li></li>
+            </ul>
+            <div style="width:700px;margin-left: -120px;">
+                <canvas id="myChart5"></canvas>        
+            </div> -->
+        </div>
+        <hr/>
+
+        
+       
+
+        <script type="text/javascript">
+
+        function bc(){
+            var bmi = parseFloat(document.getElementById("bmi").innerHTML);
+            var bf = parseFloat(document.getElementById("bf").innerHTML);
+            var wthr = parseFloat(document.getElementById("wthr").innerHTML);
+            var gender = parseFloat(document.getElementById("gender").innerHTML);
+        }
+
+        function bal(){
+            var laas = parseFloat(document.getElementById("laas").innerHTML);
+            var lpas = parseFloat(document.getElementById("lpas").innerHTML);
+            var lpas2 = parseFloat(document.getElementById("lpas2").innerHTML);
+            var cs2 = parseFloat(document.getElementById("cs2").innerHTML);
+            var raas = parseFloat(document.getElementById("raas").innerHTML);
+            var rpas = parseFloat(document.getElementById("rpas").innerHTML);
+            var rpas2 = parseFloat(document.getElementById("rpas2").innerHTML);
+            var cd3 = parseFloat(document.getElementById("cs3").innerHTML);
+
+
+            var ctx21 = document.getElementById('myChart21').getContext('2d');
+            var chart21 = new Chart(ctx21, {
+                // The type of chart we want to create
+                type: 'polarArea',
+                legend: {
+                    display: true,
+                    position: 'top',
+                    maxWidth: 400,
+                },
+                data: {
+                    labels: ['Anterior Score', 'Posterolateral Score', 'Posteromedial Score'],
+
+                    datasets: [{
+                        label: 'Left Foot Score',
+                        // borderColor: 'rgb(255, 99, 132)',
+                        data: [laas, lpas, lpas2],
+                        backgroundColor: [
+                          "rgba(255, 0, 0, 0.5)",
+                          "rgba(100, 255, 0, 0.5)",
+                          "rgba(200, 50, 255, 0.5)"
+                        ]
+                    }]
+                },
+                options: {}
+            });
+
+            var ctx22 = document.getElementById('myChart22').getContext('2d');
+            var chart22 = new Chart(ctx22, {
+                // The type of chart we want to create
+                type: 'polarArea',
+                legend: {
+                    display: true,
+                    position: 'top',
+                    maxWidth: 400,
+                },
+                data: {
+                    labels: ['Anterior Score', 'Posterolateral Score', 'Posteromedial Score'],
+
+                    datasets: [{
+                        label: 'Right Foot Score',
+                        // borderColor: 'rgb(255, 99, 132)',
+                        data: [raas, rpas, rpas2],
+                        backgroundColor: [
+                          "rgba(255, 0, 0, 0.5)",
+                          "rgba(100, 255, 0, 0.5)",
+                          "rgba(200, 50, 255, 0.5)"
+                        ]
+                    }]
+                },
+                options: {}
+            });
+        }
+
+        function mf(){
+            var rat1 = parseFloat(document.getElementById("bpwr").innerHTML);
+            var rat2 = parseFloat(document.getElementById("pwr").innerHTML);
+            var rat3 = parseFloat(document.getElementById("lpwr").innerHTML);
+            var ratios = [rat1, rat2, rat3];
+            
+            var ctx = document.getElementById('myChart4').getContext('2d');
+
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'polarArea',
+                legend: {
+                    display: true,
+                    position: 'top',
+                    maxWidth: 400,
+                },
+                data: {
+                    labels: ['Bench Press Weight', 'Pulldown Weight', 'Leg Press Weight'],
+
+                    datasets: [{
+                        label: 'Muscular Fitness',
+                        // borderColor: 'rgb(255, 99, 132)',
+                        data: [rat1, rat2, rat3],
+                        backgroundColor: [
+                          "rgba(255, 0, 0, 0.5)",
+                          "rgba(100, 255, 0, 0.5)",
+                          "rgba(200, 50, 255, 0.5)"
+                        ]
+                    }]
+                },
+
+                options: {}
+            });
+        }
+
+        mf();
+        bc();
+        bal();
+
+        </script>
+
+   	</body>
+
+
+</html>

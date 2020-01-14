@@ -1,0 +1,224 @@
+{% extends "nav.html" %}
+
+  {% block head %}
+	<style type="text/css">
+        html{
+             width: 100%;
+         }
+        body{
+            width: 100%;
+        }
+        form{
+            width: 100%;
+        }
+        fieldset{
+            width: 300px;
+        }
+		
+		h1, legend {
+			font-family:Arial, Helvetica, sans-serif;
+		}
+		label, input, select {
+			display:block;
+		}
+		input, select {
+			margin-bottom: 1em;
+		}
+		fieldset {
+			margin-bottom: 2em;
+		}
+		fieldset fieldset {
+			margin-top: 1em;
+			margin-bottom: 1em;
+		}
+		input[type="checkbox"] {
+			display:inline;
+		}
+		.range {
+			margin-bottom:1em;
+		}	
+		.card-type input, .card-type label {
+			display:inline-block;
+		}
+    .inv{
+      display: none;
+    }
+    .fl{
+        float:left;
+        width: 320px;
+        margin-bottom: 20px;
+        background: rgb(134, 197, 247);
+        padding:10px;
+        border-radius: 5px;
+        height: 54px;
+    }
+    
+    .fl label{
+        font-size: 16px;
+        margin-bottom:10px;
+    }
+   
+    legend{
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    #sub{
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        width: 140px;
+        font-size: 18px;
+        margin: auto;
+    }
+        
+	</style>
+  {% endblock %}
+
+
+    {% block content %}
+   
+    	<!-- <h1>Cardiopulmonary Fitness {{ name }}</h1> -->
+
+      <div style="display:none" id="age">{{age}}</div>
+      <div style="display:none" id="rhr">{{rhr}}</div>
+      
+      
+   		
+   		<form id="form2" onsubmit="cal_sub()" action="/cardiopulmonary_fitness_form_submit" method="post">
+          <fieldset> 
+          <input type="text" name="Username" value={{name}} style="display: none;">
+            <legend>VO2max</legend> 
+            <div class="fl">  
+                <label style="font-size: 10px">YMCA Cycle Ergometry Protocol (ml/kg/min)</label>
+                <input id="ymca" name="ymca" type="number" step=0.01   value={{dict.ymca}}>
+            </div> 
+            <div style="display:none"> 
+                <!-- <label>Age Predicted HR Max (bpm)</label> -->
+                <!-- (220 - Age) -->
+                <input id="aphrm" name="aphrm" type="text">
+            </div> 
+            <div style="display:none"> 
+                <!-- <label>Gellish HR Max (bpm)</label> -->
+                <!-- 206.9 - (0.67 * Age) -->
+                <input id="ghrm" name="ghrm" type="text">
+            </div> 
+            <div style="display:none"> 
+                <!-- <label>Target Heart Rate (bpm)</label> -->
+                <!-- ((HR Max - HR Rest) x 70%) + HR Rest -->
+                <input id="thr" name="thr" type="text">
+            </div> 
+            <div style="display:none"> 
+                <!-- <label>85% HR Max (bpm)</label> -->
+                <!-- (220 - Age) -->
+                <input id="hrm" name="hrm" type="text">
+            </div> 
+            <div style="display:none"> 
+                <!-- <label>85% HR Max (bpm)</label> -->
+                <!-- (220 - Age) -->
+                <input id="hrm_w" name="hrm_w" type="text">
+            </div> 
+           
+          </fieldset>
+
+          <fieldset> 
+            <legend>Heart Rate Recovery</legend> 
+            <div class="fl"> 
+                <label>60 Second post-exercise (bpm)</label>
+                <div style="float: left;margin-right: 10px;padding-top: 2px;">from </div>
+                <input id="sp60_pre" style="float:left; width:70px;" name="sp60_pre" type="number"  value={{dict.sp60_pre}}>
+                <div style="float: left;margin-right: 10px;margin-left:10px;padding-top: 2px;" name="sp60_pre" type="number"   value={{dict.sp60_pre}} >to </div>
+                <input id="sp60" style="float:left; width:70px;" name="sp60" type="number"  value={{dict.sp60}}>
+            </div> 
+            <div class="fl"> 
+                <label>120 Second post-exercise (bpm)</label>
+                <div style="float: left;margin-right: 10px;padding-top: 2px;">from </div>
+                <input id="sp120_pre" style="float:left; width:70px;" name="sp120_pre" type="number"   value={{dict.sp120_pre}} >
+                <div style="float: left;margin-right: 10px;margin-left:10px;padding-top: 2px;">to </div>
+                <input id="sp120" name="sp120" style="float:left; width:70px;" type="number" step=0.01   value={{dict.sp120}} >
+            </div> 
+          </fieldset>
+
+          <fieldset class="inv"> 
+            <legend>Zone 1</legend> 
+            <div> 
+                <!-- <label>50-60% HR Max (bpm)</label> -->
+                <!-- (50% * Age Predicted HR Max) to (60% * Age Predicted HR Max) -->
+                <input id="aphrm50" name="aphrm50" type="text">
+            </div>
+          </fieldset>
+          <fieldset class="inv"> 
+            <legend>Zone 2</legend> 
+            <div> 
+                <!-- <label>60-70% HR Max (bpm)</label> -->
+                <!-- (60% * Age Predicted HR Max) to (70% * Age Predicted HR Max) -->
+                <input id="aphrm60" name="aphrm60" type="text">
+            </div>
+          </fieldset>
+          <fieldset class="inv"> 
+            <legend>Zone 3</legend> 
+            <div> 
+                <!-- <label>70-80% HR Max (bpm)</label> -->
+                <!-- (70% * Age Predicted HR Max) to (80% * Age Predicted HR Max) -->
+                <input id="aphrm70" name="aphrm70" type="text">
+            </div>
+          </fieldset>
+          <fieldset class="inv"> 
+            <legend>Zone 4</legend> 
+            <div> 
+                <!-- <label>80-90% HR Max (bpm)</label> -->
+                <!-- (80% * Age Predicted HR Max) to (90% * Age Predicted HR Max) -->
+                <input id="aphrm80" name="aphrm80" type="text">
+            </div>
+          </fieldset>
+          <fieldset class="inv"> 
+            <legend>Zone 5</legend> 
+            <div> 
+                <!-- <label>90-100% HR Max (bpm)</label> -->
+                <!-- (90% * Age Predicted HR Max) to (100% * Age Predicted HR Max) -->
+                <input id="aphrm90" name="aphrm90" type="text">
+            </div>
+          </fieldset>
+
+          <!-- <input type="submit" id="sub" value="submit" onclick="upload()"> -->
+
+            <div>
+                <div style="width: 350px; margin: auto">
+                    <input type="button" class="button button1" value="submit" onsubmit="cal_sub()">
+                    <button class="button button1" ><a href="/patient_list" style="color: #000000">Back to Patient List</a></button>
+                </div>
+            </div>
+
+        </form>
+
+
+    <script type="text/javascript">
+      function cal_sub(){
+
+        // var age = 24;
+        var age = parseFloat(document.getElementById("age").innerHTML);
+        var aphrm = 220-age;
+        // var rhr = 200;
+        var rhr = (parseFloat(document.getElementById("rhr").innerHTML));
+        
+        document.getElementById("aphrm").value = aphrm;
+        document.getElementById("ghrm").value = (206.9-0.67*age).toFixed(2);
+        // document.getElementById("thr").value = ((HR max-HR Rest)*0.7) + HR Rest;
+        document.getElementById("thr").value = (((aphrm-rhr)*0.7) + rhr).toFixed(2);
+        document.getElementById("hrm").value = ((220-age)*0.85).toFixed(2);
+        document.getElementById("hrm_w").value = (220-age).toFixed(2);
+        document.getElementById("aphrm50").value = (0.5*aphrm).toFixed(2);
+        document.getElementById("aphrm60").value = (0.6*aphrm).toFixed(2);
+        document.getElementById("aphrm70").value = (0.7*aphrm).toFixed(2);
+        document.getElementById("aphrm80").value = (0.8*aphrm).toFixed(2);
+        document.getElementById("aphrm90").value = (0.9*aphrm).toFixed(2);
+        
+        return false;
+      }
+
+    </script>
+
+  {% endblock %}

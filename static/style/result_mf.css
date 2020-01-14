@@ -1,0 +1,516 @@
+@media screen{
+    
+	h1, legend {
+		font-family:Arial, Helvetica, sans-serif;
+	}
+    h1{
+        margin-top: 40px;
+    }
+	label, input, select {
+		display:block;
+	}
+	input, select {
+		margin-bottom: 1em;
+	}
+	fieldset {
+		margin-bottom: 2em;
+		padding: 1em;
+	}
+	fieldset fieldset {
+		margin-top: 1em;
+		margin-bottom: 1em;
+	}
+	input[type="checkbox"] {
+		display:inline;
+	}
+	.range {
+		margin-bottom:1em;
+	}	
+	.card-type input, .card-type label {
+		display:inline-block;
+	}
+
+    ul li{
+        list-style: none;
+    }
+    .graph_list li{
+        float:left;
+    }
+    table {
+      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 600px;
+    }
+
+    td, th {
+      border: 1px solid #ddd;
+      padding: 6px;
+      font-size:20px;
+    }
+
+    tr:nth-child(even){background-color: #f2f2f2;}
+
+    tr:hover {background-color: #ddd;}
+
+    th {
+      padding-top: 6px;
+      padding-bottom: 6px;
+      text-align: left;
+      background-color: #D3BE28;
+      color: white;
+    }
+
+    .icon{
+        width: 34px;
+        display: block;
+        float: left;
+        margin-top: -4px;
+        overflow: hidden;
+        margin-right:10px; 
+        margin-bottom: -10px;
+    }
+
+    #icon_ms{
+        width: 80px; 
+        position: absolute; 
+        margin-top: -70px; 
+        margin-left: -8px;
+    }
+
+    #per_ms{
+        position: absolute;
+        margin-top: 64px;
+        margin-left: 420px;
+        font-size: 22px;
+    }
+
+    #icon_grip{
+        width: 80px; 
+        position: absolute; 
+        margin-top: -76px; 
+        margin-left: -8px;
+    }
+
+    #per_grip{
+        position: absolute;
+        margin-top: 240px;
+        margin-left: 420px;
+        font-size: 22px;
+    }
+
+    #icon_me{
+        width: 80px; 
+        position: absolute; 
+        margin-top: -70px; 
+        margin-left: -10px;
+    }
+
+    #per_me{
+        position: absolute;
+        margin-top: 150px;
+        margin-left: 50px; 
+        font-size:22px;
+    }
+
+    #icon_pull{
+        width: 80px; 
+        position: absolute; 
+        margin-top: -34px; 
+        margin-left: -70px;
+    }
+
+    #per_pull{
+        position: absolute;
+        margin-top: -40px;
+        margin-left: 300px;
+        font-size:22px;
+    }
+
+    #icon_push{
+        width: 80px; 
+        margin-right:0px; 
+        margin-bottom: -10px;
+        position: absolute; 
+        margin-top: -72px;
+        margin-left:-16px;
+    }
+
+    #per_push{
+        position: absolute;
+        margin-top: 210px;
+        margin-left: 430px;
+        font-size:22px;
+    }
+
+    #icon_leg{
+        width: 80px; 
+        margin-right:0px; 
+        margin-bottom: -10px;
+        position: absolute; 
+        margin-top: -72px; 
+        margin-left: -16px;
+    }
+
+    #per_leg{
+        position: absolute;
+        margin-top: 210px;
+        margin-left: 90px; 
+        font-size:22px;
+    }
+
+    #per_l1{
+        position: absolute;
+        margin-left: 64px;
+        margin-top: 50px;
+        font-size: 22px;
+    }
+    #per_l2{
+        position: absolute;
+        margin-top: 140px;
+        margin-left: 50px; 
+        font-size:22px;
+
+    }
+    #icon_l{
+        width: 80px; 
+        margin-right:0px; 
+        margin-bottom: -10px;
+        position: absolute; 
+        margin-top: -72px;
+        margin-left:-12px;
+    }
+
+    #per_r1{
+        position: absolute;
+        margin-left: 432px;
+        margin-top: 50px;
+        font-size: 22px;
+    }
+    #per_r2{
+        position: absolute;
+        margin-top: 140px;
+        margin-left: 430px;
+        font-size:22px;
+    }
+    #icon_r{
+        width: 80px; 
+        margin-right:0px; 
+        margin-bottom: -10px;
+        position: absolute; 
+        margin-left:-12px; 
+        margin-top: -72px;
+    }
+
+    #icon_me2{
+        width: 80px; 
+        position: absolute; 
+        margin-top: -30px; 
+        margin-left: -80px;
+    }
+    #per_me2{
+        position: absolute;
+        margin-top: -40px;
+        margin-left: 285px; 
+        font-size:22px;
+    }
+    
+    
+    .can{
+        width:500px; 
+        margin-left: 20px;
+        margin-top:30px;
+    }
+
+    h1{
+        font-size: 24px;
+    }
+
+    #title1{
+        text-align: center;
+        font-size: 36px;
+        font-weight: bold;
+        margin-top: 42px;
+    }
+
+    #left_column{
+        float:left; width:600px;
+        margin-left: 50px;
+    }
+
+    #right_column{
+        float:left; width:600px; 
+        margin-left: 100px;
+    }
+
+    .cl_line{
+        clear:both;
+        padding-bottom: 30px;
+    }
+
+    .gra{
+        width:600px;
+        margin-left: 25px; 
+        margin-top: 40px;
+    }
+
+}
+
+@media print{
+    
+    h1, legend {
+        font-family:Arial, Helvetica, sans-serif;
+    }
+    h1{
+        margin-top: 40px;
+    }
+    label, input, select {
+        display:block;
+    }
+    input, select {
+        margin-bottom: 1em;
+    }
+    fieldset {
+        margin-bottom: 2em;
+        padding: 1em;
+    }
+    fieldset fieldset {
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+    input[type="checkbox"] {
+        display:inline;
+    }
+    .range {
+        margin-bottom:1em;
+    }   
+    .card-type input, .card-type label {
+        display:inline-block;
+    }
+
+    ul li{
+        list-style: none;
+    }
+    .graph_list li{
+        float:left;
+    }
+    table {
+      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 400px;
+    }
+
+    td, th {
+      border: 1px solid #ddd;
+      padding: 6px;
+      font-size:20px;
+    }
+
+    tr:nth-child(even){background-color: #f2f2f2;}
+
+    tr:hover {background-color: #ddd;}
+
+    th {
+      padding-top: 6px;
+      padding-bottom: 6px;
+      text-align: left;
+      background-color: #D3BE28;
+      color: white;
+    }
+
+    .icon{
+        width: 34px;
+        display: block;
+        float: left;
+        margin-top: -4px;
+        overflow: hidden;
+        margin-right:10px; 
+        margin-bottom: -10px;
+    }
+
+    #icon_ms{
+        width: 80px; 
+        position: absolute; 
+        margin-top: -70px; 
+        margin-left: -8px;
+    }
+
+    #per_ms{
+        position: absolute;
+        margin-top: 64px;
+        margin-left: 420px;
+        font-size: 22px;
+    }
+
+    #icon_grip{
+        width: 80px; 
+        position: absolute; 
+        margin-top: -76px; 
+        margin-left: -8px;
+    }
+
+    #per_grip{
+        position: absolute;
+        margin-top: 240px;
+        margin-left: 420px;
+        font-size: 22px;
+    }
+
+    #icon_me{
+        width: 80px; 
+        position: absolute; 
+        margin-top: -70px; 
+        margin-left: -10px;
+    }
+
+    #per_me{
+        position: absolute;
+        margin-top: 150px;
+        margin-left: 50px; 
+        font-size:22px;
+    }
+
+    #icon_pull{
+        width: 80px; 
+        position: absolute; 
+        margin-top: -34px; 
+        margin-left: -70px;
+    }
+
+    #per_pull{
+        position: absolute;
+        margin-top: -40px;
+        margin-left: 300px;
+        font-size:22px;
+    }
+
+    #icon_push{
+        width: 80px; 
+        margin-right:0px; 
+        margin-bottom: -10px;
+        position: absolute; 
+        margin-top: -72px;
+        margin-left:-16px;
+    }
+
+    #per_push{
+        position: absolute;
+        margin-top: 210px;
+        margin-left: 430px;
+        font-size:22px;
+    }
+
+    #icon_leg{
+        width: 80px; 
+        margin-right:0px; 
+        margin-bottom: -10px;
+        position: absolute; 
+        margin-top: -72px; 
+        margin-left: -16px;
+    }
+
+    #per_leg{
+        position: absolute;
+        margin-top: 210px;
+        margin-left: 90px; 
+        font-size:22px;
+    }
+
+    #per_l1{
+        position: absolute;
+        margin-left: 64px;
+        margin-top: 50px;
+        font-size: 22px;
+    }
+    #per_l2{
+        position: absolute;
+        margin-top: 140px;
+        margin-left: 50px; 
+        font-size:22px;
+
+    }
+    #icon_l{
+        width: 80px; 
+        margin-right:0px; 
+        margin-bottom: -10px;
+        position: absolute; 
+        margin-top: -72px;
+        margin-left:-12px;
+    }
+
+    #per_r1{
+        position: absolute;
+        margin-left: 432px;
+        margin-top: 50px;
+        font-size: 22px;
+    }
+    #per_r2{
+        position: absolute;
+        margin-top: 140px;
+        margin-left: 430px;
+        font-size:22px;
+    }
+    #icon_r{
+        width: 80px; 
+        margin-right:0px; 
+        margin-bottom: -10px;
+        position: absolute; 
+        margin-left:-12px; 
+        margin-top: -72px;
+    }
+
+    #icon_me2{
+        width: 80px; 
+        position: absolute; 
+        margin-top: -30px; 
+        margin-left: -80px;
+    }
+    #per_me2{
+        position: absolute;
+        margin-top: -40px;
+        margin-left: 285px; 
+        font-size:22px;
+    }
+    
+    
+    .can{
+        width:150px; 
+        margin-top:30px;
+    }
+
+    h1{
+        font-size: 24px;
+    }
+
+    #title1{
+        text-align: center;
+        font-size: 36px;
+        font-weight: bold;
+        margin-top: 42px;
+    }
+
+    #left_column{
+        float:left; width:450px;
+    }
+
+    #right_column{
+        float:left; width:450px; 
+        margin-left: 50px;
+    }
+
+    .cl_line{
+        clear:both;
+        padding-bottom: 20px;
+    }
+
+    .cl_line2{
+        clear:both;
+        padding-bottom: 50px;
+    }
+
+    .gra{
+        width:200px;
+        margin-top: 30px;
+        margin-left:-300px;
+    }
+
+}

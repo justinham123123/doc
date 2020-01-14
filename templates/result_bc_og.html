@@ -1,0 +1,373 @@
+{% extends "nav2.html" %}
+
+    {% block head %}
+    <script type="text/javascript" src="/static/polar.js"></script>
+	<style type="text/css">
+		
+		h1, legend {
+			font-family:Arial, Helvetica, sans-serif;
+		}
+        h1{
+            margin-top: 40px;
+        }
+		label, input, select {
+			display:block;
+		}
+		input, select {
+			margin-bottom: 1em;
+		}
+		fieldset {
+			margin-bottom: 2em;
+			padding: 1em;
+		}
+		fieldset fieldset {
+			margin-top: 1em;
+			margin-bottom: 1em;
+		}
+		input[type="checkbox"] {
+			display:inline;
+		}
+		.range {
+			margin-bottom:1em;
+		}	
+		.card-type input, .card-type label {
+			display:inline-block;
+		}
+
+        ul li{
+            list-style: none;
+        }
+
+        table {
+          font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+          border-collapse: collapse;
+          width: 600px;
+        }
+
+        td, th {
+          border: 1px solid #ddd;
+          padding: 6px;
+          font-size:20px;
+        }
+
+        tr:nth-child(even){background-color: #f2f2f2;}
+
+        tr:hover {background-color: #ddd;}
+
+        th {
+          padding-top: 6px;
+          padding-bottom: 6px;
+          text-align: left;
+          background-color: #388BF5;
+          color: white;
+        }
+        .icon{
+            width: 34px;
+            margin-right: 20px;
+            display: block;
+            float: left;
+            margin-top: -7px;
+            margin-bottom: -4px;
+            overflow: hidden;
+        }
+
+        h1{
+            font-size: 24px;
+        }
+
+	</style>
+    {% endblock %}
+
+    {% block content%}
+        <div style="text-align: center;font-size: 36px;font-weight: bold;margin-top: 42px;">Body Composition Results</div>
+<!-- 
+        <div style="background:rgb(203, 233, 243); width:100%"> -->
+        <div style="width:100%">
+        <div style="float:left; width:600px;margin-left: 50px;">
+   
+        <div style="margin-top:20px;">
+            
+            <table style="margin-top:40px;">
+                <tr>
+                    <th>KEY</th>
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon/bc_res_bf.svg">Body Fat %: <span id='bf'>{{score[0]}}</span>/10</td>
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon/bc_res_wthratio.svg">Waist-to-Hip Ratio (WHR): <span id='wthr2'>{{score[1]}}</span>/10</td>   
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon/bc_res_abf.svg">Acceptable Body Fat %: <span id='abf'>{{score[2]}}</span>/10</td>   
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon/bc_res_bmi.svg">Body Mass Index (BMI): <span id='bmi'>{{score[3]}}</span>/10</td>  
+                </tr>
+            </table>
+            <br/>
+
+            <div style="position: absolute; margin-left: 70px; margin-top: 100px;font-size: 27px"><img class="icon" style="width: 66px; position: absolute; margin-top: -64px; margin-left: 7px;" src="/static/icon/bc_res_bf.svg"><span id='bf'>{{score[0]*10}}</span>%</div>
+            <div style="position: absolute; margin-left: 440px; margin-top: 100px;font-size: 27px"><img class="icon" style="width: 66px; position: absolute; margin-top: -64px; margin-left: 7px;" src="/static/icon/bc_res_wthratio.svg"><span id='bf'>{{score[1]*10}}</span>%</div>
+            <div style="position: absolute; margin-left: 440px; margin-top: 460px;font-size: 27px"><img class="icon" style="width: 66px; position: absolute; margin-top: -64px; margin-left: 7px;" src="/static/icon/bc_res_abf.svg"><span id='bf'>{{score[2]*10}}</span>%</div>
+            <div style="position: absolute; margin-left: 70px; margin-top: 460px;font-size: 27px"><img class="icon" style="width: 66px; position: absolute; margin-top: -64px; margin-left: 7px;" src="/static/icon/bc_res_bmi.svg"><span id='bf'>{{score[3]*10}}</span>%</div>
+
+            <div style="width:700px;margin-left:-50px; margin-top:100px;">
+                <canvas id="myChart"></canvas>        
+            </div>
+
+
+        </div>
+        <div style="clear:both;margin-bottom:20px;"></div>
+        </div>
+     
+        <div style="float:left; width:650px;margin-left: 100px;">
+        <!-- 
+            <h1>RESULT</h1> -->
+            <!-- <ul>
+                <li>Body Fat %: <span id='bf'>{{bc_dict.bf}}</span></li>
+                <li>Waist-to-Hip Ratio (WHR): <span id='wthr'>{{bc_dict.wthr}}</span></li>
+                <li>Acceptable Body Fat %: <span id='abf'>TBD</span></li>
+                <li>Body Mass Index (BMI): <span id='bmi'>{{bc_dict.bmi}}</span></li>
+            </ul> -->
+            <div style="margin-top:40px;">
+             <table>
+                <tr>
+                    <th colspan="3">CALCULATED COMPOSITION</th>
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon/bc_cc_bodyfat.svg">Body Fat: <span>{{bc_dict.bf}}</span>%</td>
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon/bc_cc_fatmass.svg">Fat Mass: <span>{{bc_dict.fm}}</span>lbs</td>   
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon/bc_cc_lbmass.svg">Lean Body Mass: <span>{{bc_dict.lbm}}</span>lbs</td>   
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon/bc_cc_metarate.svg">Basal Metabolic Rate: <span>{{bc_dict.bmr}}</span>kcal</td>  
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon/bc_cc_tdee.svg">Total Daily Energy Expenditure: <span>{{bc_dict.tdee}}</span>kcal</td>   
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon/bc_cc_cirtotal.svg">Circumference Total: <span id="cir_tot">{{bc_dict.circumference}}</span>''</td>   
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon/bc_res_wthratio.svg">Waist-to-Hip Ratio (WHR): <span id='wthr'>{{bc_dict.wthr}}</span></td>   
+                </tr>
+            </table>
+        </div>
+      
+
+            <table style="margin-top:40px;">
+
+                <tr>
+                    <th colspan="3">RESTING MEASUREMENTS</th>
+                </tr>
+                 <tr>
+                    <td><img class="icon" src="/static/icon/bc_height.svg">Height: <span>{{bc_dict.height}}</span></td>
+                    <td><img class="icon" src="/static/icon/bc_weight.svg">Weight: <span>{{bc_dict.weight}}</span></td>
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon/bc_bmi.svg">Body Mass Index (BMI): <span>{{bc_dict.bmi}}</span></td>
+                    <td><img class="icon" src="/static/icon/bc_bp.svg">BP: <span>{{bc_dict.bp}}</span></td>   
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon/bc_hrrest.svg">HR Rest: <span>{{bc_dict.rhr}}</span></td>
+                    <td><img class="icon" src="/static/icon/bc_hrmax.svg">HR Max: <span>{{bc_dict.hrm}}</span></td>   
+                </tr>
+                
+            </table>
+            <div style="clear:both;"></div>
+    
+        <br/><br/>
+
+
+        <div>
+            <!-- <h1>CIRCUMFERENCE</h1> -->
+            <!-- <ul>
+                <li>Neck: <span>{{bc_dict.neck}}</span></li>
+                <li>Arm: <span>{{bc_dict.arml}}</span>,<span>{{bc_dict.armr}}</span></li>
+                <li>Forearm: <span>{{bc_dict.forearml}}</span>,<span>{{bc_dict.forearmr}}</span></li>
+                <li>Chest: <span>{{bc_dict.chest}}</span></li>
+                <li>Waist: <span>{{bc_dict.waist}}</span></li>
+                <li>Abdomen: <span>{{bc_dict.abdomen}}</span></li>
+                <li>Buttoncks: <span>{{bc_dict.buttocks}}</span></li> 
+                <li>Midthigh: <span>{{bc_dict.midthighl}}</span>,<span>{{bc_dict.midthighr}}</span></li>
+                <li>Calf: <span>{{bc_dict.calfl}}</span>,<span>{{bc_dict.calfr}}</span></li>   
+             </ul> -->
+            <div style="background: url('/static/icon/bc_body_t.svg'); background-repeat: no-repeat;">
+                <!-- <div><img style="width:100px;" src="/static/icon/bc_body_f.svg"></div> -->
+                <table>
+                    <tr>
+                        <th colspan="3">CIRCUMFERENCE</th>
+                    </tr>
+
+                    <!-- <tr>
+                        <th></th>
+                        <th>Overall</th>
+                        <th>Left</th>
+                        <th>Right</th>
+                    </tr> -->
+                    <tr>
+                        <td></td>
+                        <td>Left</td>
+                        <td>Right</td>
+                    </tr>
+                    <tr>
+                        <td>Neck</td>
+                        <td colspan="2">{{bc_dict.neck}}</td>
+                    </tr>
+                    <tr>
+                        <td>Arm</td>
+                        <td>{{bc_dict.arml}}</td>
+                        <td>{{bc_dict.armr}}</td>   
+                    </tr>
+                    <tr>
+                        <td>Forearm</td>
+                        <td>{{bc_dict.forearml}}</td>
+                        <td>{{bc_dict.forearmr}}</td>   
+                    </tr>
+                    <tr>
+                        <td>Chest</td>
+                        <td colspan="2">{{bc_dict.chest}}</td>
+                    </tr>
+                    <tr>
+                        <td>Waist</td>
+                        <td colspan="2">{{bc_dict.waist}}</td>
+                    </tr>
+                    <tr>
+                        <td>Abdomen</td>
+                        <td colspan="2">{{bc_dict.abdomen}}</td>
+                    </tr>
+                    <tr>
+                        <td>Buttocks/Hip</td>
+                        <td colspan="2">{{bc_dict.buttocks}}</td>
+                    </tr>
+                    <tr>
+                        <td>Midthigh</td>
+                        <td>{{bc_dict.midthighl}}</td>
+                        <td>{{bc_dict.midthighr}}</td>
+                    </tr>
+                    <tr>
+                        <td>Calf</td>
+                        <td>{{bc_dict.calfl}}</td>
+                        <td>{{bc_dict.calfr}}</td>
+                    </tr>
+                    
+                </table>
+            </div>
+        </div>
+        <br/><br/>
+        
+
+        <div>
+            <!-- <h1>SKINFOLD VALUES</h1> -->
+            <!-- <ul style="float:left;width:300px;">
+                <li>Abdomen: <span>{{bc_dict.abdomen2}}</span></li>
+                <li>Chest: <span>{{bc_dict.chest2}}</span></li>
+                <li>Subscapular: <span>{{bc_dict.subscapular}}</span></li>
+                <li>Thigh: <span>{{bc_dict.thigh}}</span></li>
+            </ul>
+            <ul style="float:left;width:300px;">
+                <li>Triceps: <span>{{bc_dict.triceps}}</span></li>
+                <li>Midaxillary: <span>{{bc_dict.midaxillary}}</span></li>
+                <li>Suprailiac: <span>{{bc_dict.suprailiac}}</span></li>
+                <li>SUM: <span>{{bc_dict.sum7}}</span></li>
+            </ul> -->
+
+            <table>
+                <tr>
+                    <th colspan="3">SKINFOLD VALUES</th>
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon/bc_sf_abdomen.svg">Abdomen: <span>{{bc_dict.abdomen2}}</span></td>
+                    <td><img class="icon" src="/static/icon/bc_sf_tricep.svg">Triceps: <span>{{bc_dict.triceps}}</span></td>
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon/bc_sf_chest.svg">Chest: <span>{{bc_dict.chest2}}</span></td>
+                    <td><img class="icon" src="/static/icon/bc_sf_midaxillary.svg">Midaxillary: <span>{{bc_dict.midaxillary}}</span></td>   
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon/bc_sf_subscapular.svg">Subscapular: <span>{{bc_dict.subscapular}}</span></td>
+                    <td><img class="icon" src="/static/icon/bc_sf_suprailiac.svg">Suprailiac: <span>{{bc_dict.suprailiac}}</span></td>   
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon/bc_sf_thigh.svg">Thigh: <span>{{bc_dict.thigh}}</span></td>
+                    <td><img class="icon" src="/static/icon/bc_sf_sum.svg">SUM: <span>{{bc_dict.sum7}}</span></td>   
+                </tr>
+                
+            </table>
+            <div style="clear:both;"></div>
+        </div>
+        
+
+            
+            
+        </div>
+
+        <div style="clear:both;margin-bottom:20px;"></div>
+        
+     
+        
+
+        <script type="text/javascript">
+
+        function bc(){
+            var bmi = parseFloat(document.getElementById("bmi").innerHTML);
+            var bf = parseFloat(document.getElementById("bf").innerHTML);
+            var wthr = parseFloat(document.getElementById("wthr2").innerHTML);
+            var abf = parseFloat(document.getElementById("abf").innerHTML);
+            
+            var ctx = document.getElementById('myChart').getContext('2d');
+
+            // alert(wthr)
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'polarArea',
+                
+                data: {
+                    labels: ['BF', 'WHR', 'ABF', 'BMI'],
+
+                    datasets: [{
+                        label: 'Muscular Fitness',
+                        // borderColor: 'rgb(255, 99, 132)',
+                        data: [bf,wthr,abf,bmi],
+                        backgroundColor: [
+                          "rgba(50, 100, 200, 0.5)",
+                          "rgba(100, 150, 200, 0.5)",
+                          "rgba(50, 150, 255, 0.5)",
+                          "rgba(100, 200, 255, 0.5)"
+                          
+                        ]
+                    }]
+                },
+
+                options: {
+                    startAngle: Math.PI,
+                    legend: {
+                        display: false
+                        // position: 'top',
+                        // maxWidth: 400,
+                    },
+                    scale: {
+                        ticks: {
+                            suggestedMin: 10,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+        }
+
+        
+        bc();
+
+        var cir_cm = parseFloat(document.getElementById("cir_tot").innerHTML);
+        var cir_tot = (cir_cm/2.54);
+        document.getElementById("cir_tot").innerHTML = cir_tot.toFixed(2);
+
+        </script>
+        </div>
+
+   	{% endblock %}

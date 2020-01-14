@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title></title>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+
+    <style>
+        html body {
+            background-color: #F5F5F5;
+        }
+
+        #sub_but {
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .sub_but {
+            width: 150px;
+        }
+
+        .fl label {
+            width: 150px;
+        }
+
+        .fl input {
+            width: 100px;
+        }
+
+        .top-m {
+            width: 100%;
+            height: 20px;
+        }
+    </style>
+</head>
+<div class="container">
+    <div class="top-m"></div>
+    <!--提交form-->
+    <form id="register" onsubmit="cal_sub()" action="/basic_form_submit" method="post">
+
+        <div id="accordion">
+            <!--第一组折叠-->
+            {% if dict.id=="" %}
+                <!--第1组折叠-->
+                <div class="card">
+                    <div class="card-header">
+                        <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                            <h4>Account</h4>
+                        </a>
+                    </div>
+                    <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                        <div class="card-body">
+                            <div class="fl" style="display: none;">
+
+                                <input style="float:left;margin-left:20px; display: none" id="pat" name="whor" type="radio"
+                                       value='patient' checked >
+                                <input id="who" name="who" type="text" style="display: none;">
+                            </div>
+                            <div class="row">
+                                <div class="col-12 fl">
+                                    <label>User Name</label>
+                                    <input id="uname" name="uname" type="text" placeholder="user name" required
+                                           autofocus value={{ dict.id }}>
+                                </div>
+                                <div class="col-12 fl">
+                                    <label>Password</label>
+                                    <input id="passw1" name="passw1" type="password" required value={{ dict.ps }}>
+                                </div>
+                                <div class="col-12 fl">
+                                    <label>Repeat Password</label>
+                                    <input id="passw2" name="passw2" type="password" required value={{ dict.ps }}>
+                                </div>
+                            </div>
+
+                            <input id="typ" name="typ" type="text" value='new' style="display:none;">
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <!--第2组折叠-->
+                <div class="card">
+                    <div class="card-header">
+                        <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                            <h4>Account</h4>
+                        </a>
+                    </div>
+                    <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                        <div class="card-body">
+                            <div class="col-12 fl">
+
+                                {% if dict.userType=="doctor" %}
+                                    <input style="float:left;margin-left:20px; display: none" id="pat" name="whor" type="radio"
+                                           value='patient' checked>
+                                    <input id="who" name="who" type="text" style="display: none;">
+                                {% else %}
+                                    <input style="float:left;margin-left:20px; display: none" id="pat" name="whor" type="radio"
+                                           value='patient' checked>
+                                    <input id="who" name="who" type="text" style="display: none;">
+                                {% endif %}
+                            </div>
+                            <input id="who" name="who" type="text" style="display: none;" value={{ dict.userType }}>
+                            <div class="row">
+                                <div class="col-12 fl">
+                                    <label>User Name</label>
+                                    <input id="uname" name="uname" type="text" placeholder="user name" required
+                                           autofocus value={{ dict.id }}>
+                                </div>
+                                <div class="col-12 fl">
+                                    <label>Password</label>
+                                    <input id="passw1" name="passw1" type="password" required value={{ dict.ps }}>
+                                </div>
+                                <div class="col-12 fl">
+                                    <label>Repeat Password</label>
+                                    <input id="passw2" name="passw2" type="password" required value={{ dict.ps }}>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h2>{{ dict.id }}</h2>
+                </div>
+                <input id="typ" name="typ" type="text" value='update' style="display: none;">
+            {% endif %}
+            <!--第二组折叠-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                        <h4>Personal Info</h4>
+                    </a>
+                </div>
+                <div id="collapseTwo" class="collapse show" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6 fl">
+                                <div style="display: none">
+                                    <label>Real Name </label>
+                                    <input id="rname" name="rname" type="text" placeholder="" value={{ dict.rname }}>
+                                </div>
+                                <div>
+                                    <label>First Name </label>
+                                    <input id="fname" type="text">
+                                </div>
+                                <div>
+                                    <label>Last Name </label>
+                                    <input id="lname" type="text" >
+                                </div>
+                            </div>
+                            <div class="col-6 fl">
+                                <label>Date of Birth</label>
+
+                                <input id="dob" name="dob" type="text" required placeholder="mm/dd/yyyy"
+                                       value={{ dict.dob }}>
+                                <input id="age" name="age" type="number" style="display:none">
+                            </div>
+                        </div>
+
+                        {% if dict.gender=="male" %}
+                            <div class="top-m"></div>
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <label>Gender</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <input id="male" name="gender" type="radio" checked value="male">
+                                        <label for="visa">male</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <input id="female" name="gender" type="radio" value="female">
+                                        <label for="mastercard">female</label>
+                                    </div>
+                                </div>
+                                <!-- 注意！
+                                更改时，上下同时更改，{if/else} -->
+                                {% else %}
+                                <div class="top-m"></div>
+                                <div class="row">
+                                    <div class="col-2">
+                                        <label>Gender</label>
+                                    </div>
+
+                                    <div class="col-4">
+                                        <input id="male" name="gender" type="radio" value="male">
+                                        <label for="visa">male</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <input id="female" name="gender" type="radio" checked value="female">
+                                        <label for="mastercard">female</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div>
+                            <div>
+                                <div class="col-12 fl">
+                                    <label>Email：</label>
+                                    <input style="width: 200px" id="email" name="email" type="email"
+                                           placeholder="example@domain.com" required
+                                           value={{ dict.email }}>
+                                </div>
+                                <div class="top-m"></div>
+                                <div class="col-12 fl">
+                                    <label>Telephone：</label>
+                                    <input style="width: 200px" id="phone" name="phone" type="tel"
+                                           placeholder="Eg. +447000 000000" required
+                                           value={{ dict.phone }}>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="top-m"></div>
+                        <div>
+                            <div class="col-12 fl">
+                                <label>Address：</label>
+                                <input style="width: 200px" id="address" name="address" rows=5 required
+                                       value={{ dict.address }}>
+                            </div>
+                            <div class="col-12 fl" style="display:none;">
+                                <label>Post code </label>
+                                <input id="postCode" name="postCode" type="text" value={{ dict.postCode }}>
+                            </div>
+                            <div class="col-12 fl" style="display:none;">
+                                <label>Country </label>
+                                <input id="country" name="country" type="text" value={{ dict.Country }}>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!--        提交按钮-->
+        <div class="row">
+            <div class="d-flex justify-content-center" id="sub_but">
+                <div>
+                    <button class="btn btn-primary sub_but" type="submit" onsubmit="cal_sub()"> submit</button>
+                    <a href="/patient_list" style="color: #ffffff">
+                        <button class="btn btn-danger sub_but" type="button">Back</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<body>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var name = document.getElementById("rname").value;
+
+        var name_arr = name.split(" ");
+        document.getElementById("fname").value = name_arr[0];
+        document.getElementById("lname").value = name_arr[1];
+
+    })
+    function getAge(dateString) {
+        var today = new Date();
+        var birthDate = new Date(dateString);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
+
+
+    function cal_sub() {
+        var dob = document.getElementById("dob").value;
+        age = getAge(dob);
+        // var age = 24;
+        document.getElementById("age").value = age;
+
+        var userType = "";
+        var eles = document.getElementsByName("whor");
+        for (var i = 0; i < eles.length; i++) {
+            if (eles[i].checked) {
+                userType = eles[i].value;
+                document.getElementById("who").value = userType;
+                break;
+            }
+        }
+
+        var name = document.getElementById("fname").value + " " + document.getElementById("lname").value;
+        document.getElementById("rname").value = name;
+
+        // 少了一步，需要作出提醒或者直接退出这个界面
+        alert("Updated successfully!");
+        return userType
+    }
+</script>
+</body>
+</html>

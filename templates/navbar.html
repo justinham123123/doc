@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Balance</title>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <!-- 图标必备文件 -->
+    <script type="text/javascript" src="/static/html2pdf.min.js"></script>
+    <script src="/static/html2canvas.min.js"></script>
+
+    <style>
+
+    </style>
+    <!--    头部文件-->
+    <link rel="stylesheet" href="../static/css/base.css">
+    <!--    显示头部文件-->
+    {% block head %} {% endblock %}
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <!-- Brand -->
+    <div>
+        <a class="navbar-brand d-lg-none" href="#">Report of <span style="color: yellow">{{patient}}</span> </a>
+    </div>
+    <!-- Toggler/collapsibe Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar links -->
+    <!--    靠左显示-->
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+            <!--第一组-->
+            {% if single=='f' %}
+            <li class="nav-item">
+                <a class="nav-link" id="result_m" class="nav" href="/result_m?name={{name}}">Summary</a>
+            </li>
+            <!--第二组-->
+            {% if states[0]=='t' %}
+            <li class="nav-item">
+                <a class="nav-link" id="result_bc" class="nav" href="/result_bc?name={{name}}">Body Composition</a>
+            </li>
+            {% else %}
+            <span id="result_bc" class="fake_nav">Body Composition</span>
+            {% endif %}
+            <!--第三组-->
+            {% if states[1]=='t' %}
+            <li class="nav-item">
+                <a class="nav-link" id="result_balance" class="nav" href="/result_balance?name={{name}}">Balance</a>
+            </li>
+            {% else %}
+            <span id="result_balance" class="fake_nav">Balance</span>
+            {% endif %}
+            <!--第4组-->
+            {% if states[2]=='t' %}
+            <li class="nav-item">
+                <a class="nav-link" id="result_cf" class="nav" href="/result_cf?name={{name}}">Cardiopulmonary
+                    Fitness</a>
+            </li>
+            {% else %}
+            <span id="result_cf" class="fake_nav">Cardiopulmonary Fitness</span>
+            {% endif %}
+            <!--第5组-->
+            {% if states[3]=='t' %}
+            <li class="nav-item">
+                <a class="nav-link" id="result_mf" class="nav" href="/result_mf?name={{name}}">Muscular Fitness</a>
+            </li>
+            {% else %}
+            <span id="result_mf" class="fake_nav">Muscular Fitness</span>
+            {% endif %}
+            <!--第6组-->
+            {% if states[4]=='t' %}
+            <li class="nav-item">
+                <a class="nav-link" id="result_rom" class="nav" href="/result_rom?name={{name}}">Range of Motion</a>
+            </li>
+            {% else %}
+            <span id="result_rom" class="fake_nav">Range of Motion</span>
+            {% endif %}
+            <!--第7组-->
+            {% else %}
+            <li class="nav-item">
+                <!-- <a class="nav-link" id="back" class="nav" href="/general_form?name={{name}}">Back</a> -->
+            </li>
+            {% endif %}
+        </ul>
+        <!--        靠右显示-->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <span class="nav-link d-none d-lg-table-cell">Report of <span style="color: yellow">{{patient}}</span></span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link d-none d-sm-table-cell" style="float:right" href="/print_w?name={{name}}" target="_blank">Print</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout" style="float:right; color: red;">Logout</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/general_form?name={{name}}" style="float:right; color: red;">Back</a>
+            </li>
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link" href="/report_list" style="float:right">Back to Report List</a>-->
+<!--            </li>-->
+        </ul>
+
+
+        <!--        navbar-nav flex-row ml-md-auto d-none d-md-flex-->
+
+    </div>
+</nav>
+<div>
+    <!--    显示内容-->
+    {% block content %} {% endblock %}
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var elements = document.getElementsByClassName('nav-link');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].classList.remove('active');
+        }
+
+        var curr_url = window.location.href;
+        var name_loc = curr_url.split("/");
+        // alert(curr_url)
+        var target = name_loc[name_loc.length - 1];
+        // alert(target)
+        var name = target.split("?")[0]
+        var target_ele = document.getElementById(name);
+        // alert(target_ele.innerHTML)
+        target_ele.classList.add('active');
+    });
+</script>
+</body>
+</html>

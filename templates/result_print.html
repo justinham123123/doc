@@ -1,0 +1,2629 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="/static/jquery.js"></script>
+<!--     <script type="text/javascript" src="/static/html2pdf.min.js"></script> -->
+    <script type="text/javascript" src="/static/html2canvas.min.js"></script>
+    <script type="text/javascript" src="/static/polar.js"></script>
+    <script type="text/javascript" src="/static/fileSaver.js"></script>
+    <script type="text/javascript" src="/static/jspdf/dist/jspdf.debug.js"></script>
+<!-- 
+    <script type="text/javascript" src="/static/jspdf/plugins/from_html.js"></script>
+    <script type="text/javascript" src="/static/jspdf/plugins/split_text_to_size.js"></script> 
+    <script type="text/javascript" src="/static/jspdf/plugins/standard_fonts_metrics.js"></script>
+ -->
+
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/style/result_mf.css">
+
+
+    <!-- balance -->
+    <style type="text/css">
+        body {
+          margin: 0;
+          font-family: Arial, Helvetica, sans-serif;
+        }
+
+        #pg{
+          width: 1400px;
+          margin: auto;
+          padding-bottom: 0px;
+        }
+
+        .pg_s{
+            height:2050px;
+            /*display:none;*/
+        }
+
+        .pg_ss{
+            height:2050px;
+        }
+    
+        ul li{
+            list-style: none;
+        }
+
+        .graph_list li{
+            float:left;
+        }
+
+        table {
+          font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+          border-collapse: collapse;
+          width: 600px;
+        }
+
+        td, th {
+          border: 1px solid #ddd;
+          padding: 6px;
+          font-size:20px;
+        }
+
+        tr:nth-child(even){background-color: #f2f2f2;}
+
+        tr:hover {background-color: #ddd;}
+
+        th {
+          padding-top: 6px;
+          padding-bottom: 6px;
+          text-align: left;
+          color: white;
+        }
+
+        h1{
+            font-size: 24px;
+        }
+
+        .pg_tit{
+            text-align: center;
+            font-size: 40px;
+            font-weight: bold;
+            margin-top: 42px;
+            margin-bottom:40px;
+        }
+
+        
+        .main_table{
+            width: 1000px;
+            margin-top: 200px;
+            margin-left: 200px;
+        }
+
+        .main_table th {
+            background-color: #4CAF50;
+         }
+
+        .tagg{
+            position: absolute;
+            top: 80px;
+            font-size: 20px;
+            background: rgb(77, 61, 61);
+            padding: 7px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            padding-left: 15px;
+            padding-right: 15px;
+            margin-left:50px;
+        }
+    
+
+        .car_table th {
+          background-color: #E5533E;
+        }
+
+        .rom_table th {
+          background-color: #4CAF50;
+        }
+
+        .bc_table th {
+          background-color: #388BF5;
+        }
+
+        .balance_table th {
+          background-color: #8E52AA;
+          text-align: center;
+        }
+
+
+        .tit{
+            text-align: left;
+            font-size: 18px;
+            margin-left: -48px;
+            margin-top: -10px;
+            position: absolute;
+        }
+
+        .tit2{
+            float:right;
+            text-align: right;
+            font-size: 18px;
+            margin-right: 0px;
+            margin-top: -10px;
+            width:548px;
+            position: absolute;
+        }
+
+        .per_tit{
+            color: green;
+            font-weight: bold;
+        }
+
+        .tit_a{
+            text-align: center;
+            background: rgb(184, 235, 184);
+            width: 340px;
+            margin-left: 50px;
+            padding-top: 5px;
+            padding-bottom: 5px
+        }
+
+        .chart_ent{
+            width:500px;
+            margin-bottom: 30px;
+            margin-left: 50px;
+            margin-right: -50px;
+        }
+
+        .icon{
+            width: 34px;
+            margin-right: 20px;
+            display: block;
+            float: left;
+            margin-top: 0px;
+            margin-bottom: -4px;
+            overflow: hidden;
+        }
+
+        .cl_line2{
+            clear:both;
+            margin-bottom: 100px;
+        }
+
+        .ft{
+            margin-top: 90px;
+        }
+    </style>
+    
+</head>
+
+
+<body>
+    
+    <div style="font-size:42px; text-align: center; margin-top: 40px;" >
+        <span>Print Overview</span>
+        <button onclick="generatePDF5()" class="btn btn-primary" style="padding-left:20px;padding-right:20px; font-size:32px;margin-left:50px;">download as PDF</button>
+    </div>
+
+    <div id="screen" style="position: fixed; background: black; opacity: 0.8">
+        <div>generating PDF...</div>
+    </div>
+
+    <div id="pg">
+    <div style="height:2px;border:1px solid black; margin-top:50px;"></div>
+
+    <div id="pg_main" class="pg_s">
+        <!-- 
+        <div class="tagg">Report of {{patient}} </div>
+         -->
+        <div>
+            <h1 class="pg_tit" style="font-size: 58px;">Report of {{patient}}</h1>
+
+            <div style="width:1200px;margin: auto;margin-top: 300px;">
+                <div style="position: absolute;margin-top: 120px;margin-left: 900px; font-size: 28px;">
+                    {% if states[0]=='t' %}
+                    <a href="/result_bc?name={{name}}">
+                    <img class="icon" style="width: 80px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -85px; margin-left: -10px;" src="/static/icon_png/home_bc.png">
+                <!-- 
+                    <img class="icon" style="width: 100px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -85px; margin-left: -10px;" src="/static/polar_res.png"> 
+                -->
+                    </a>
+                    {% else %}
+                    <span>
+                    <img class="icon" style="width: 80px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -85px; margin-left: -10px;" src="/static/icon_png/home_bc.png">
+                    </span>
+                    {% endif %}
+                    <b style="font-size:16px;margin-left:-32px;">Body Composition</b><br/>
+                    <span>{{score[0]*10}}</span>%
+                </div>
+                <div style="position: absolute;margin-top: 450px;margin-left: 900px; font-size: 28px;">
+                    {% if states[1]=='t' %}
+                    <a href="/result_balance?name={{name}}">
+                    <img class="icon" style="width: 80px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -85px; margin-left: -10px;" src="/static/icon_png/home_b.png">
+                    </a>
+                    {% else %}
+                    <span>
+                    <img class="icon" style="width: 80px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -85px; margin-left: -10px;" src="/static/icon_png/home_b.png">
+                    </span>
+                    {% endif %}
+                    <b style="font-size:16px;margin-left:8px;">Balance</b><br/>
+                    <span>{{score[1]*10}}</span>%
+                </div>
+                <div style="position: absolute;margin-top: 570px;margin-left: 580px; font-size: 28px;">
+                    {% if states[2]=='t' %}
+                    <a href="/result_cf?name={{name}}">
+                    <img class="icon" style="width: 80px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -85px; margin-left: -10px;" src="/static/icon_png/home_car.png">
+                    </a>
+                    {% else %}
+                    <span>
+                    <img class="icon" style="width: 80px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -85px; margin-left: -10px;" src="/static/icon_png/home_car.png">
+                    </span>
+                    {% endif %}
+                    <b style="font-size:16px; margin-left:-55px;">Cardiopulmonary Fitness</b><br/>
+                    <span>{{score[2]*10}}</span>%
+                </div>
+                <div style="position: absolute;margin-top: 450px;margin-left: 265px; font-size: 28px;">
+                    {% if states[3]=='t' %}
+                    <a href="/result_mf?name={{name}}">
+                    <img class="icon" style="width: 80px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -85px; margin-left: -10px;" src="/static/icon_png/home_mf.png">
+                    </a>
+                    {% else %}
+                    <span>
+                    <img class="icon" style="width: 80px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -85px; margin-left: -10px;" src="/static/icon_png/home_mf.png">
+                    </span>
+                    {% endif %}
+                    <b style="font-size:16px;margin-left:-25px;">Muscular Fitness</b><br/>
+                    <span >{{score[3]*10}}</span>%
+                </div>
+                <div style="position: absolute;margin-top: 120px;margin-left: 265px; font-size: 28px;">
+                    {% if states[4]=='t' %}
+                    <a href="/result_rom?name={{name}}">
+                    <img class="icon" style="width: 80px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -85px; margin-left: -10px;" src="/static/icon_png/home_rom.png">
+                    </a>
+                    {% else %}
+                    <span>
+                    <img class="icon" style="width: 80px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -85px; margin-left: -10px;" src="/static/icon_png/home_rom.png">
+                    </span>
+                    {% endif %}
+                    <b style="font-size:16px;margin-left:-25px;">Range of Motion</b><br/>
+                    <span>{{score[4]*10}}</span>%
+                </div>
+                <div style="position: absolute;margin-top: -88px;margin-left: 580px; font-size: 28px;">
+                    <img class="icon" style="width: 100px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -65px; margin-left: -10px;" src="/static/icon_png/home.png">
+                    <b style="font-size:16px;margin-left:-2px;">Composite</b><br/>
+                    <span id='b_ll'>{{score[5]*10}}</span>%
+                </div>
+
+                <div style="width: 960px;margin-left:140px; margin-top:170px;">
+                    <canvas id="myChart_main"></canvas>
+                </div>
+            </div>
+
+
+            <div style="clear:both;"></div>
+            <div id="test_id" style="display: none;">{{name}}</div>
+
+
+            <table class="main_table">
+                <tr>
+                    <td><img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;" src="/static/icon_png/home_bc.png">Body Composition: <span id='d1'>{{score[0]}}</span>/10</td>
+                    <td><img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;" src="/static/icon_png/home_b.png">Balance: <span id='d2'>{{score[1]}}</span>/10</td>
+                    <td><img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;" src="/static/icon_png/home_car.png">Cardiopulmonary Fitness: <span id='d3'>{{score[2]}}</span>/10</td>
+                </tr>
+                <tr>
+                    <td><img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;" src="/static/icon_png/home_mf.png">Muscular Fitness: <span id='d4'>{{score[3]}}</span>/10</td>
+                    <td><img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;" src="/static/icon_png/home_rom.png">Range of Motion: <span id='d5'>{{score[4]}}</span>/10</td>
+                    <td><img class="icon" style="width: 42px; margin-left:-4px; margin-right:6px; margin-top: 2px; margin-bottom: -10px;" src="/static/icon_png/home.png">Composite: <span id='d6'>{{score[5]}}</span>/10</td>
+                </tr>
+            </table>
+        </div>
+
+
+
+
+
+        <script type="text/javascript">
+
+        function gen(){
+
+            var d1 = parseFloat(document.getElementById("d1").innerHTML);
+            var d2 = parseFloat(document.getElementById("d2").innerHTML);
+            var d3 = parseFloat(document.getElementById("d3").innerHTML);
+            var d4 = parseFloat(document.getElementById("d4").innerHTML);
+            var d5 = parseFloat(document.getElementById("d5").innerHTML);
+            var d6 = parseFloat(document.getElementById("d6").innerHTML);
+            // var d6 = (0.2*d1+0.2*d2+0.2*d3+0.2*d4+0.2*d5).toFixed(2);
+            // document.getElementById("d6").innerHTML = d6;
+            // document.getElementById("b_ll").innerHTML = d6;
+            var ctx = document.getElementById('myChart_main').getContext('2d');
+
+            var test_id = document.getElementById("test_id").innerHTML;
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'polarArea',
+                legend: {
+                    display: true,
+                    position: 'top',
+                    maxWidth: 400,
+                },
+                data: {
+                    labels: ['Body Composition', 'Balance', 'Cardiopulmonary Fitness', 'Muscular Fitness', 'Range of Motion', 'Composite'],
+
+                    datasets: [{
+                        label: 'AVERAGE',
+                        // borderColor: 'rgb(255, 99, 132)',
+                        data: [d1, d2, d3, d4, d5, d6],
+                        backgroundColor: [
+                          "rgba(0, 100, 255, 0.5)",
+                          "rgba(255, 0, 255, 0.5)",
+                          "rgba(255, 0, 0, 0.5)",
+                          "rgba(255, 255, 0, 0.5)",
+                          "rgba(100, 255, 0, 0.5)",
+                          "rgba(50, 50, 50, 0.5)",
+                        ]
+                    }]
+                },
+
+                options: {
+
+                    startAngle: Math.PI*1.0/6-Math.PI*0.5,
+
+                    'onClick' : function (evt, item) {
+                        var target = item[0]['_model'].label
+                        if (target=="Range of Motion"){
+                            window.location.href = "/result_rom?name="+test_id;
+                        }else if (target=="Muscular Fitness"){
+                            window.location.href = "/result_mf?name="+test_id;
+                        }else if (target=="Cardiopulmonary Fitness"){
+                            window.location.href = "/result_cf?name="+test_id;
+                        }else if (target=="Balance"){
+                            window.location.href = "/result_balance?name="+test_id;
+                        }else if (target=="Body Composition"){
+                            window.location.href = "/result_bc?name="+test_id;
+                        }
+                    },
+
+                
+                    legend: {
+                        display: false
+                    },
+                    scale: {
+                        ticks: {
+                            suggestedMin: 0.1,
+                            suggestedMax: 10
+                        }
+                    }
+                    
+                }
+            });
+        }
+
+
+        gen();
+
+        </script>
+
+    </div>
+    
+    <div class="cl_line2"></div>
+    <div class="cl_line2"></div>
+
+
+
+
+
+
+
+
+
+    <div id="pg_bc" class="pg_ss">
+        <div class="pg_tit">Body Composition Results</div>
+<!-- 
+        <div style="background:rgb(203, 233, 243); width:100%"> -->
+        <div style="float:left; width:600px;margin-left: 50px;">
+   
+            <div style="margin-top:20px;">
+                
+                <table class="bc_table" style="margin-top:40px;">
+                    <tr>
+                        <th>KEY</th>
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon_png/bc_res_bf.png">Body Fat %: <span id='bf'>{{score_bc[0]}}</span>/10</td>
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon_png/bc_res_wthratio.png">Waist-to-Hip Ratio (WHR): <span id='wthr2'>{{score_bc[1]}}</span>/10</td>   
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon_png/bc_res_abf.png">Acceptable Body Fat %: <span id='abf'>{{score_bc[2]}}</span>/10</td>   
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon_png/bc_res_bmi.png">Body Mass Index (BMI): <span id='bmi'>{{score_bc[3]}}</span>/10</td>  
+                    </tr>
+                </table>
+                <br/>
+
+                <div style="position: absolute; margin-left: 70px; margin-top: 60px;font-size: 27px"><img class="icon" style="width: 66px; position: absolute; margin-top: -54px; margin-left: 7px;" src="/static/icon_png/bc_res_bf.png"><span id='bf'>{{score_bc[0]*10}}</span>%</div>
+                <div style="position: absolute; margin-left: 440px; margin-top: 60px;font-size: 27px"><img class="icon" style="width: 66px; position: absolute; margin-top: -54px; margin-left: 7px;" src="/static/icon_png/bc_res_wthratio.png"><span id='bf'>{{score_bc[1]*10}}</span>%</div>
+                <div style="position: absolute; margin-left: 440px; margin-top: 360px;font-size: 27px"><img class="icon" style="width: 66px; position: absolute; margin-top: -64px; margin-left: 7px;" src="/static/icon_png/bc_res_abf.png"><span id='bf'>{{score_bc[2]*10}}</span>%</div>
+                <div style="position: absolute; margin-left: 70px; margin-top: 360px;font-size: 27px"><img class="icon" style="width: 66px; position: absolute; margin-top: -64px; margin-left: 7px;" src="/static/icon_png/bc_res_bmi.png"><span id='bf'>{{score_bc[3]*10}}</span>%</div>
+
+                <div style="width:600px;margin-left:0px; margin-top:50px;">
+                    <canvas id="myChart_bc"></canvas>        
+                </div>
+            </div>
+            <div class="cl_line"></div>
+
+            <div style="margin-top:40px;">
+                <table class="bc_table">
+                    <tr>
+                        <th colspan="3">CALCULATED COMPOSITION</th>
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon_png/bc_cc_bodyfat.png">Body Fat: <span>{{bc_dict.bf}}</span>%</td>
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon_png/bc_cc_fatmass.png">Fat Mass: <span>{{bc_dict.fm}}</span>lbs</td>   
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon_png/bc_cc_lbmass.png">Lean Body Mass: <span>{{bc_dict.lbm}}</span>lbs</td>   
+                    </tr>
+                    <tr>
+                        <td><img class="icon" style="height:30px;" src="/static/icon_png/bc_cc_metarate.png">Basal Metabolic Rate: <span>{{bc_dict.bmr}}</span>kcal</td>  
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon_png/bc_cc_tdee.png">Total Daily Energy Expenditure: <span>{{bc_dict.tdee}}</span>kcal</td>   
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon_png/bc_cc_cirtotal.png">Circumference Total: <span id="cir_tot">{{bc_dict.circumference}}</span>''</td>   
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon_png/bc_res_wthratio.png">Waist-to-Hip Ratio (WHR): <span id='wthr'>{{bc_dict.wthr}}</span></td>   
+                    </tr>
+                </table>
+            </div>
+        </div>
+     
+
+        <div style="float:left; width:600px;margin-left: 100px;">
+            
+            <table style="margin-top:40px;"  class="bc_table">
+                <tr>
+                    <th colspan="3">RESTING MEASUREMENTS</th>
+                </tr>
+                 <tr>
+                    <td><img class="icon" style="height:30px;" src="/static/icon_png/bc_height.png">Height: <span>{{bc_dict.height}}</span></td>
+                    <td><img class="icon" src="/static/icon_png/bc_weight.png">Weight: <span>{{bc_dict.weight}}</span></td>
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon_png/bc_bmi.png">Body Mass Index (BMI): <span>{{bc_dict.bmi}}</span></td>
+                    <td><img class="icon" style="height:30px;" src="/static/icon_png/bc_bp.png">BP: <span>{{bc_dict.bp}}</span></td>   
+                </tr>
+                <tr>
+                    <td><img class="icon" src="/static/icon_png/bc_hrrest.png">HR Rest: <span>{{bc_dict.rhr}}</span></td>
+                    <td><img class="icon" src="/static/icon_png/bc_hrmax.png">HR Max: <span>{{bc_dict.hrm}}</span></td>   
+                </tr>
+                
+            </table>
+            <div style="clear:both;"></div>
+ 
+            <br/><br/>
+ 
+            <div>
+                <!-- <div style="background: url('/static/icon_png/bc_body_t.png'); background-repeat: no-repeat;"> -->
+                <div>
+                    <table class="bc_table">
+                        <tr>
+                            <th colspan="3">CIRCUMFERENCE</th>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td>Left</td>
+                            <td>Right</td>
+                        </tr>
+                        <tr>
+                            <td>Neck</td>
+                            <td colspan="2">{{bc_dict.neck}}</td>
+                        </tr>
+                        <tr>
+                            <td>Arm</td>
+                            <td>{{bc_dict.arml}}</td>
+                            <td>{{bc_dict.armr}}</td>   
+                        </tr>
+                        <tr>
+                            <td>Forearm</td>
+                            <td>{{bc_dict.forearml}}</td>
+                            <td>{{bc_dict.forearmr}}</td>   
+                        </tr>
+                        <tr>
+                            <td>Chest</td>
+                            <td colspan="2">{{bc_dict.chest}}</td>
+                        </tr>
+                        <tr>
+                            <td>Waist</td>
+                            <td colspan="2">{{bc_dict.waist}}</td>
+                        </tr>
+                        <tr>
+                            <td>Abdomen</td>
+                            <td colspan="2">{{bc_dict.abdomen}}</td>
+                        </tr>
+                        <tr>
+                            <td>Buttocks/Hip</td>
+                            <td colspan="2">{{bc_dict.buttocks}}</td>
+                        </tr>
+                        <tr>
+                            <td>Midthigh</td>
+                            <td>{{bc_dict.midthighl}}</td>
+                            <td>{{bc_dict.midthighr}}</td>
+                        </tr>
+                        <tr>
+                            <td>Calf</td>
+                            <td>{{bc_dict.calfl}}</td>
+                            <td>{{bc_dict.calfr}}</td>
+                        </tr>
+                        
+                    </table>
+                </div>
+            </div>
+            <br/><br/>
+        
+
+            <div>
+                <table class="bc_table">
+                    <tr>
+                        <th colspan="3">SKINFOLD VALUES</th>
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon_png/bc_sf_abdomen.png">Abdomen: <span>{{bc_dict.abdomen2}}</span></td>
+                        <td><img class="icon" src="/static/icon_png/bc_sf_tricep.png">Triceps: <span>{{bc_dict.triceps}}</span></td>
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon_png/bc_sf_chest.png">Chest: <span>{{bc_dict.chest2}}</span></td>
+                        <td><img class="icon" style="height:30px;" src="/static/icon_png/bc_sf_midaxillary.png">Midaxillary: <span>{{bc_dict.midaxillary}}</span></td>   
+                    </tr>
+                    <tr>
+                        <td><img class="icon" style="height:30px;" src="/static/icon_png/bc_sf_subscapular.png">Subscapular: <span>{{bc_dict.subscapular}}</span></td>
+                        <td><img class="icon" src="/static/icon_png/bc_sf_suprailiac.png">Suprailiac: <span>{{bc_dict.suprailiac}}</span></td>   
+                    </tr>
+                    <tr>
+                        <td><img class="icon" style="height:30px;" src="/static/icon_png/bc_sf_thigh.png">Thigh: <span>{{bc_dict.thigh}}</span></td>
+                        <td><img class="icon" style="height:30px;" src="/static/icon_png/bc_sf_sum.png">SUM: <span>{{bc_dict.sum7}}</span></td>   
+                    </tr>
+                    
+                </table>
+                <div style="clear:both;"></div>
+            </div>
+                
+        </div>
+
+        <div class="cl_line"></div>
+        
+
+        <script type="text/javascript">
+
+        function bc(){
+            var bmi = parseFloat(document.getElementById("bmi").innerHTML);
+            var bf = parseFloat(document.getElementById("bf").innerHTML);
+            var wthr = parseFloat(document.getElementById("wthr2").innerHTML);
+            var abf = parseFloat(document.getElementById("abf").innerHTML);
+            
+            var ctx = document.getElementById('myChart_bc').getContext('2d');
+
+            // alert(wthr)
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'polarArea',
+                
+                data: {
+                    labels: ['BF', 'WHR', 'ABF', 'BMI'],
+
+                    datasets: [{
+                        label: 'Muscular Fitness',
+                        // borderColor: 'rgb(255, 99, 132)',
+                        data: [bf,wthr,abf,bmi],
+                        backgroundColor: [
+                          "rgba(50, 100, 200, 0.5)",
+                          "rgba(100, 150, 200, 0.5)",
+                          "rgba(50, 150, 255, 0.5)",
+                          "rgba(100, 200, 255, 0.5)"
+                          
+                        ]
+                    }]
+                },
+
+                options: {
+                    startAngle: Math.PI,
+                    legend: {
+                        display: false
+                    },
+                    scale: {
+                        ticks: {
+                            suggestedMin: 10,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+        }
+
+        
+        bc();
+
+        var cir_cm = parseFloat(document.getElementById("cir_tot").innerHTML);
+        var cir_tot = (cir_cm/2.54);
+        document.getElementById("cir_tot").innerHTML = cir_tot.toFixed(2);
+
+        </script>
+
+    </div>
+
+    <div class="cl_line2"></div>
+
+
+
+
+
+
+
+    <div id="pg_balance" class="pg_ss">
+        <div class="pg_tit">Balance Results</div>
+        <div style="width:100%">
+   
+        <div style="float:left; width:600px;margin-left: 50px;">
+        
+        <h1>AVERAGE</h1>
+        <div>
+             <table class="balance_table">
+                <tr>
+                    <th style="text-align:left">KEY</th>
+                </tr>
+                <tr>
+                    <td><img class="icon" style="width: 15px; height:30px; margin-right:10px; margin-top: -2px; margin-bottom: -10px;" src="/static/icon_png/b_res_ave_l.png">Left: <span id="avg_l"></span>/10</td>
+                </tr>
+
+                <tr>
+                    <td><img class="icon" style="width: 15px; height:30px; margin-right:10px; margin-top: -2px; margin-bottom: -10px;" src="/static/icon_png/b_res_ave_r.png">Right: <span  id='avg_r'></span>/10</td>
+                </tr>
+           </table>
+
+            <div style="position: absolute;margin-top: 180px;margin-left: 35px;font-size: 30px;">
+                <img class="icon" style="transform: scaleX(-1); width: 27px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -60px;margin-left: 25px;" src="/static/icon_png/b_res_ave_r.png">
+                <span id='avg_lb2'></span>%
+            </div>
+            <div style="position: absolute;margin-top: 180px;margin-left: 485px;font-size: 30px;">
+                <img class="icon" style="width: 27px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -60px; margin-left: 25px;" src="/static/icon_png/b_res_ave_r.png">
+                <span id='avg_rb2'></span>%
+            </div>
+            <div style="width:600px; margin-top: 40px;">
+                <canvas id="myChart_balance4"></canvas>        
+            </div>
+               
+            
+            <h1>BESS TEST</h1>
+            <table class="balance_table">
+                <tr><th style="text-align: left;"><img class="icon" src="/static/icon_png/b_bess_ftft.png" style="width: 30px; margin-right: 10px; margin-top: -2px; margin-bottom: -10px;">Feet Together</th></tr>
+                <tr>
+                    <td>Double Leg Stance: <span>{{balance_dict.dls}}</span></td>
+                </tr>
+                <tr>
+                    <td>Double Leg Stance (Pad): <span>{{balance_dict.dlsp}}</span></td>
+                </tr>
+                <tr>
+                    <td>Faults: <span>{{balance_dict.ft}}</span></td>
+                </tr>
+            </table>          
+
+            <table style="text-align: center;" class="balance_table">
+                <tr>
+                    <th>
+                        Left
+                    </th>
+                    <th></th>
+                    <th>
+                        Right
+                    </th>
+                </tr>
+                <tr>
+                    <td><span>{{balance_dict.lsls}}</span></td>
+                    <td><span>Single Leg Stance</span></td>
+                    <td><span>{{balance_dict.rsls}}</span></td>
+                </tr>
+                <tr>
+                    <td><span>{{balance_dict.lslsp}}</span></td>
+                    <td><span>Single Leg Stance (Pad)</span></td>
+                    <td><span>{{balance_dict.rslsp}}</span></td>
+                </tr>
+                <tr>
+                    <td><span>{{balance_dict.lts}}</span></td>
+                    <td><span>Tandem Stance</span></td>
+                    <td><span>{{balance_dict.rts}}</span></td>
+                </tr>
+                <tr>
+                    <td><span>{{balance_dict.ltsp}}</span></td>
+                    <td><span>Tandem Stance (Pad)</span></td>
+                    <td><span>{{balance_dict.rtsp}}</span></td>
+                </tr>
+                <tr>
+                    <td><span>{{balance_dict.lf}}</span></td>
+                    <td><span>Faults</span></td>
+                    <td><span>{{balance_dict.rf}}</span></td>
+                </tr>
+            </table>
+
+            <table class="balance_table">
+                <tr><th style="text-align:center;">TOTAL FAULTS: <span>{{balance_dict.tf}}</span></th></tr>
+            </table>
+        </div>
+        <div>
+             <div style="position: absolute;margin-top: 180px;margin-left: 35px;font-size: 30px;">
+                <img class="icon" style="transform: scaleX(-1); width: 27px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -60px;margin-left: 25px;" src="/static/icon_png/b_res_ave_r.png">
+                <span id='b_l'>{{score_balance[0]*10}}</span>%
+            </div>
+            <div style="position: absolute;margin-top: 180px;margin-left: 485px;font-size: 30px;">
+                <img class="icon" style="width: 27px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -60px; margin-left: 25px;" src="/static/icon_png/b_res_ave_r.png">
+                <span id='b_r'>{{score_balance[1]*10}}</span>%
+            </div>
+            
+            <div style="width:600px;margin-top:35px;">
+                <canvas id="myChart_balance1"></canvas>        
+            </div>
+        </div>
+
+        </div>
+
+        
+        <div style="float:left; width:600px;margin-left: 100px;">
+                    <div>
+            <h1>A-N BALANCE TEST</h1>
+            <table style="text-align: center;" class="balance_table">
+                <tr>
+                    <th>
+                       Left
+                    </th>
+                    <th></th>
+                    <th>
+                        Right
+                    </th>
+                </tr> 
+                <tr>
+                    <td><span>{{balance_dict.lkup}}</span>/3</td>
+                    <td><span>Knee Up</span></td>
+                    <td><span>{{balance_dict.rkup}}</span>/3</td>
+                </tr>
+
+                <tr>
+                    <td><span>{{balance_dict.lbb}}</span>/3</td>
+                    <td><span>Bottom Block</span></td>
+                    <td><span>{{balance_dict.rbb}}</span>/3</td>
+                </tr>
+                <tr>
+                    <td><span>{{balance_dict.lk2t}}</span>/3</td>
+                    <td><span>Knee 2 T</span></td>
+                    <td><span>{{balance_dict.rk2t}}</span>/3</td>
+                </tr>
+                <tr>
+                    <td><span>{{balance_dict.lh}}</span>/3</td>
+                    <td><span>Heel Tap</span></td>
+                    <td><span>{{balance_dict.rh}}</span>/3</td>
+                </tr>
+                <tr>
+                    <td><span>{{balance_dict.lrb}}</span>/3</td>
+                    <td><span>Reach Back</span></td>
+                    <td><span>{{balance_dict.rrb}}</span>/3</td>
+                </tr>
+                <tr>
+                    <td><span>{{balance_dict.lfs}}</span>/15</td>
+                    <td><span>Score</span></td>
+                    <td><span>{{balance_dict.rfs}}</span>/15</td>
+                </tr>
+                <tr>
+                    <th><span>{{balance_dict.cs}}</span>%</th>
+                    <th><span>COMPOSITE SCORE</span></th>
+                    <th><span>{{balance_dict.cs2}}</span>%</th>
+                </tr>
+            </table>
+        </div>
+        <div>
+
+            <div style="position: absolute;margin-top: 180px;margin-left: 25px;font-size: 30px;">
+                <img class="icon" style="transform: scaleX(-1); width: 27px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -60px;margin-left: 25px;" src="/static/icon_png/b_res_ave_r.png">
+                <span>{{score_balance[2]*10}}</span>%
+            </div>
+            <div style="position: absolute;margin-top: 180px;margin-left: 485px;font-size: 30px;">
+                <img class="icon" style="width: 27px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -60px; margin-left: 25px;" src="/static/icon_png/b_res_ave_r.png">
+                <span>{{score_balance[3]*10}}</span>%
+            </div>
+            
+            <div style="width:600px; margin-top:35px;">
+                <canvas id="myChart_balance2"></canvas>   
+            </div>     
+            
+        </div>
+        
+
+        <div>
+            <h1>Y BALANCE TEST</h1>
+            
+            <table style="text-align: center;" class="balance_table">
+                <tr>
+                    <th>
+                        Left
+                    </th>
+                    <th></th>
+                    <th>
+                        Right
+                    </th>
+                </tr>
+                <tr>
+                    <td><span>{{balance_dict.laas}}</span>cm <span>{{balance_dict.larrd}}</span>%</td>
+                    <td><span>Anterior</span></td>
+                    <td><span>{{balance_dict.raas}}</span>cm <span>{{balance_dict.rarrd}}</span>%</td>
+                </tr>
+                <tr>
+                    <td><span>{{balance_dict.lpas}}</span>cm <span>{{balance_dict.lprrd}}</span>%</td>
+                    <td><span>Posteromedial</span></td>
+                    <td><span>{{balance_dict.rpas}}</span>cm <span>{{balance_dict.rprrd}}</span>%</td>
+                </tr>
+                <tr>
+                    <td><span>{{dict.lpas2}}</span>cm <span>{{balance_dict.lprrd2}}</span>%</td>
+                    <td><span>Posterolateral</span></td>
+                    <td><span>{{dict.rpas2}}</span>cm <span>{{balance_dict.rprrd2}}</span>%</td>
+                </tr>
+                <tr>
+                    <th><span>{{balance_dict.cs3}}</span>%</th>
+                    <th><span>COMPOSITE SCORE</span></th>
+                    <th><span>{{balance_dict.cs4}}</span>%</th>
+                </tr>
+            </table>
+        </div>
+
+        <div>
+        <div style="width:420px;">
+           
+            <div style="position: absolute;margin-top: 180px;margin-left: 35px;font-size: 30px;">
+                <img class="icon" style="transform: scaleX(-1); width: 27px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -60px;margin-left: 25px;" src="/static/icon_png/b_res_ave_r.png">
+                <span>{{score_balance[4]*10}}</span>%
+            </div>
+            <div style="position: absolute;margin-top: 180px;margin-left: 485px;font-size: 30px;">
+                <img class="icon" style="width: 27px; margin-right:0px; margin-bottom: -10px;position: absolute; margin-top: -60px; margin-left: 25px;" src="/static/icon_png/b_res_ave_r.png">
+                <span>{{score_balance[5]*10}}</span>%
+            </div>
+            <div style="width:600px; margin-top:35px;">
+                <canvas id="myChart_balance3"></canvas>  
+            </div>      
+        </div>
+        </div>
+
+
+            <table style="margin-left: 50px; display: none;" class="balance_table">
+                <tr>
+                    <th>KEY</th>
+                </tr>
+                <tr>
+                    <td><img class="icon" style="transform: scaleX(-1); width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;" src="/static/icon_png/b_res_ave_r.png">Bess Test (Left): <span id='b_l'>{{score_balance[0]}}</span>/10</td>
+                </tr>
+                <tr>
+                    <td><img class="icon" style="width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;" src="/static/icon_png/b_res_ave_r.png">Bess Test (Right): <span id='b_r'>{{score_balance[1]}}</span>/10</td>   
+                </tr>
+                <tr>
+                    <td><img class="icon" style="transform: scaleX(-1); width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;" src="/static/icon_png/b_res_ave_r.png">A-N Balance (Left): <span id='an_l'>{{score_balance[2]}}</span>/10</td>   
+                </tr>
+                <tr>
+                    <td><img class="icon" style="width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;" src="/static/icon_png/b_res_ave_r.png">A-N Balance (Right): <span id='an_r'>{{score_balance[3]}}</span>/10</td>  
+                </tr>
+                <tr>
+                    <td><img class="icon" style="transform: scaleX(-1); width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;" src="/static/icon_png/b_res_ave_r.png">Y Balance (Left): <span id='y_l'>{{score_balance[4]}}</span>/10</td>   
+                </tr>
+                <tr>
+                    <td><img class="icon" style="width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;" src="/static/icon_png/b_res_ave_r.png">Y Balance (Right): <span id='y_r'>{{score_balance[5]}}</span>/10</td>  
+                </tr>
+                <tr>
+                    <td><img class="icon" style="transform: scaleX(-1); width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;" src="/static/icon_png/b_res_ave_r.png">Average (Left): <span id='avg_l'></span>/10</td>   
+                </tr>
+                <tr>
+                    <td><img class="icon" style="width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;" src="/static/icon_png/b_res_ave_r.png">Average (Right): <span id='avg_r'></span>/10</td>
+                </tr>
+            </table>
+            <div style="clear:both;"></div>
+            
+        </div>
+
+        <div style="clear:both;margin-bottom:20px;"></div>
+        
+        
+
+        <script type="text/javascript">
+
+        function bal_n(name, l, r){
+
+            
+            var ctx = document.getElementById(name).getContext('2d');
+
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'polarArea',
+                
+                data: {
+                    labels: ['LEFT', 'RIGHT'],
+
+                    datasets: [{
+                        label: 'AVERAGE',
+                        // borderColor: 'rgb(255, 99, 132)',
+                        data: [l, r],
+                        backgroundColor: [
+                          "rgba(200, 50, 255, 0.5)",
+                          "rgba(100, 50, 200, 0.5)"
+                        ]
+                    }]
+                },
+
+                options: {
+                    startAngle: 0.5*Math.PI,
+                    legend: {
+                        display: false
+                    },
+                    scale: {
+                        ticks: {
+                            suggestedMin: 10,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+        }
+       
+        var b_l = parseFloat(document.getElementById("b_l").innerHTML)/10;
+        var b_r = parseFloat(document.getElementById("b_r").innerHTML)/10;
+        bal_n('myChart_balance1', b_l, b_r);
+
+        var an_l = parseFloat(document.getElementById("an_l").innerHTML);
+        var an_r = parseFloat(document.getElementById("an_r").innerHTML);
+        bal_n('myChart_balance2', an_l, an_r);
+
+        var y_l = parseFloat(document.getElementById("y_l").innerHTML);
+        var y_r = parseFloat(document.getElementById("y_r").innerHTML);
+        bal_n('myChart_balance3', y_l, y_r);
+
+        var count = 0;
+        var tot = 0;
+        if (b_l>0){
+            count += 1;
+            tot += b_l;
+        }
+        if (an_l>0){
+            count += 1;
+            tot += an_l;
+        }
+        if (y_l>0){
+            count += 1;
+            tot += y_l;
+        }
+        var avg_l = 0.0;
+        if (count>0){
+            avg_l = (tot/count).toFixed(2);   
+        }
+        
+
+        var count = 0;
+        var tot = 0;
+        if (b_r!=0){
+            count += 1;
+            tot += b_r;
+        }
+        if (an_r!=0){
+            count += 1;
+            tot += an_r;
+        }
+        if (y_r!=0){
+            count += 1;
+            tot += y_r;
+        }
+        var avg_r = 0.0;
+        if (count>0){
+            avg_r = (tot/count).toFixed(2);
+        }
+        
+        // var avg_l = ((b_l+an_l+y_l)/3).toFixed(2);
+        // var avg_r = ((b_r+an_r+y_r)/3).toFixed(2);
+        document.getElementById("avg_l").innerHTML = avg_l;
+        document.getElementById("avg_lb2").innerHTML = avg_l*10;
+        document.getElementById("avg_r").innerHTML = avg_r;
+        document.getElementById("avg_rb2").innerHTML = avg_r*10;
+        bal_n('myChart_balance4', avg_l, avg_r);
+        
+        </script>
+        </div>
+
+    </div>
+
+    <div class="cl_line2"></div>
+
+
+
+
+
+
+    <div id="pg_car" class="pg_s">
+
+    <div class="pg_tit">Cardiopulmonary Fitness Results</div>
+
+    <div style="width:100%;padding-bottom: 40px;">
+        <div style="float:left; width:600px; margin-left: 50px;">
+  	    <div style="margin-top:40px;"> 
+            <table style="width:600px;" class="car_table">
+                <tr>
+                    <th>KEY</th>
+                </tr>
+                <tr>
+                    <td><img class="icon" style="width: 34px; margin-right:10px; margin-top: 0px; margin-bottom: -10px;" src="/static/icon_png/cf_res_vo2.png">VO2 Max: <span id='vo2max'>{{score_car[0]}}</span>/10</td>
+                </tr>
+                <tr>
+                    <td><img class="icon" style="width: 34px; margin-right:10px; margin-top: 0px; margin-bottom: -10px;" src="/static/icon_png/cf_res_hrr.png">Heart Rate Recovery: <span id='hrr'>{{score_car[1]}}</span>/10</td>   
+                </tr>
+               
+            </table>
+
+            <div style="font-size: 28px; position: absolute; margin-left: 250px; margin-top: 95px;"><img class="icon" style="width: 80px; margin-right:10px; margin-bottom: -10px;position: absolute;margin-top: -70px;margin-left: 8px;" src="/static/icon_png/cf_res_vo2.png"><span id='vo2max' style="margin-left:10px;">{{score_car[0]*10}}</span>%</div>
+            
+            <div style="font-size: 28px; position: absolute; margin-left: 250px; margin-top: 560px;"><img class="icon" style="width: 80px; margin-right:10px; margin-bottom: -10px;position: absolute;margin-top: -70px;margin-left: 8px;" src="/static/icon_png/cf_res_hrr.png"><span id='hrr' style="margin-left:10px;">{{score_car[1]*10}}</span>%</div>   
+
+            <div style="width:700px;margin-top: 140px;margin-left: -50px;">
+                <canvas id="myChart_car"></canvas>        
+            </div>  
+
+        </div>
+        <div style="margin-top: 135px;">
+            
+            <table class="car_table">
+                <tr><th>VO2 MAX<img class="icon" src="/static/icon_png/cf_vo2max.png"></th></tr>
+                <tr>
+                    <td>VO2 Max: <span>{{cf_dict.ymca}}</span>ml/kg/min</td>
+                </tr>
+                <tr>
+                    <td>HR Max: <span>{{cf_dict.hrm_w}}</span></td>
+                </tr>
+                <tr>
+                    <td>Target HR/70% HR Reserve: <span>{{cf_dict.thr}}</span></td>
+                </tr>
+                <tr>
+                    <td>85% HR Max: <span>{{cf_dict.hrm}}</span></td>
+                </tr>
+            </table>
+        </div>
+        <br/><br/>
+
+        </div>
+        
+        
+        <div style="float:left; width:550px; margin-left: 100px;">
+        <div style="margin-top:40px;">
+                <div style="display: none;">
+                    <span id="sp601">{{cf_dict.sp60_pre}}</span>
+                    <span id="sp602">{{cf_dict.sp60}}</span>
+                    <span id="sp1201">{{cf_dict.sp120_pre}}</span>
+                    <span id="sp1202">{{cf_dict.sp120}}</span>
+                </div>
+
+             <table class="car_table">
+                <tr><th>HEART RATE RECOVERY<img class="icon" src="/static/icon_png/cf_hr_w.png"></th></tr>
+                
+                <tr>
+                    <td>60 Second Post-exercise: <span id="rec60"></span> bpm</td>
+                </tr>
+                <tr>
+                    <td>120 Second Post-exercise: <span id="rec120"></span> bpm</td>
+                </tr>
+            </table>
+        </div>
+        
+
+        <div>
+            <h1>HEART RATE ZONES</h1>
+            <div style="display:none">
+                <div id=ap50>{{cf_dict.aphrm50}}</div>
+                <div id=ap60>{{cf_dict.aphrm60}}</div>
+                <div id=ap70>{{cf_dict.aphrm70}}</div>
+                <div id=ap80>{{cf_dict.aphrm80}}</div>
+                <div id=ap90>{{cf_dict.aphrm90}}</div>
+            </div>
+            <table class="car_table">
+                <tr>
+                    <th>
+                        <span>ZONE 1</span>
+                        <span>VERY LIGHT</span>
+                        <span><span>{{cf_dict.aphrm60}}</span>-<span>{{cf_dict.aphrm70}}</span>bpm</span>
+                    </th>
+                </tr>
+                <tr>
+                    <td>50-60% HR Max</td>
+                </tr>
+                <tr>
+                    <td>Walking, Body and Mind</td>
+                </tr>
+                <tr>
+                    <td>Improves overall health and helps recovery</td>
+                </tr>
+
+                <tr>
+                    <th>
+                        <span>ZONE 2</span>
+                        <span>LIGHT</span>
+                        <span><span>{{cf_dict.aphrm60}}</span>-<span>{{cf_dict.aphrm70}}</span>bpm</span>
+                    </th>
+                </tr>
+                <tr>
+                    <td>60-70% HR Max</td>
+                </tr>
+                <tr>
+                    <td>Walking, Body and Mind</td>
+                </tr>
+                <tr>
+                    <td>Improves basic endurance</td>
+                </tr>
+
+                <tr>
+                    <th>
+                        <span>ZONE 3</span>
+                        <span>MODERATE</span>
+                        <span><span>{{cf_dict.aphrm70}}</span>-<span>{{cf_dict.aphrm80}}</span>bpm</span>
+                    </th>
+                </tr>
+                <tr>
+                    <td>70-80% HR Max</td>
+                </tr>
+                <tr>
+                    <td>Strength Training, Cardio Classes, Dancing</td>
+                </tr>
+                <tr>
+                    <td>Improve aerobic fitness</td>
+                </tr>
+
+                <tr>
+                    <th>
+                        <span>ZONE 4</span>
+                        <span>HARD</span>
+                        <span><span>{{cf_dict.aphrm80}}</span>-<span>{{cf_dict.aphrm90}}</span>bpm</span>
+                    </th>
+                </tr>
+                <tr>
+                    <td>80-90% HR Max</td>
+                </tr>
+                <tr>
+                    <td>Spinning, Circuit Training</td>
+                </tr>
+                <tr>
+                    <td>Increase maximum performance capacity</td>
+                </tr>
+
+                <tr>
+                    <th>
+                        <span>ZONE 5</span>
+                        <span>MAXIMUM</span>
+                        <span><span>{{cf_dict.aphrm90}}</span>-<span>{{cf_dict.aphrm}}</span>bpm</span>
+                    </th>
+                </tr>
+                <tr>
+                    <td>90-100% HR Max</td>
+                </tr>
+                <tr>
+                    <td>HIIT, Crossfit</td>
+                </tr>
+                <tr>
+                    <td>Develops maximum performance</td>
+                </tr>
+            </table>
+            <div style="clear:both;"></div>
+        </div>
+        
+        </div>
+
+        <div style="clear:both;"></div>
+        
+
+        
+
+        <script type="text/javascript">
+
+        var rec60 = parseInt(document.getElementById("sp601").innerHTML)-parseInt(document.getElementById("sp602").innerHTML);
+        document.getElementById("rec60").innerHTML = rec60;
+        var rec120 = parseInt(document.getElementById("sp1201").innerHTML)-parseInt(document.getElementById("sp1202").innerHTML);
+        document.getElementById("rec120").innerHTML = rec120;
+        // alert(rec60)
+
+        function car(){
+            // var d1 = 10;
+            // var d2 = 10;
+            var d1 = parseFloat(document.getElementById('vo2max').innerHTML);
+            var d2 = parseFloat(document.getElementById('hrr').innerHTML);
+
+            var ctx = document.getElementById('myChart_car').getContext('2d');
+
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'polarArea',
+                
+                data: {
+                    labels: ['VO2 Max', 'Heart Rate Recovery'],
+
+                    datasets: [{
+                        label: 'AVERAGE',
+                        // borderColor: 'rgb(255, 99, 132)',
+                        data: [d1, d2],
+                        backgroundColor: [
+                          "rgba(255, 50, 50, 0.5)",
+                          "rgba(255, 100, 50, 0.5)"
+                        ]
+                    }]
+                },
+
+                options: {
+                    startAngle: Math.PI,
+                    legend: {
+                      display: false
+                        // position: 'top',
+                        // maxWidth: 400
+                    },
+                    scale: {
+                        ticks: {
+                            suggestedMin: 0.1,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+
+        }
+        
+        car();
+        
+
+        </script>
+        </div>
+
+    </div>
+
+    <div class="cl_line2"></div>
+
+
+
+
+
+
+
+
+
+
+    <div id="pg_mf" class="pg_s">
+
+        <div class="pg_tit">Muscular Fitness Results</div>
+        <div id="left_column">
+            <div>
+                <h1>OVERALL</h1>
+                <table class="mf_table">
+                    <tr><th>KEY</th></tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon_png/mf_res_ave_ms.png">Muscular Strength: <span id='ms_s'></span>/10</td>   
+                    </tr>
+                    <tr>
+                        <td><img class="icon" style="height:30px;"  src="/static/icon_png/mf_res_ave_grip.png">Grip: <span id='g_s'>{{score_mf[5]}}</span>/10</td>   
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon_png/mf_res_ave_me.png">Muscular Endurance: <span id='me_s'>{{score_mf[6]}}</span>/10</td>   
+                    </tr>
+                   
+                </table>
+
+                <div class="gra">
+                    <div id="per_ms">
+                        <img id="icon_ms" style="margin-left:14px; width:60px;" src="/static/icon_png/mf_res_ave_ms.png">
+                        <span id='ms_s2'></span>%
+                    </div>
+                    <div id="per_grip">
+                        <img id="icon_grip" style="margin-left:6px; width:55px;" src="/static/icon_png/mf_res_ave_grip.png">
+                        <span id='g_s2'>{{score_mf[5]*10}}</span>%
+                    </div>
+                    <div id="per_me">
+                        <img id="icon_me" src="/static/icon_png/mf_res_ave_me.png">
+                        <span id='me_s2'></span>%
+                    </div>
+                    <div class="can">
+                        <canvas id="myChart_mf4"></canvas>   
+                    </div>     
+                    <div class="cl_line"></div>
+                </div>
+            </div>
+
+
+            <div>
+                <h1>MUSCULAR STRENGTH</h1>
+                <table class="mf_table">
+                    <tr>
+                        <th>KEY</th>
+                    </tr>
+                    <tr>
+                        <td><img class="icon" style="height:30px;" src="/static/icon_png/mf_res_ms_pull.png">Pull: <span id='pull_s'>{{score_mf[0]}}</span>/10</td>
+                    </tr>
+                    <tr>
+                        <td><img class="icon" style="height:30px;" src="/static/icon_png/mf_res_ms_push.png">Push: <span id='push_s'>{{score_mf[1]}}</span>/10</td>   
+                    </tr>
+                    <tr>
+                        <td><img class="icon" style="height:30px;" src="/static/icon_png/mf_res_ms_legs.png">Leg: <span id='leg_s'>{{score_mf[2]}}</span>/10</td>   
+                    </tr>
+                </table>
+
+                <div class="cl_line"></div>
+                
+                <div class="gra">
+                     <div id="per_pull">
+                        <img id="icon_pull" style="width:46px; margin-top:-26px;margin-left:-80px;" src="/static/icon_png/mf_res_ms_pull.png">
+                        <span>{{score_mf[0]*10}}</span>%
+                    </div>
+                    <div id="per_push" style="margin-left:420px;">
+                        <img id="icon_push" style="margin-top:-57px;" src="/static/icon_png/mf_res_ms_push.png">
+                        <span>{{score_mf[1]*10}}</span>%
+                    </div>
+                    <div id="per_leg" style="margin-left:78px;">
+                        <img id="icon_leg" style="width:42px;margin-top:-66px; margin-left:6px;" src="/static/icon_png/mf_res_ms_legs.png">
+                        <span>{{score_mf[2]*10}}</span>%
+                    </div>
+                    <div class="can">
+                        <canvas id="myChart_mf1"></canvas>  
+                    </div>      
+                </div>
+                <div class="cl_line"></div>
+                
+
+                <div>
+                    <table class="mf_table">
+                        <tr>
+                            <th><img class="icon" style="height:30px;" src="/static/icon_png/mf_push.png">PUSH</th>
+                        </tr>
+                        <tr>
+                            <td>1 Rep Max Chest Press: <span id="rmp">{{mf_dict.rmp}}</span> lbs (<span id="rmp_kg">x</span> kg)</td>
+                        </tr>
+                    </table>           
+                </div>
+
+                <div>
+                    <table class="mf_table">
+                        <tr>
+                            <th><img class="icon" style="height:30px;" src="/static/icon_png/mf_pull.png">PULL</th>
+                        </tr>
+                        <tr>
+                            <td>1 Rep Max Pulldown: <span id="rmp2">{{mf_dict.rmp2}}</span> lbs (<span id="rmp2_kg">x</span> kg)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div>
+                    <table class="mf_table">
+                        <tr>
+                            <th><img class="icon" style="height:30px;" src="/static/icon_png/mf_legs.png">LEGS</th>
+                        </tr>
+                        <tr>
+                            <td>1 Rep Max Leg Press: <span id="rml">{{mf_dict.rml}}</span> lbs (<span id="rml_kg">x</span> kg)</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="cl_line"></div>
+                    
+            </div>
+
+        </div>  <!-- left column end -->
+
+        <div id="right_column">
+
+            <div id="mst" style="display:none;">{{score_mf[7]}}</div>
+            <div>
+
+                <h1>MUSCULAR STRENGTH - GRIP</h1>
+                <table class="mf_table">
+                    <tr>
+                        <th>KEY</th>
+                    </tr>
+                    <tr>
+                        <td><img class="icon" style="height:30px;" src="/static/icon_png/mf_res_grip_l.png">Grip (Left): <span id='gl_s'>{{score_mf[3]}}</span>/10</td>   
+                    </tr>
+                    <tr>
+                        <td><img class="icon" style="height:30px;" src="/static/icon_png/mf_res_grip_r.png">Grip (Right): <span id='gr_s'>{{score_mf[4]}}</span>/10</td>   
+                    </tr>
+                </table>
+
+                <div class="gra">
+                    <div id="per_l1">Left</div>
+                    <div id="per_r1">Right</div>
+                    <div id="per_l2">
+                        <img id="icon_l" style="margin-top:-61px; margin-left:2px; width:46px;" src="/static/icon_png/mf_res_grip_r.png">
+                        <span>{{score_mf[3]*10}}</span>%
+                    </div>
+                    <div id="per_r2">
+                        <img id="icon_r" style="margin-top:-61px; margin-left:2px; width:46px;" src="/static/icon_png/mf_res_grip_r.png">
+                        <span>{{score_mf[4]*10}}</span>%
+                    </div>
+                    <div class="can">
+                        <canvas id="myChart_mf2"></canvas>        
+                    </div>
+                </div>
+                <div class="cl_line"></div>
+                
+                <table class="mf_table">
+                    <tr>
+                        <th><img class="icon" style="height:30px;" src="/static/icon_png/mf_grip.png">GRIP</th>
+                    </tr>
+                    <tr>
+                        <td>Left Hand Dynamometer: <span id="lhd">{{mf_dict.lhd}}</span> kg</td>
+                    </tr>
+                    <tr>
+                        <td>Right Hand Dynamometer: <span id="rhd">{{mf_dict.rhd}}</span> kg</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div>
+                <h1>MUSCULAR ENDURANCE</h1>
+                <table class="mf_table">
+                    <tr>
+                        <th>KEY</th>
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon_png/mf_res_ave_me.png">Endurance: <span id='end_s'>{{score_mf[6]}}</span>/10</td>   
+                    </tr>
+                </table>
+
+                <div class="gra" style="margin-top:70px;">
+                    <div id="per_me2">
+                        <img id="icon_me2" style="width:65px; margin-top:-10px;" src="/static/icon_png/mf_res_ave_me.png">
+                        <span>{{score_mf[6]*10}}</span>%
+                    </div>
+                    <div class="can">
+                        <canvas id="myChart_mf3"></canvas>  
+                    </div>      
+                </div>
+                <div class="cl_line"></div>
+            
+                
+                <table class="mf_table">
+                    <tr>
+                        <th><img class="icon" src="/static/icon_png/mf_me.png">MUSCULAR ENDURANCE</th>
+                    </tr>
+                    <tr>
+                        <td>Push-up/Knee Push-Up: <span id="pu">{{mf_dict.pu}}</span>/<span id="kpu">{{mf_dict.kpu}}</span> reps</td>
+                    </tr>
+                    <tr>
+                        <td>Squat: <span id="squ">{{mf_dict.squ}}</span> reps</td>
+                    </tr>
+                    <tr>
+                        <td>Pull-Up: <span id="pu2">{{mf_dict.pu2}}</span> reps</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="cl_line"></div>
+        </div>
+
+        <div class="cl_line"></div>
+        
+
+        <script type="text/javascript">
+
+        function to_kg(){
+            var rmp = parseFloat(document.getElementById("rmp").innerHTML);
+            var rmp_kg = rmp/2.2;
+            document.getElementById("rmp_kg").innerHTML = rmp_kg.toFixed(2);
+
+            var rmp2 = parseFloat(document.getElementById("rmp2").innerHTML);
+            var rmp2_kg = rmp2/2.2;
+            document.getElementById("rmp2_kg").innerHTML = rmp2_kg.toFixed(2);
+
+            var rml = parseFloat(document.getElementById("rml").innerHTML);
+            var rml_kg = rml/2.2;
+            document.getElementById("rml_kg").innerHTML = rml_kg.toFixed(2);
+
+            var lhd = parseFloat(document.getElementById("lhd").innerHTML);
+            var rhd = parseFloat(document.getElementById("rhd").innerHTML);
+            var pu = parseFloat(document.getElementById("pu").innerHTML);
+            var pu2 = parseFloat(document.getElementById("pu2").innerHTML);
+            var squ = parseFloat(document.getElementById("squ").innerHTML);
+        }
+
+        function bal1(){
+            var push = parseFloat(document.getElementById("push_s").innerHTML);
+            var pull = parseFloat(document.getElementById("pull_s").innerHTML);
+            var leg = parseFloat(document.getElementById("leg_s").innerHTML);
+            
+            var ctx = document.getElementById('myChart_mf1').getContext('2d');
+            
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'polarArea',
+                
+                data: {
+                    labels: ['PULL','PUSH', 'LEGS'],
+
+                    datasets: [{
+                        label: 'AVERAGE',
+                        data: [pull, push, leg],
+                        backgroundColor: [
+                          "rgba(255, 200, 50, 0.5)",
+                          "rgba(200, 180, 0, 0.5)",
+                          "rgba(150, 50, 0, 0.5)"
+                        ]
+                    }]
+                },
+
+                options: {
+                    startAngle: Math.PI*7.0/6,
+                    legend: {
+                        display: false
+                    },
+                    scale: {
+                        ticks: {
+                            suggestedMin: 10,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+        }
+
+        function bal2(){
+            var l2 = parseFloat(document.getElementById("gl_s").innerHTML);
+            var r2 = parseFloat(document.getElementById("gr_s").innerHTML);      
+
+            var ctx = document.getElementById('myChart_mf2').getContext('2d');
+
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'polarArea',
+                
+                data: {
+                    labels: ['LEFT', 'RIGHT'],
+
+                    datasets: [{
+                        label: 'AVERAGE',
+                        // borderColor: 'rgb(255, 99, 132)',
+                        data: [l2, r2],
+                        backgroundColor: [
+                          "rgba(255, 200, 50, 0.5)",
+                          "rgba(200, 180, 0, 0.5)"
+                        ]
+                    }]
+                },
+
+                options: {
+                    startAngle: 0.5*Math.PI,
+                    legend: {
+                        display: false
+                    },
+                    scale: {
+                        ticks: {
+                            suggestedMin: 10,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+        }
+
+        function bal3(){
+            var end = parseFloat(document.getElementById("end_s").innerHTML);      
+
+            var ctx = document.getElementById('myChart_mf3').getContext('2d');
+
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'polarArea',
+                
+                data: {
+                    labels: ['Endurance'],
+
+                    datasets: [{
+                        label: 'AVERAGE',
+                        // borderColor: 'rgb(255, 99, 132)',
+                        data: [end],
+                        backgroundColor: [
+                          "rgba(255, 200, 50, 0.5)"
+                        ]
+                    }]
+                },
+
+                options: {
+                    legend: {
+                        display: false
+                    },
+                    scale: {
+                        ticks: {
+                            suggestedMin: 10,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+        }
+
+        function bal4(){
+            
+            var ms = parseFloat(document.getElementById("mst").innerHTML);
+            // var ms = ((push+pull+leg)/3).toFixed(2);
+            document.getElementById("ms_s").innerHTML = ms;
+            document.getElementById("ms_s2").innerHTML = ms*10;
+
+            var grip = parseFloat(document.getElementById("g_s").innerHTML);
+            var end = parseFloat(document.getElementById("end_s").innerHTML);      
+            document.getElementById("me_s").innerHTML = (end).toFixed(1);
+            document.getElementById("me_s2").innerHTML = (end*10).toFixed(1); 
+
+            var ctx = document.getElementById('myChart_mf4').getContext('2d');
+
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'polarArea',
+                
+                data: {
+                    labels: ['MUSCULAR STRENGTH', 'GRIP', 'MUSCULAR ENDURANCE'],
+
+                    datasets: [{
+                        label: 'AVERAGE',
+                        // borderColor: 'rgb(255, 99, 132)',
+                        data: [ms, grip, end],
+                        backgroundColor: [
+                          "rgba(255, 200, 50, 0.5)",
+                          "rgba(200, 180, 0, 0.5)",
+                          "rgba(150, 50, 0, 0.5)"
+                        ]
+                    }]
+                },
+
+                options: {
+                    startAngle: 8.0*Math.PI/6,
+                    legend: {
+                        display: false
+                    },
+                    scale: {
+                        ticks: {
+                            suggestedMin: 10,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+        }
+
+        to_kg();
+        bal1();
+        bal2();
+        bal3();
+        bal4();
+        
+
+        </script>
+    </div>
+
+    <div class="cl_line2"></div>
+
+
+
+
+
+
+    <div id="pg_rom" class="pg_s">
+        <div class="pg_tit">Range of Motion Results</div>
+    <!-- <div style="background:rgb(226, 243, 226);width:100%"> -->
+        <div style="float:left; width:600px;margin-left: 50px;margin-top:50px;">
+            <div class="chart_ent">
+                <div style="display: none">
+                    <div id="6a">{{score_dict['6a']}}</div>
+                    <div id="6b">{{score_dict['6b']}}</div>
+                    <div id="6ar">{{score_dict['6ar']}}</div>
+                    <div id="6br">{{score_dict['6br']}}</div>
+                </div>
+                <div>
+                    <div class="tit">
+                        <div class="per_tit">LEFT</div>
+                        <br/>
+                        <div>FLEXION</div>
+                        <div>{{score_dict['6a']*10}}%</div>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div>EXTENSION</div>    
+                        <div>{{score_dict['6b']*10}}%</div>
+                    </div>
+                    <div class="tit2">
+                        <div class="per_tit">RIGHT</div>
+                        <br/>
+                        <div>FLEXION</div>
+                        <div>{{score_dict['6ar']*10}}%</div>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div>EXTENSION</div>    
+                        <div>{{score_dict['6br']*10}}%</div>
+                    </div>    
+                </div>
+                <canvas id="myChart1"></canvas>        
+            </div> 
+
+        <div class="ft">
+            <table class="rom_table">
+                <tr>
+                    <th colspan="3"><img class="icon" src="/static/icon_png/rom_w.png">WRIST <span id="wrist_avg"></span></th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>LEFT</td>
+                    <td>RIGHT</td>
+                </tr>
+                <tr>
+                    <td>Flexion (0-90): </td>
+                    <td>{{rom_dict.flel_w}}&#186;</td> 
+                    <td>{{rom_dict.fler_w}}&#186;</td>    
+                </tr>
+                
+                <tr>
+                    <td>Extension (0-70): </td>
+                    <td>{{rom_dict.extl_w}}&#186;</td> 
+                    <td>{{rom_dict.extr_w}}&#186;</td>
+                </tr>
+            </table>
+        </div>
+        <br/><br/>
+
+
+        <div class="chart_ent">
+            <div style="display: none;">
+                <div id="3a">{{score_dict['3a']}}&#186;</div>
+                <div id="3b">{{score_dict['3b']}}&#186;</div>
+                <div id="3ar">{{score_dict['3ar']}}&#186;</div>
+                <div id="3br">{{score_dict['3br']}}&#186;</div>
+            </div>
+            <div>
+                <div class="tit">
+                    <div class="per_tit">LEFT</div>
+                    <br/>
+                    <div>DORSIFLEXION</div>
+                    <div>{{score_dict['3a']*10}}%</div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div>PLANTAR FLEXION</div>    
+                    <div>{{score_dict['3b']*10}}%</div>
+                </div>
+                <div class="tit2">
+                    <div class="per_tit">RIGHT</div>
+                    <br/>
+                    <div>DORSIFLEXION</div>
+                    <div>{{score_dict['3ar']*10}}%</div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div>PLANTAR FLEXION</div>    
+                    <div>{{score_dict['3br']*10}}%</div>
+                </div>    
+            </div>
+            <canvas id="myChart8"></canvas>        
+        </div>
+
+        <div class="ft">
+            <!-- <h1>ANKLE</h1> -->
+            <table class="rom_table">
+                <tr>
+                    <th colspan="3"><img class="icon" src="/static/icon_png/rom_a.png">ANKLE <span id="ankle_avg"></span></th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>LEFT</td>
+                    <td>RIGHT</td>
+                </tr>
+                <tr>
+                    <td>Dorsiflexion (0-20): </td>
+                    <td>{{rom_dict.flel_a}}&#186;</td> 
+                    <td>{{rom_dict.fler_a}}&#186;</td>    
+                </tr>
+                
+                <tr>
+                    <td>Plantar Flexion (0-50): </td>
+                    <td>{{rom_dict.extl_a}}&#186;</td> 
+                    <td>{{rom_dict.extr_a}}&#186;</td>
+                </tr>
+            </table>
+        </div>
+        <br/><br/>
+
+        </div>
+        
+        <!-- 
+        <div style="clear:both;"></div>
+        -->
+        
+        <div style="float:left; width:600px; margin-left:100px;margin-top:50px;">
+
+            <div class="chart_ent">
+                <div style="display: none;">
+                    <div id="4a">{{score_dict['4a']}}</div>
+                    <div id="4b">{{score_dict['4b']}}</div>
+                    <div id="4c">{{score_dict['4c']}}</div>
+                    <div id="4d">{{score_dict['4d']}}</div>
+                    <div id="4ar">{{score_dict['4ar']}}</div>
+                    <div id="4br">{{score_dict['4br']}}</div>
+                    <div id="4cr">{{score_dict['4cr']}}</div>
+                    <div id="4dr">{{score_dict['4dr']}}</div>
+                </div>
+                <div>
+                    <div class="tit">
+                        <div class="per_tit">LEFT</div>
+                        <div>FLEXION</div>
+                        <div>{{score_dict['4a']*10}}%</div>
+                        <br/>
+                        <div>EXTENSION</div>    
+                        <div>{{score_dict['4b']*10}}%</div>
+                        <br/>
+                        <div>ABDUNCTION</div>    
+                        <div>{{score_dict['4c']*10}}%</div>
+                        <br/>
+                        <div>LATERAL ROTATION</div>    
+                        <div>{{score_dict['4d']*10}}%</div>
+                    </div>
+                    <div class="tit2">
+                        <div class="per_tit">RIGHT</div>
+                        <div>FLEXION</div>
+                        <div>{{score_dict['4ar']*10}}%</div>
+                        <br/>
+                        <div>EXTENSION</div>    
+                        <div>{{score_dict['4br']*10}}%</div>
+                        <br/>
+                        <div>ABDUCTION</div>    
+                        <div>{{score_dict['4cr']*10}}%</div>
+                        <br/>
+                        <div>LATERAL ROTATION</div>    
+                        <div>{{score_dict['4dr']*10}}%</div>
+                    </div> 
+                </div>
+                <canvas id="myChart4"></canvas>        
+            </div> 
+
+            <div class="ft">
+            <!-- <h1>SHOULDER</h1> -->
+                <table class="rom_table">
+                    <tr>
+                        <th colspan="3"><img class="icon" style="margin-top:7px;" src="/static/icon_png/rom_s.png">SHOULDER <span id="shoulder_avg"></span></th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>LEFT</td>
+                        <td>RIGHT</td>
+                    </tr>
+                    <tr>
+                        <td>Flexion (0-180): </td>
+                        <td>{{rom_dict.flel}}&#186;</td> 
+                        <td>{{rom_dict.fler}}&#186;</td>    
+                    </tr>
+                    
+                    <tr>
+                        <td>Extension (0-50): </td>
+                        <td>{{rom_dict.extl}}&#186;</td> 
+                        <td>{{rom_dict.extr}}&#186;</td>
+                    </tr>
+
+                    <tr>
+                        <td>Abduction (0-180): </td>
+                        <td>{{rom_dict.abdl}}&#186;</td> 
+                        <td>{{rom_dict.abdr}}&#186;</td>
+                    </tr>
+                    <tr>
+                        <td>Lateral Rotation (0-90): </td>
+                        <td>{{rom_dict.lrl}}&#186;</td> 
+                        <td>{{rom_dict.lrr}}&#186;</td>
+                    </tr>
+                </table>
+            </div>
+            <br/><br/>
+
+
+            <div class="chart_ent">
+                <div style="display: none;">
+                    <div id="1a">{{score_dict['1a']}}</div>
+                    <div id="1b">{{score_dict['1b']}}</div>
+                    <div id="1c">{{score_dict['1c']}}</div>
+                    <div id="1ar">{{score_dict['1ar']}}</div>
+                    <div id="1br">{{score_dict['1br']}}</div>
+                    <div id="1cr">{{score_dict['1cr']}}</div>
+                </div>
+                <div>
+                    <div class="tit">
+                        <div class="per_tit">LEFT</div>
+                        <br/>
+                        <div>FLEXION</div>
+                        <div>{{score_dict['1a']*10}}%</div>
+                        <br/>
+                        <div>HYPEREXTENSION</div>    
+                        <div>{{score_dict['1b']*10}}%</div>
+                        <br/>
+                        <div>ABDUCTION</div>    
+                        <div>{{score_dict['1c']*10}}%</div>
+                    </div>
+                    <div class="tit2">
+                        <div class="per_tit">RIGHT</div>
+                        <br/>
+                        <div>FLEXION</div>
+                        <div>{{score_dict['1ar']*10}}%</div>
+                        <br/>
+                        <div>HYPEREXTENSION</div>    
+                        <div>{{score_dict['1br']*10}}%</div>
+                        <br/>
+                        <div>ABDUCTION</div>    
+                        <div>{{score_dict['1cr']*10}}%</div>
+                    </div> 
+                </div>
+                <canvas id="myChart6"></canvas>        
+            </div>
+
+            <div class="ft">
+            <!-- <h1>HIP</h1> -->
+                 <table class="rom_table">
+                    <tr>
+                        <th colspan="3"><img class="icon" src="/static/icon_png/rom_h.png">HIP <span id="hip_avg"></span></th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>LEFT</td>
+                        <td>RIGHT</td>
+                    </tr>
+                    <tr>
+                        <td>Flexion (0-125): </td>
+                        <td>{{rom_dict.flel_h}}&#186;</td> 
+                        <td>{{rom_dict.fler_h}}&#186;</td>    
+                    </tr>
+                    
+                    <tr>
+                        <td>Hyperextension (0-15): </td>
+                        <td>{{rom_dict.hypl_h}}&#186;</td> 
+                        <td>{{rom_dict.hypr_h}}&#186;</td>
+                    </tr>
+                    <tr>
+                        <td>Abduction (0-45): </td>
+                        <td>{{rom_dict.abdl_h}}&#186;</td> 
+                        <td>{{rom_dict.abdr_h}}&#186;</td>
+                    </tr>
+                </table>
+            </div>
+            <br/><br/>               
+
+
+            <div style="clear:both;"></div> 
+        </div>
+
+        <div style="clear:both;margin-bottom:20px;"></div>
+    
+    </div>
+
+
+    <div id="pg_rom2" class="pg_s">
+        <!-- <div class="pg_tit">Range of Motion Results</div> -->     
+        <div class="pg_tit"> </div>
+    <!-- <div style="background:rgb(226, 243, 226);width:100%"> -->
+        <div style="float:left; width:600px;margin-left: 50px;margin-top:50px;">
+
+        <div class="chart_ent">
+            <div style="display: none;">
+                <div id="5a">{{score_dict['5a']}}&#186;</div>
+                <div id="5b">{{score_dict['5b']}}&#186;</div>
+                <div id="5c">{{score_dict['5c']}}&#186;</div>
+                <div id="5d">{{score_dict['5d']}}&#186;</div>
+                <div id="5ar">{{score_dict['5ar']}}&#186;</div>
+                <div id="5br">{{score_dict['5br']}}&#186;</div>
+                <div id="5cr">{{score_dict['5cr']}}&#186;</div>
+                <div id="5dr">{{score_dict['5dr']}}&#186;</div>
+            </div>
+            <div>
+                <div class="tit">
+                    <div class="per_tit">LEFT</div>
+                    <div>FLEXION</div>
+                    <div>{{score_dict['5a']*10}}%</div>
+                    <br/>
+                    <div>EXTENSION</div>    
+                    <div>{{score_dict['5b']*10}}%</div>
+                    <br/>
+                    <div>PRONATION</div>    
+                    <div>{{score_dict['5c']*10}}%</div>
+                    <br/>
+                    <div>SUPINATION</div>    
+                    <div>{{score_dict['5d']*10}}%</div>
+                </div>
+                <div class="tit2">
+                    <div class="per_tit">RIGHT</div>
+                    <div>FLEXION</div>
+                    <div>{{score_dict['5ar']*10}}%</div>
+                    <br/>
+                    <div>EXTENSION</div>    
+                    <div>{{score_dict['5br']*10}}%</div>
+                    <br/>
+                    <div>PRONATION</div>    
+                    <div>{{score_dict['5cr']*10}}%</div>
+                    <br/>
+                    <div>SUPINATION</div>    
+                    <div>{{score_dict['5dr']*10}}%</div>
+                </div>   
+            </div>
+            <canvas id="myChart2"></canvas>        
+        </div>        
+
+        <div class="ft">
+            <table class="rom_table">
+                <tr>
+                    <th colspan="3"><img class="icon" src="/static/icon_png/rom_e.png">ELBOW <span id="elbow_avg"></span></th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>LEFT</td>
+                    <td>RIGHT</td>
+                </tr>
+                <tr>
+                    <td>Flexion (0-160): </td>
+                    <td>{{rom_dict.flel_e}}&#186;</td> 
+                    <td>{{rom_dict.fler_e}}&#186;</td>    
+                </tr>
+                
+                <tr>
+                    <td>Extension (0-145): </td>
+                    <td>{{rom_dict.extl_e}}&#186;</td> 
+                    <td>{{rom_dict.extr_e}}&#186;</td>
+                </tr>
+
+                <tr>
+                    <td>Pronation (0-90): </td>
+                    <td>{{rom_dict.prol_e}}&#186;</td> 
+                    <td>{{rom_dict.pror_e}}&#186;</td>
+                </tr>
+
+                <tr>
+                    <td>Supination (0-90): </td>
+                    <td>{{dict.supl_e}}&#186;</td> 
+                    <td>{{dict.supr_e}}&#186;</td>
+                </tr>
+            </table>
+        </div>
+        <br/><br/>
+
+
+        <div class="chart_ent">
+            <div style="display: none;">
+                <div id="2a">{{score_dict['2a']}}&#186;</div>
+                <div id="2b">{{score_dict['2b']}}&#186;</div>
+                <div id="2ar">{{score_dict['2ar']}}&#186;</div>
+                <div id="2br">{{score_dict['2br']}}&#186;</div>
+            </div>
+            <div>
+                <div class="tit">
+                    <div class="per_tit">LEFT</div>
+                    <br/>
+                    <div>FLEXION</div>
+                    <div>{{score_dict['2a']*10}}%</div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div>EXTENSION</div>    
+                    <div>{{score_dict['2b']*10}}%</div>
+                </div>
+                <div class="tit2">
+                    <div class="per_tit">LEFT</div>
+                    <br/>
+                    <div>FLEXION</div>
+                    <div>{{score_dict['2ar']*10}}%</div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div>EXTENSION</div>    
+                    <div>{{score_dict['2br']*10}}%</div>
+                </div> 
+            </div>
+            <canvas id="myChart7"></canvas>        
+        </div>
+
+        <div class="ft">
+            <!-- <h1>KNEE</h1> -->
+            <table class="rom_table">
+                <tr>
+                    <th colspan="3"><img class="icon"  style="height:30px;" src="/static/icon_png/rom_k.png">KNEE <span id="knee_avg"></span></th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>LEFT</td>
+                    <td>RIGHT</td>
+                </tr>
+                <tr>
+                    <td>Flexion (0-130): </td>
+                    <td>{{rom_dict.flel_k}}&#186;</td> 
+                    <td>{{rom_dict.fler_k}}&#186;</td>    
+                </tr>
+                
+                <tr>
+                    <td>Extension (0-120): </td>
+                    <td>{{rom_dict.extl_k}}&#186;</td> 
+                    <td>{{rom_dict.extr_k}}&#186;</td>
+                </tr>
+            </table>
+        </div>
+        <br/><br/>
+        <div class="cl_line"></div>
+        </div>
+
+        
+        
+        <div style="float:left; width:600px; margin-left:100px;margin-top:50px;">    
+
+            <div class="chart_ent">
+                <div style="display: none;">
+                    <div id="8a">{{score_dict['8a']}}</div>
+                    <div id="8b">{{score_dict['8b']}}</div>
+                    <div id="8c">{{score_dict['8c']}}</div>
+                    <div id="8cr">{{score_dict['8cr']}}</div>
+                </div>
+                <div>
+                    <div class="tit">
+                        <br/>
+                        <br/>
+                        <div>FLEXION</div>
+                        <div>{{score_dict['8a']*10}}%</div>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div>LEFT ROTATION</div>    
+                        <div>{{score_dict['8c']*10}}%</div>
+                    </div>
+                    <div class="tit2">
+                        <br/>
+                        <br/>
+                        <div>EXTENSION</div>
+                        <div>{{score_dict['8b']*10}}%</div>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div>RIGHT ROTATION</div>    
+                        <div>{{score_dict['8cr']*10}}%</div>
+                    </div>    
+                </div>
+                <canvas id="myChart3"></canvas>        
+            </div>   
+
+            <div class="ft">
+            <!-- <h1>CERVICAL</h1> -->
+                <table class="rom_table">
+                    <tr>
+                        <th colspan="3"><img class="icon" style="height:30px;" src="/static/icon_png/rom_c.png">CERVICAL SPINE <span id="cervical_avg"></span></th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>LEFT</td>
+                        <td>RIGHT</td>
+                    </tr>
+                    <tr>
+                        <td>Flexion (0-90): </td>
+                        <td colspan="2">{{rom_dict.fle_c}}&#186;</td>     
+                    </tr>
+                    <tr>
+                        <td>Extension (0-70): </td>
+                        <td colspan="2">{{rom_dict.ext_c}}&#186;</td> 
+                    </tr>
+                    <tr>
+                        <td>Lateral Rotation (0-90): </td>
+                        <td>{{rom_dict.lrl_c}}&#186;</td>
+                        <td>{{rom_dict.lrr_c}}&#186;</td> 
+                    </tr>
+                </table>
+            </div>
+            <br/><br/>
+        
+
+    
+
+            
+            
+            <div class="chart_ent">
+                <div style="display: none;">
+                    <div id="7a">{{score_dict['7a']}}</div>
+                    <div id="7b">{{score_dict['7b']}}</div>
+                </div>
+                <div>
+                <div class="tit">
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div>FLEXION</div>    
+                        <div>{{score_dict['7a']*10}}%</div>
+                    </div>
+                    <div class="tit2">
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div>EXTENSION</div>
+                        <div>{{score_dict['7b']*10}}%</div>
+                    </div>    
+                </div>
+                <canvas id="myChart5"></canvas>        
+            </div>   
+
+
+            <div class="ft">
+                <!-- <h1>LUMBAR</h1> -->
+                <table class="rom_table">
+                    <tr>
+                        <th colspan="3"><img class="icon" style="height:30px;" src="/static/icon_png/rom_l.png">LUMBAR SPINE <span id="lumbar_avg"></span></th>
+                    </tr>
+                    <tr>
+                        <td>Flexion (0-50): </td>
+                        <td>{{rom_dict.fle}}&#186;</td>  
+                    </tr>
+                    
+                    <tr>
+                        <td>Extension (0-20): </td>
+                        <td>{{rom_dict.ext}}&#186;</td>
+                    </tr>
+                </table>
+            </div>
+            <br/><br/>
+                
+
+
+            <div style="clear:both;"></div> 
+        </div>
+
+        <div class="cl_line"></div>
+    </div>    
+        
+
+        <script type="text/javascript">
+
+        cal_8_avg();
+
+        function cal_8_avg(){
+            var w1 = parseFloat(document.getElementById('6a').innerHTML);
+            var w2 = parseFloat(document.getElementById('6b').innerHTML);
+            var w3 = parseFloat(document.getElementById('6ar').innerHTML);
+            var w4 = parseFloat(document.getElementById('6br').innerHTML);
+            document.getElementById("wrist_avg").innerHTML = ((w1+w2+w3+w4)/4).toFixed(2);
+
+            var a1 = parseFloat(document.getElementById('3a').innerHTML);
+            var a2 = parseFloat(document.getElementById('3b').innerHTML);
+            var a3 = parseFloat(document.getElementById('3ar').innerHTML);
+            var a4 = parseFloat(document.getElementById('3br').innerHTML);
+            document.getElementById("ankle_avg").innerHTML = ((a1+a2+a3+a4)/4).toFixed(2);
+
+            var e1 = parseFloat(document.getElementById('5a').innerHTML);
+            var e2 = parseFloat(document.getElementById('5b').innerHTML);
+            var e3 = parseFloat(document.getElementById('5c').innerHTML);
+            var e4 = parseFloat(document.getElementById('5d').innerHTML);
+            var e5 = parseFloat(document.getElementById('5ar').innerHTML);
+            var e6 = parseFloat(document.getElementById('5br').innerHTML);
+            var e7 = parseFloat(document.getElementById('5cr').innerHTML);
+            var e8 = parseFloat(document.getElementById('5dr').innerHTML);
+            document.getElementById("elbow_avg").innerHTML = ((e1+e2+e3+e4+e5+e6+e7+e8)/8).toFixed(2);
+
+            var k1 = parseFloat(document.getElementById('2a').innerHTML);
+            var k2 = parseFloat(document.getElementById('2b').innerHTML);
+            var k3 = parseFloat(document.getElementById('2ar').innerHTML);
+            var k4 = parseFloat(document.getElementById('2br').innerHTML);
+            document.getElementById("knee_avg").innerHTML = ((k1+k2+k3+k4)/4).toFixed(2);
+
+            //
+            var s1 = parseFloat(document.getElementById('4a').innerHTML);
+            var s2 = parseFloat(document.getElementById('4b').innerHTML);
+            var s3 = parseFloat(document.getElementById('4c').innerHTML);
+            var s4 = parseFloat(document.getElementById('4d').innerHTML);
+            var s5 = parseFloat(document.getElementById('4ar').innerHTML);
+            var s6 = parseFloat(document.getElementById('4br').innerHTML);
+            var s7 = parseFloat(document.getElementById('4cr').innerHTML);
+            var s8 = parseFloat(document.getElementById('4dr').innerHTML);
+            document.getElementById("shoulder_avg").innerHTML = ((s1+s2+s3+s4+s5+s6+s7+s8)/8).toFixed(2);
+
+            var h1 = parseFloat(document.getElementById('1a').innerHTML);
+            var h2 = parseFloat(document.getElementById('1b').innerHTML);
+            var h3 = parseFloat(document.getElementById('1c').innerHTML);
+            var h4 = parseFloat(document.getElementById('1ar').innerHTML);
+            var h5 = parseFloat(document.getElementById('1br').innerHTML);
+            var h6 = parseFloat(document.getElementById('1cr').innerHTML);
+            document.getElementById("hip_avg").innerHTML = ((h1+h2+h3+h4+h5+h6)/6).toFixed(2);
+
+            var c1 = parseFloat(document.getElementById('8a').innerHTML);
+            var c2 = parseFloat(document.getElementById('8b').innerHTML);
+            var c3 = parseFloat(document.getElementById('8c').innerHTML);
+            var c4 = parseFloat(document.getElementById('8cr').innerHTML);
+            document.getElementById("cervical_avg").innerHTML = ((c1+c2+c3+c4)/4).toFixed(2);
+
+            var l1 = parseFloat(document.getElementById('7a').innerHTML);
+            var l2 = parseFloat(document.getElementById('7b').innerHTML);
+            document.getElementById("lumbar_avg").innerHTML = ((l1+l2)/2).toFixed(2);
+        }
+        
+
+        function draw_graph(target, data, labels, lr){
+
+            var color_map = ["rgba(100, 255, 100, 0.5)", "rgba(100, 200, 100, 0.5)", "rgba(100, 150, 100, 0.5)","rgba(50, 100, 50, 0.5)"]
+            var bg_color = [];
+
+            if (lr){
+                for (i=0,j=labels.length-1; i<j; i++,j--){
+                    bg_color[i] = bg_color[j] = color_map[i];
+                }
+            }else{
+                for (i=0; i<labels.length; i++){
+                    bg_color[i] = color_map[i];
+                }
+            }
+            var ctx = document.getElementById(target).getContext('2d');
+
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'polarArea',
+                legend: {
+                    display: true,
+                    position: 'top',
+                    maxWidth: 400,
+                },
+                data: {
+                    labels: labels,
+
+                    datasets: [{
+                        label: 'AVERAGE',
+                        // borderColor: 'rgb(255, 99, 132)',
+                        data: data,
+                        backgroundColor: bg_color
+                    }]
+                },
+
+                options: {
+                    legend:{
+                        position: 'right',
+                        display: false
+                    },
+                    scale:{
+                        reverse: true
+                    },
+                    scale: {
+                        ticks: {
+                            suggestedMin: 10,
+                            suggestedMax: 10
+                        }
+                    }
+                    // startAngle: 0.5*Math.PI
+                }
+                
+            });
+        }
+        
+
+        // RIGHT FIRST, REVERSE LEFT
+        var labs1 = ['FLEXION', 'EXTENSION', 'EXTENSION', 'FLEXION']
+        var flel_w = parseFloat(document.getElementById("6a").innerHTML);
+        var extl_w = parseFloat(document.getElementById("6b").innerHTML);
+        var fler_w = parseFloat(document.getElementById("6ar").innerHTML);
+        var extr_w = parseFloat(document.getElementById("6br").innerHTML);
+        // var data1 = [2.8,3.85,5.8,3.7];
+        var data1 = [fler_w,extr_w,extl_w,flel_w];
+        draw_graph('myChart1', data1, labs1, true);
+        
+        var labs2 = ['FLEXION', 'EXTENSION','PRONATION','SUPINATION','SUPINATION','PRONATION','EXTENSION','FLEXION']
+        var flel_e = parseFloat(document.getElementById("5a").innerHTML);
+        if (flel_e<0){
+            flel_e = 0
+        }
+        var extl_e = parseFloat(document.getElementById("5b").innerHTML);
+        if (extl_e<0){
+            extl_e = 0
+        }
+        var prol_e = parseFloat(document.getElementById("5c").innerHTML);
+        if (prol_e<0){
+            prol_e = 0
+        }
+        var supl_e = parseFloat(document.getElementById("5d").innerHTML);
+        if (supl_e<0){
+            supl_e = 0
+        }
+        var fler_e = parseFloat(document.getElementById("5ar").innerHTML);
+        if (fler_e<0){
+            fler_e = 0
+        }
+        var extr_e = parseFloat(document.getElementById("5br").innerHTML);
+        if (extr_e<0){
+            extr_e = 0
+        }
+        var pror_e = parseFloat(document.getElementById("5cr").innerHTML);
+        if (pror_e<0){
+            pror_e = 0
+        }
+        var supr_e = parseFloat(document.getElementById("5dr").innerHTML);
+        if (supr_e<0){
+            supr_e = 0
+        }
+        // var data2 = [2.8,3.85,5.8,3.7,2.8,3.85,5.8,3.7];
+        var data2 = [fler_e,extr_e,pror_e,supr_e, supl_e,prol_e,extl_e,flel_e];
+        draw_graph('myChart2', data2, labs2, true);
+
+
+        var labs3 = ['EXTENSION', 'RIGHT ROTATION','LEFT ROTATION','FLEXION']
+        var fle_c = parseFloat(document.getElementById("8a").innerHTML);
+        var ext_c = parseFloat(document.getElementById("8b").innerHTML);
+        var lrl_c = parseFloat(document.getElementById("8c").innerHTML);
+        var lrr_c = parseFloat(document.getElementById("8cr").innerHTML);
+        // var data3 = [2.8,3.85,5.8,3.7];
+        var data3 = [ext_c, lrr_c,lrl_c,fle_c];
+        draw_graph('myChart3', data3, labs3, false);
+
+        
+        var labs4 = ['FLEXION', 'EXTENSION','ABDUCTION','LATERAL','LATERAL','ABDUCTION','EXTENSION','FLEXION']
+        var flel = parseFloat(document.getElementById("4a").innerHTML);
+        var extl = parseFloat(document.getElementById("4b").innerHTML);
+        var abdl = parseFloat(document.getElementById("4c").innerHTML);
+        var lrl = parseFloat(document.getElementById("4d").innerHTML);
+        var fler = parseFloat(document.getElementById("4ar").innerHTML);
+        var extr = parseFloat(document.getElementById("4br").innerHTML);
+        var abdr = parseFloat(document.getElementById("4cr").innerHTML);
+        var lrr = parseFloat(document.getElementById("4dr").innerHTML);
+        // var data4 = [2.8,3.85,5.8,3.7,2.8,3.85,5.8,3.7];
+        var data4 = [fler,extr,abdr,lrr,lrl,abdl,extl,flel];
+        draw_graph('myChart4', data4, labs4, true);
+
+
+        var labs5 = ['EXTENSION', 'FLEXION']
+        var fle = parseFloat(document.getElementById("7a").innerHTML);
+        var ext = parseFloat(document.getElementById("7b").innerHTML);
+        // var data5 = [2.8,3.85];
+        var data5 = [fle,ext];
+        draw_graph('myChart5', data5, labs5, false);
+
+    
+        var labs6 = ['FLEXION', 'HYPEREXTENSION','ABDUCTION','ABDUCTION','HYPEREXTENSION','FLEXION']
+        var flel_h = parseFloat(document.getElementById("1a").innerHTML);
+        var hypl_h = parseFloat(document.getElementById("1b").innerHTML);
+        var abdl_h = parseFloat(document.getElementById("1c").innerHTML);
+        var fler_h = parseFloat(document.getElementById("1ar").innerHTML);
+        var hypr_h = parseFloat(document.getElementById("1br").innerHTML);
+        var abdr_h = parseFloat(document.getElementById("1cr").innerHTML);
+        // var data6 = [2.8,3.85,5.8,3.7,2.8,3.85];
+        var data6 = [fler_h, hypr_h, abdr_h, abdl_h, hypl_h, flel_h];
+        draw_graph('myChart6', data6, labs6, true);
+
+        var labs7 = ['FLEXION', 'EXTENSION','EXTENSION','FLEXION']
+        var flel_k = parseFloat(document.getElementById("2a").innerHTML);
+        if (flel_k<0){
+            flel_k = 0
+        }
+        var extl_k = parseFloat(document.getElementById("2b").innerHTML);
+        if (extl_k<0){
+            extl_k = 0
+        }
+        var fler_k = parseFloat(document.getElementById("2ar").innerHTML);
+        if (fler_k<0){
+            fler_k = 0
+        }
+        var extr_k = parseFloat(document.getElementById("2br").innerHTML);
+        if (extr_k<0){
+            extr_k = 0
+        }
+        // var data7 = [2.8,3.85,5.8,3.7];
+        var data7 = [fler_k, extr_k, extl_k, flel_k];
+        draw_graph('myChart7', data7, labs7, true);
+        
+        var labs8 = ['DORSIFLEXION', 'PLANTARFLEXION','PLANTARFLEXION','DORSIFLEXION']
+        var dorl_a = parseFloat(document.getElementById("3a").innerHTML);
+        var plal_a = parseFloat(document.getElementById("3b").innerHTML);
+        var plar_a = parseFloat(document.getElementById("3ar").innerHTML);
+        var dorr_a = parseFloat(document.getElementById("3br").innerHTML);
+        // var data8 = [2.8,3.85,5.8,3.7];
+        var data8 = [dorr_a,plar_a,plal_a,dorl_a];
+        draw_graph('myChart8', data8, labs8, true);
+
+        </script>
+
+    </div>
+
+    <script type="text/javascript">
+
+    function generatePDF4(){
+        var w = 210;
+        var h = 295;    
+        var doc = new jsPDF('p', "mm", "a4", true);  
+
+        html2canvas(document.getElementById("pg_main")).then(function(canvas){
+            var img_main = canvas.toDataURL("image/png", 1.0);
+            var rh = canvas.height*w/canvas.width;
+            // window.open(base64image , "_blank");               
+            doc.addImage(img_main, 'png', 0, 50, w, rh);   
+        });
+
+        html2canvas(document.getElementById("pg_bc")).then(function(canvas){
+            var base64image = canvas.toDataURL("image/png", 1.0);
+            var rh = canvas.height*w/canvas.width;
+            // window.open(base64image , "_blank");   
+            doc.addPage(w,h);
+            doc.addImage(base64image, 'png', 0, 20, w, rh); 
+
+        });
+
+        html2canvas(document.getElementById("pg_balance")).then(function(canvas){
+            var base64image = canvas.toDataURL("image/png", 1.0);
+            var rh = canvas.height*w/canvas.width;
+            // window.open(base64image , "_blank");   
+            doc.addPage(w,h);
+            doc.addImage(base64image, 'png', 0, 20, w, rh); 
+        });
+
+        html2canvas(document.getElementById("pg_car")).then(function(canvas){
+            var base64image = canvas.toDataURL("image/png", 1.0);
+            var rh = canvas.height*w/canvas.width;
+            // window.open(base64image , "_blank");   
+            doc.addPage(w,h);
+            doc.addImage(base64image, 'png', 0, 20, w, rh); 
+        });
+
+        html2canvas(document.getElementById("pg_mf")).then(function(canvas){
+            var base64image = canvas.toDataURL("image/png", 1.0);
+            var rh = canvas.height*w/canvas.width;
+            // window.open(base64image , "_blank");   
+            doc.addPage(w,h);
+            doc.addImage(base64image, 'png', 0, 20, w, rh);           
+        });
+
+        html2canvas(document.getElementById("pg_rom")).then(function(canvas){
+            var base64image = canvas.toDataURL("image/png", 1.0);
+            var rh = canvas.height*w/canvas.width;
+            // window.open(base64image , "_blank");   
+            doc.addPage(w,h);
+            doc.addImage(base64image, 'png', 0, 20, w, rh);    
+        });
+
+        html2canvas(document.getElementById("pg_rom2")).then(function(canvas){
+            var base64image = canvas.toDataURL("image/png", 1.0);
+            var rh = canvas.height*w/canvas.width;
+            // window.open(base64image , "_blank");   
+            doc.addPage(w,h);
+            doc.addImage(base64image, 'png', 0, 20, w, rh);    
+            doc.save('test.pdf'); 
+        });
+
+        
+    }
+
+
+    function generatePDF5(){
+
+
+        document.getElementById("screen").style.display = "block";
+
+        html2canvas(document.getElementById("pg")).then(function(canvas){
+            
+            var imgWidth = 590; 
+            var pageHeight = 900;  
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            var heightLeft = imgHeight;
+            var doc = new jsPDF('p', 'pt', 'letter', false);
+            var position = 0;
+            var imgData = canvas.toDataURL("image/png", 1.0);
+
+            doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight, undefined, 'MEDIUM');
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+              position = heightLeft - imgHeight;
+              doc.addPage();
+              doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight, undefined, 'MEDIUM');
+              heightLeft -= pageHeight;
+            }
+
+            doc.save( 'file.pdf');﻿
+        });
+
+        document.getElementById("screen").style.display = "none";
+
+        // window.location.href = "";
+        // window.location.reload(false); 
+    }
+      
+    </script>
+
+  </body>
+    }
+</html>

@@ -1,0 +1,1003 @@
+{% extends "test.html" %}
+
+{% block head %}
+<script type="text/javascript" src="/static/polar.js"></script>
+<style type="text/css">
+
+    h1, legend {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    h1 {
+        margin-top: 40px;
+    }
+
+    label, input, select {
+        display: block;
+    }
+
+    input, select {
+        margin-bottom: 1em;
+    }
+
+    fieldset {
+        margin-bottom: 2em;
+        padding: 1em;
+    }
+
+    fieldset fieldset {
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+
+    input[type="checkbox"] {
+        display: inline;
+    }
+
+    .range {
+        margin-bottom: 1em;
+    }
+
+    .card-type input, .card-type label {
+        display: inline-block;
+    }
+
+    ul li {
+        list-style: none;
+    }
+
+    .graph_list li {
+        float: left;
+    }
+
+    table {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #ddd;
+        padding: 6px;
+        font-size: 20px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #ddd;
+    }
+
+    th {
+        padding-top: 6px;
+        padding-bottom: 6px;
+        text-align: center;
+        background-color: #8E52AA;
+        color: white;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+</style>
+{% endblock %}
+{% block content %}
+<div style="text-align: center;font-size: 36px;font-weight: bold;margin-top: 42px;">Balance Results</div>
+<div class="container-fluid">
+    <div class="row">
+
+        <!--  <div style="background:rgb(241, 232, 252);width:100%"> -->
+        <!--    左显示-->
+        <div class="col-sm-6 col-12">
+
+            <div>
+                <!-- <div style="background: #8E52AA; color:white; font-size:18px; text-align: center;padding-top: 5px;padding-bottom: 5px;margin-top: 40px;font-weight: bold;margin-bottom: 20px;">AVERAGE</div>  -->
+                <table style="margin-top: 40px;">
+                    <tr>
+                        <th style="text-align:left">KEY</th>
+                    </tr>
+                    <tr>
+                        <td><img class="icon"
+                                 style="width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                                 src="/static/icon/b_res_ave_l.svg">Left: <span id="avg_l"></span>/10
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><img class="icon"
+                                 style="width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                                 src="/static/icon/b_res_ave_r.svg">Right: <span id='avg_r'></span>/10
+                        </td>
+                    </tr>
+                </table>
+                <!--             <h1>AVERAGE</h1>
+                 -->
+                <!--                    图表{% extends "test.html" %}
+
+{% block head %}
+<script type="text/javascript" src="/static/polar.js"></script>
+<style type="text/css">
+
+    h1, legend {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    h1 {
+        margin-top: 40px;
+    }
+
+    label, input, select {
+        display: block;
+    }
+
+    input, select {
+        margin-bottom: 1em;
+    }
+
+    fieldset {
+        margin-bottom: 2em;
+        padding: 1em;
+    }
+
+    fieldset fieldset {
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+
+    input[type="checkbox"] {
+        display: inline;
+    }
+
+    .range {
+        margin-bottom: 1em;
+    }
+
+    .card-type input, .card-type label {
+        display: inline-block;
+    }
+
+    ul li {
+        list-style: none;
+    }
+
+    .graph_list li {
+        float: left;
+    }
+
+    table {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #ddd;
+        padding: 6px;
+        font-size: 20px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #ddd;
+    }
+
+    th {
+        padding-top: 6px;
+        padding-bottom: 6px;
+        text-align: center;
+        background-color: #8E52AA;
+        color: white;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+</style>
+{% endblock %}
+{% block content %}
+<div style="text-align: center;font-size: 36px;font-weight: bold;margin-top: 42px;">Balance Results</div>
+<div class="container-fluid">
+    <div class="row">
+
+        <!--  <div style="background:rgb(241, 232, 252);width:100%"> -->
+                <!--    左显示-->
+                <div class="col-sm-6 col-12">
+
+                    <div>
+                        <!-- <div style="background: #8E52AA; color:white; font-size:18px; text-align: center;padding-top: 5px;padding-bottom: 5px;margin-top: 40px;font-weight: bold;margin-bottom: 20px;">AVERAGE</div>  -->
+                        <table style="margin-top: 40px;">
+                            <tr>
+                                <th style="text-align:left">KEY</th>
+                            </tr>
+                            <tr>
+                                <td><img class="icon"
+                                         style="width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                                         src="/static/icon/b_res_ave_l.svg">Left: <span id="avg_l"></span>/10
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td><img class="icon"
+                                         style="width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                                         src="/static/icon/b_res_ave_r.svg">Right: <span id='avg_r'></span>/10
+                                </td>
+                            </tr>
+                        </table>
+                        <!--             <h1>AVERAGE</h1>
+                         -->
+                        <!--                    图表4-->
+
+                        <div class="row" style=" width: 100%;margin-top: 20px">
+                            <div class="col-2" style="font-size: 1.5em;">
+                                <img class="icon" style="width: 60px;" src="/static/icon/b_res_ave_r.svg">
+                                <span id='avg_l2' style="width: 250px"></span>%
+                            </div>
+                            <div class="col-8">
+                                <canvas id="myChart4"></canvas>
+                            </div>
+                            <div class="col-2" style="font-size: 1.5em;">
+                                <img class="icon" style="width: 60px;" src="/static/icon/b_res_ave_r.svg">
+                                <span id='avg_r2'></span>%
+                            </div>
+                        </div>
+
+                        <h1>BESS TEST</h1>
+                        <table>
+                            <tr>
+                                <th style="text-align: left;"><img class="icon" src="/static/icon/b_bess_ftft.svg"
+                                                                   style="width: 34px; margin-right: 10px; margin-top: -4px; margin-bottom: -10px;">Feet
+                                    Together
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>Double Leg Stance: <span>{{dict.dls}}</span></td>
+                            </tr>
+                            <tr>
+                                <td>Double Leg Stance (Pad): <span>{{dict.dlsp}}</span></td>
+                            </tr>
+                            <tr>
+                                <td>Faults: <span>{{dict.ft}}</span></td>
+                            </tr>
+                        </table>
+
+                        <table style="text-align: center;">
+                            <tr>
+                                <th>
+                                    <!-- <img style="transform: scaleX(-1); width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;" class="icon" src="/static/icon/b_bess_Rft.svg" > -->
+                                    Left
+                                </th>
+                                <th></th>
+                                <th>
+                                    Right
+                                    <!-- <img class="icon" style="width: 34px; margin-top: -4px; margin-bottom: -10px;" src="/static/icon/b_bess_Rft.svg"> -->
+                                </th>
+                            </tr>
+                            <tr>
+                                <td><span>{{dict.lsls}}</span></td>
+                                <td><span>Single Leg Stance</span></td>
+                                <td><span>{{dict.rsls}}</span></td>
+                            </tr>
+                            <tr>
+                                <td><span>{{dict.lslsp}}</span></td>
+                                <td><span>Single Leg Stance (Pad)</span></td>
+                                <td><span>{{dict.rslsp}}</span></td>
+                            </tr>
+                            <tr>
+                                <td><span>{{dict.lts}}</span></td>
+                                <td><span>Tandem Stance</span></td>
+                                <td><span>{{dict.rts}}</span></td>
+                            </tr>
+                            <tr>
+                                <td><span>{{dict.ltsp}}</span></td>
+                                <td><span>Tandem Stance (Pad)</span></td>
+                                <td><span>{{dict.rtsp}}</span></td>
+                            </tr>
+                            <tr>
+                                <td><span>{{dict.lf}}</span></td>
+                                <td><span>Faults</span></td>
+                                <td><span>{{dict.rf}}</span></td>
+                            </tr>
+                        </table>
+
+                        <table>
+                            <tr>
+                                <th style="text-align:center;">TOTAL FAULTS: <span>{{dict.tf}}</span></th>
+                            </tr>
+                        </table>
+                    </div>
+                    <!--                图标1-->
+                    <div class="row" style="width: 100%; margin-top: 20px">
+                        <div class="col-2" style="font-size: 1.5em;">
+                            <img class="icon" style="width: 60px" src="/static/icon/b_res_ave_r.svg">
+                            <span id='avg_l2t'>{{score[0]*10}}</span>%
+                        </div>
+                        <div class="col-8">
+                            <canvas id="myChart1"></canvas>
+                        </div>
+                        <div class="col-2" style="font-size: 1.5em;">
+                            <img class="icon" style="width: 60px;" src="/static/icon/b_res_ave_r.svg">
+                            <span id='avg_r2t'>{{score[1]*10}}</span>%
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--    右显示-->
+                <div class="col-sm-6 col-12">
+                    <div>
+                        <h1>A-N BALANCE TEST</h1>
+                        <table style="text-align: center;">
+                            <tr>
+                                <th>
+                                    Left
+                                </th>
+                                <th></th>
+                                <th>
+                                    Right
+                                </th>
+                            </tr>
+                            <tr>
+                                <td><span>{{dict.lkup}}</span>/3</td>
+                                <td><span>Knee Up</span></td>
+                                <td><span>{{dict.rkup}}</span>/3</td>
+                            </tr>
+
+                            <tr>
+                                <td><span>{{dict.lbb}}</span>/3</td>
+                                <td><span>Bottom Block</span></td>
+                                <td><span>{{dict.rbb}}</span>/3</td>
+                            </tr>
+                            <tr>
+                                <td><span>{{dict.lk2t}}</span>/3</td>
+                                <td><span>Knee 2 T</span></td>
+                                <td><span>{{dict.rk2t}}</span>/3</td>
+                            </tr>
+                            <tr>
+                                <td><span>{{dict.lh}}</span>/3</td>
+                                <td><span>Heel Tap</span></td>
+                                <td><span>{{dict.rh}}</span>/3</td>
+                            </tr>
+                            <tr>
+                                <td><span>{{dict.lrb}}</span>/3</td>
+                                <td><span>Reach Back</span></td>
+                                <td><span>{{dict.rrb}}</span>/3</td>
+                            </tr>
+                            <tr>
+                                <td><span>{{dict.lfs}}</span>/15</td>
+                                <td><span>Score</span></td>
+                                <td><span>{{dict.rfs}}</span>/15</td>
+                            </tr>
+                            <tr>
+                                <th><span>{{dict.cs}}</span>%</th>
+                                <th><span>COMPOSITE SCORE</span></th>
+                                <th><span>{{dict.cs2}}</span>%</th>
+                            </tr>
+                        </table>
+                    </div>
+                    <!--                图标2-->
+                    <div>
+                        <div class="row" style="width: 100%; margin-top: 20px">
+                            <div class="col-2" style="font-size: 1.5em;">
+                                <img class="icon" style="width: 60px;" src="/static/icon/b_res_ave_r.svg">
+                                <span id='avg_l2t2'>{{score[2]*10}}</span>%
+                            </div>
+                            <div class="col-8">
+                                <canvas id="myChart2"></canvas>
+                            </div>
+                            <div class="col-2" style="font-size: 1.5em;">
+                                <img class="icon" style="width: 60px;" src="/static/icon/b_res_ave_r.svg">
+                                <span id='avg_r2t2'>{{score[3]*10}}</span>%
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h1>Y BALANCE TEST</h1>
+
+                        <table style="text-align: center;">
+                            <tr>
+                                <th>
+                                    Left
+                                </th>
+                                <th></th>
+                                <th>
+                                    Right
+                                </th>
+                            </tr>
+                            <tr>
+                                <td><span>{{dict.laas}}</span>cm <span>{{dict.larrd}}</span>%</td>
+                                <td><span>Anterior</span></td>
+                                <td><span>{{dict.raas}}</span>cm <span>{{dict.rarrd}}</span>%</td>
+                            </tr>
+                            <tr>
+                                <td><span>{{dict.lpas}}</span>cm <span>{{dict.lprrd}}</span>%</td>
+                                <td><span>Posteromedial</span></td>
+                                <td><span>{{dict.rpas}}</span>cm <span>{{dict.rprrd}}</span>%</td>
+                            </tr>
+                            <tr>
+                                <td><span>{{dict.lpas2}}</span>cm <span>{{dict.lprrd2}}</span>%</td>
+                                <td><span>Posterolateral</span></td>
+                                <td><span>{{dict.rpas2}}</span>cm <span>{{dict.rprrd2}}</span>%</td>
+                            </tr>
+                            <tr>
+                                <th><span>{{dict.cs3}}</span>%</th>
+                                <th><span>COMPOSITE SCORE</span></th>
+                                <th><span>{{dict.cs4}}</span>%</th>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <div class="row" style="width: 100%; margin-top: 20px">
+
+                            <div class="col-2" style="font-size: 1.5em;">
+                                <img class="icon" style="width: 60px;" src="/static/icon/b_res_ave_r.svg">
+                                <span id='avg_l2t3'>{{score[6]}}</span>%
+                            </div>
+                            <div class="col-8">
+                                <canvas id="myChart3"></canvas>
+                            </div>
+                            <div class="col-2" style="font-size: 1.5em;">
+                                <img class="icon" style="width: 60px;" src="/static/icon/b_res_ave_r.svg">
+                                <span id='avg_r2t3'>{{score[7]}}</span>%
+                            </div>
+
+                        </div>
+                    </div>
+                    <table style="margin-left: 50px; display: none;">
+                        <tr>
+                            <th>KEY</th>
+                        </tr>
+                        <tr>
+                            <td><img class="icon"
+                                     style="transform: scaleX(-1); width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                                     src="/static/icon/b_res_ave_r.svg">Bess Test (Left): <span id='b_l'>{{score[0]}}</span>/10
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img class="icon" style="width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                                     src="/static/icon/b_res_ave_r.svg">Bess Test (Right): <span id='b_r'>{{score[1]}}</span>/10
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img class="icon"
+                                     style="transform: scaleX(-1); width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                                     src="/static/icon/b_res_ave_r.svg">A-N Balance (Left): <span id='an_l'>{{score[2]}}</span>/10
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img class="icon" style="width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                                     src="/static/icon/b_res_ave_r.svg">A-N Balance (Right): <span id='an_r'>{{score[3]}}</span>/10
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img class="icon"
+                                     style="transform: scaleX(-1); width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                                     src="/static/icon/b_res_ave_r.svg">Y Balance (Left): <span id='y_l'>{{score[4]}}</span>/10
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img class="icon" style="width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                                     src="/static/icon/b_res_ave_r.svg">Y Balance (Right): <span id='y_r'>{{score[5]}}</span>/10
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img class="icon"
+                                     style="transform: scaleX(-1); width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                                     src="/static/icon/b_res_ave_r.svg">Average (Left): <span id='avg_ltt'></span>/10
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img class="icon" style="width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                                     src="/static/icon/b_res_ave_r.svg">Average (Right): <span id='avg_rtt'></span>/10
+                            </td>
+                        </tr>
+                    </table>
+                    <div style="clear:both;"></div>
+
+                </div>
+
+                <div style="clear:both;margin-bottom:20px;"></div>
+
+
+                <script type="text/javascript">
+
+
+                    function bal_n(name, l, r) {
+
+
+                        var ctx = document.getElementById(name).getContext('2d');
+
+                        var chart = new Chart(ctx, {
+                            // The type of chart we want to create
+                            type: 'polarArea',
+
+                            data: {
+                                labels: ['LEFT', 'RIGHT'],
+
+                                datasets: [{
+                                    label: 'AVERAGE',
+                                    // borderColor: 'rgb(255, 99, 132)',
+                                    data: [l, r],
+                                    backgroundColor: [
+                                        "rgba(200, 50, 255, 0.5)",
+                                        "rgba(100, 50, 200, 0.5)"
+                                    ]
+                                }]
+                            },
+
+                            options: {
+                                startAngle: 0.5 * Math.PI,
+                                legend: {
+                                    display: false
+                                },
+                                scale: {
+                                    ticks: {
+                                        suggestedMin: 10,
+                                        suggestedMax: 10
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    var b_l = parseFloat(document.getElementById("b_l").innerHTML);
+                    var b_r = parseFloat(document.getElementById("b_r").innerHTML);
+                    bal_n('myChart1', b_l, b_r);
+
+                    var an_l = parseFloat(document.getElementById("an_l").innerHTML);
+                    var an_r = parseFloat(document.getElementById("an_r").innerHTML);
+                    bal_n('myChart2', an_l, an_r);
+
+                    var y_l = parseFloat(document.getElementById("y_l").innerHTML);
+                    var y_r = parseFloat(document.getElementById("y_r").innerHTML);
+                    bal_n('myChart3', y_l, y_r);
+
+                    var count = 0;
+                    var tot = 0;
+                    if (b_l > 0) {
+                        count += 1;
+                        tot += b_l;
+                    }
+                    if (an_l > 0) {
+                        count += 1;
+                        tot += an_l;
+                    }
+                    if (y_l > 0) {
+                        count += 1;
+                        tot += y_l;
+                    }
+                    var avg_l = 0.0;
+                    if (count > 0) {
+                        avg_l = (tot / count).toFixed(2);
+                    }
+
+
+                    var count = 0;
+                    var tot = 0;
+                    if (b_r != 0) {
+                        count += 1;
+                        tot += b_r;
+                    }
+                    if (an_r != 0) {
+                        count += 1;
+                        tot += an_r;
+                    }
+                    if (y_r != 0) {
+                        count += 1;
+                        tot += y_r;
+                    }
+                    var avg_r = 0.0;
+                    if (count > 0) {
+                        avg_r = (tot / count).toFixed(2);
+                    }
+
+                    document.getElementById("avg_l").innerHTML = avg_l;
+                    document.getElementById("avg_l2").innerHTML = (avg_l * 10).toFixed(1);
+                    document.getElementById("avg_r").innerHTML = avg_r;
+                    document.getElementById("avg_r2").innerHTML = (avg_r * 10).toFixed(1);
+
+                    bal_n('myChart4', avg_l, avg_r);
+
+
+                    // var val
+                    //
+
+
+                </script>
+
+            </div>
+        </div>
+
+
+        {% endblock %}4-->
+
+                <div class="row" style=" width: 100%;margin-top: 20px">
+                    <div class="col-2" style="font-size: 1.5em;">
+                        <img class="icon" style="width: 60px;" src="/static/icon/b_res_ave_r.svg">
+                        <span id='avg_l2' style="width: 250px"></span>%
+                    </div>
+                    <div class="col-8">
+                        <canvas id="myChart4"></canvas>
+                    </div>
+                    <div class="col-2" style="font-size: 1.5em;">
+                        <img class="icon" style="width: 60px;" src="/static/icon/b_res_ave_r.svg">
+                        <span id='avg_r2'></span>%
+                    </div>
+                </div>
+
+                <h1>BESS TEST</h1>
+                <table>
+                    <tr>
+                        <th style="text-align: left;"><img class="icon" src="/static/icon/b_bess_ftft.svg"
+                                                           style="width: 34px; margin-right: 10px; margin-top: -4px; margin-bottom: -10px;">Feet
+                            Together
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>Double Leg Stance: <span>{{dict.dls}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Double Leg Stance (Pad): <span>{{dict.dlsp}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Faults: <span>{{dict.ft}}</span></td>
+                    </tr>
+                </table>
+
+                <table style="text-align: center;">
+                    <tr>
+                        <th>
+                            <!-- <img style="transform: scaleX(-1); width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;" class="icon" src="/static/icon/b_bess_Rft.svg" > -->
+                            Left
+                        </th>
+                        <th></th>
+                        <th>
+                            Right
+                            <!-- <img class="icon" style="width: 34px; margin-top: -4px; margin-bottom: -10px;" src="/static/icon/b_bess_Rft.svg"> -->
+                        </th>
+                    </tr>
+                    <tr>
+                        <td><span>{{dict.lsls}}</span></td>
+                        <td><span>Single Leg Stance</span></td>
+                        <td><span>{{dict.rsls}}</span></td>
+                    </tr>
+                    <tr>
+                        <td><span>{{dict.lslsp}}</span></td>
+                        <td><span>Single Leg Stance (Pad)</span></td>
+                        <td><span>{{dict.rslsp}}</span></td>
+                    </tr>
+                    <tr>
+                        <td><span>{{dict.lts}}</span></td>
+                        <td><span>Tandem Stance</span></td>
+                        <td><span>{{dict.rts}}</span></td>
+                    </tr>
+                    <tr>
+                        <td><span>{{dict.ltsp}}</span></td>
+                        <td><span>Tandem Stance (Pad)</span></td>
+                        <td><span>{{dict.rtsp}}</span></td>
+                    </tr>
+                    <tr>
+                        <td><span>{{dict.lf}}</span></td>
+                        <td><span>Faults</span></td>
+                        <td><span>{{dict.rf}}</span></td>
+                    </tr>
+                </table>
+
+                <table>
+                    <tr>
+                        <th style="text-align:center;">TOTAL FAULTS: <span>{{dict.tf}}</span></th>
+                    </tr>
+                </table>
+            </div>
+            <!--                图标1-->
+            <div class="row" style="width: 100%; margin-top: 20px">
+                <div class="col-2" style="font-size: 1.5em;">
+                    <img class="icon" style="width: 60px" src="/static/icon/b_res_ave_r.svg">
+                    <span id='avg_l2t'>{{score[0]*10}}</span>%
+                </div>
+                <div class="col-8">
+                    <canvas id="myChart1"></canvas>
+                </div>
+                <div class="col-2" style="font-size: 1.5em;">
+                    <img class="icon" style="width: 60px;" src="/static/icon/b_res_ave_r.svg">
+                    <span id='avg_r2t'>{{score[1]*10}}</span>%
+                </div>
+
+            </div>
+
+        </div>
+
+        <!--    右显示-->
+        <div class="col-sm-6 col-12">
+            <div>
+                <h1>A-N BALANCE TEST</h1>
+                <table style="text-align: center;">
+                    <tr>
+                        <th>
+                            Left
+                        </th>
+                        <th></th>
+                        <th>
+                            Right
+                        </th>
+                    </tr>
+                    <tr>
+                        <td><span>{{dict.lkup}}</span>/3</td>
+                        <td><span>Knee Up</span></td>
+                        <td><span>{{dict.rkup}}</span>/3</td>
+                    </tr>
+
+                    <tr>
+                        <td><span>{{dict.lbb}}</span>/3</td>
+                        <td><span>Bottom Block</span></td>
+                        <td><span>{{dict.rbb}}</span>/3</td>
+                    </tr>
+                    <tr>
+                        <td><span>{{dict.lk2t}}</span>/3</td>
+                        <td><span>Knee 2 T</span></td>
+                        <td><span>{{dict.rk2t}}</span>/3</td>
+                    </tr>
+                    <tr>
+                        <td><span>{{dict.lh}}</span>/3</td>
+                        <td><span>Heel Tap</span></td>
+                        <td><span>{{dict.rh}}</span>/3</td>
+                    </tr>
+                    <tr>
+                        <td><span>{{dict.lrb}}</span>/3</td>
+                        <td><span>Reach Back</span></td>
+                        <td><span>{{dict.rrb}}</span>/3</td>
+                    </tr>
+                    <tr>
+                        <td><span>{{dict.lfs}}</span>/15</td>
+                        <td><span>Score</span></td>
+                        <td><span>{{dict.rfs}}</span>/15</td>
+                    </tr>
+                    <tr>
+                        <th><span>{{dict.cs}}</span>%</th>
+                        <th><span>COMPOSITE SCORE</span></th>
+                        <th><span>{{dict.cs2}}</span>%</th>
+                    </tr>
+                </table>
+            </div>
+            <!--                图标2-->
+            <div>
+                <div class="row" style="width: 100%; margin-top: 20px">
+                    <div class="col-2" style="font-size: 1.5em;">
+                        <img class="icon" style="width: 60px;" src="/static/icon/b_res_ave_r.svg">
+                        <span id='avg_l2t2'>{{score[2]*10}}</span>%
+                    </div>
+                    <div class="col-8">
+                        <canvas id="myChart2"></canvas>
+                    </div>
+                    <div class="col-2" style="font-size: 1.5em;">
+                        <img class="icon" style="width: 60px;" src="/static/icon/b_res_ave_r.svg">
+                        <span id='avg_r2t2'>{{score[3]*10}}</span>%
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h1>Y BALANCE TEST</h1>
+
+                <table style="text-align: center;">
+                    <tr>
+                        <th>
+                            Left
+                        </th>
+                        <th></th>
+                        <th>
+                            Right
+                        </th>
+                    </tr>
+                    <tr>
+                        <td><span>{{dict.laas}}</span>cm <span>{{dict.larrd}}</span>%</td>
+                        <td><span>Anterior</span></td>
+                        <td><span>{{dict.raas}}</span>cm <span>{{dict.rarrd}}</span>%</td>
+                    </tr>
+                    <tr>
+                        <td><span>{{dict.lpas}}</span>cm <span>{{dict.lprrd}}</span>%</td>
+                        <td><span>Posteromedial</span></td>
+                        <td><span>{{dict.rpas}}</span>cm <span>{{dict.rprrd}}</span>%</td>
+                    </tr>
+                    <tr>
+                        <td><span>{{dict.lpas2}}</span>cm <span>{{dict.lprrd2}}</span>%</td>
+                        <td><span>Posterolateral</span></td>
+                        <td><span>{{dict.rpas2}}</span>cm <span>{{dict.rprrd2}}</span>%</td>
+                    </tr>
+                    <tr>
+                        <th><span>{{dict.cs3}}</span>%</th>
+                        <th><span>COMPOSITE SCORE</span></th>
+                        <th><span>{{dict.cs4}}</span>%</th>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <div class="row" style="width: 100%; margin-top: 20px">
+
+                    <div class="col-2" style="font-size: 1.5em;">
+                        <img class="icon" style="width: 60px;" src="/static/icon/b_res_ave_r.svg">
+                        <span id='avg_l2t3'>{{score[6]}}</span>%
+                    </div>
+                    <div class="col-8">
+                        <canvas id="myChart3"></canvas>
+                    </div>
+                    <div class="col-2" style="font-size: 1.5em;">
+                        <img class="icon" style="width: 60px;" src="/static/icon/b_res_ave_r.svg">
+                        <span id='avg_r2t3'>{{score[7]}}</span>%
+                    </div>
+
+                </div>
+            </div>
+            <table style="margin-left: 50px; display: none;">
+                <tr>
+                    <th>KEY</th>
+                </tr>
+                <tr>
+                    <td><img class="icon"
+                             style="transform: scaleX(-1); width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                             src="/static/icon/b_res_ave_r.svg">Bess Test (Left): <span id='b_l'>{{score[0]}}</span>/10
+                    </td>
+                </tr>
+                <tr>
+                    <td><img class="icon" style="width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                             src="/static/icon/b_res_ave_r.svg">Bess Test (Right): <span id='b_r'>{{score[1]}}</span>/10
+                    </td>
+                </tr>
+                <tr>
+                    <td><img class="icon"
+                             style="transform: scaleX(-1); width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                             src="/static/icon/b_res_ave_r.svg">A-N Balance (Left): <span id='an_l'>{{score[2]}}</span>/10
+                    </td>
+                </tr>
+                <tr>
+                    <td><img class="icon" style="width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                             src="/static/icon/b_res_ave_r.svg">A-N Balance (Right): <span id='an_r'>{{score[3]}}</span>/10
+                    </td>
+                </tr>
+                <tr>
+                    <td><img class="icon"
+                             style="transform: scaleX(-1); width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                             src="/static/icon/b_res_ave_r.svg">Y Balance (Left): <span id='y_l'>{{score[4]}}</span>/10
+                    </td>
+                </tr>
+                <tr>
+                    <td><img class="icon" style="width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                             src="/static/icon/b_res_ave_r.svg">Y Balance (Right): <span id='y_r'>{{score[5]}}</span>/10
+                    </td>
+                </tr>
+                <tr>
+                    <td><img class="icon"
+                             style="transform: scaleX(-1); width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                             src="/static/icon/b_res_ave_r.svg">Average (Left): <span id='avg_ltt'></span>/10
+                    </td>
+                </tr>
+                <tr>
+                    <td><img class="icon" style="width: 34px; margin-right:0px; margin-top: -4px; margin-bottom: -10px;"
+                             src="/static/icon/b_res_ave_r.svg">Average (Right): <span id='avg_rtt'></span>/10
+                    </td>
+                </tr>
+            </table>
+            <div style="clear:both;"></div>
+
+        </div>
+
+        <div style="clear:both;margin-bottom:20px;"></div>
+
+
+        <script type="text/javascript">
+
+
+            function bal_n(name, l, r) {
+
+
+                var ctx = document.getElementById(name).getContext('2d');
+
+                var chart = new Chart(ctx, {
+                    // The type of chart we want to create
+                    type: 'polarArea',
+
+                    data: {
+                        labels: ['LEFT', 'RIGHT'],
+
+                        datasets: [{
+                            label: 'AVERAGE',
+                            // borderColor: 'rgb(255, 99, 132)',
+                            data: [l, r],
+                            backgroundColor: [
+                                "rgba(200, 50, 255, 0.5)",
+                                "rgba(100, 50, 200, 0.5)"
+                            ]
+                        }]
+                    },
+
+                    options: {
+                        startAngle: 0.5 * Math.PI,
+                        legend: {
+                            display: false
+                        },
+                        scale: {
+                            ticks: {
+                                suggestedMin: 10,
+                                suggestedMax: 10
+                            }
+                        }
+                    }
+                });
+            }
+
+            var b_l = parseFloat(document.getElementById("b_l").innerHTML);
+            var b_r = parseFloat(document.getElementById("b_r").innerHTML);
+            bal_n('myChart1', b_l, b_r);
+
+            var an_l = parseFloat(document.getElementById("an_l").innerHTML);
+            var an_r = parseFloat(document.getElementById("an_r").innerHTML);
+            bal_n('myChart2', an_l, an_r);
+
+            var y_l = parseFloat(document.getElementById("y_l").innerHTML);
+            var y_r = parseFloat(document.getElementById("y_r").innerHTML);
+            bal_n('myChart3', y_l, y_r);
+
+            var count = 0;
+            var tot = 0;
+            if (b_l > 0) {
+                count += 1;
+                tot += b_l;
+            }
+            if (an_l > 0) {
+                count += 1;
+                tot += an_l;
+            }
+            if (y_l > 0) {
+                count += 1;
+                tot += y_l;
+            }
+            var avg_l = 0.0;
+            if (count > 0) {
+                avg_l = (tot / count).toFixed(2);
+            }
+
+
+            var count = 0;
+            var tot = 0;
+            if (b_r != 0) {
+                count += 1;
+                tot += b_r;
+            }
+            if (an_r != 0) {
+                count += 1;
+                tot += an_r;
+            }
+            if (y_r != 0) {
+                count += 1;
+                tot += y_r;
+            }
+            var avg_r = 0.0;
+            if (count > 0) {
+                avg_r = (tot / count).toFixed(2);
+            }
+
+            document.getElementById("avg_l").innerHTML = avg_l;
+            document.getElementById("avg_l2").innerHTML = (avg_l * 10).toFixed(1);
+            document.getElementById("avg_r").innerHTML = avg_r;
+            document.getElementById("avg_r2").innerHTML = (avg_r * 10).toFixed(1);
+
+            bal_n('myChart4', avg_l, avg_r);
+
+
+            // var val
+            //
+
+
+        </script>
+
+    </div>
+</div>
+
+
+{% endblock %}

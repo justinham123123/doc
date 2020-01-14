@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--    &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
+    <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"-->
+    <!--          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+
+    <!--    <title></title>-->
+
+    <!--    &lt;!&ndash; Optional JavaScript &ndash;&gt;-->
+    <!--    &lt;!&ndash; jQuery first, then Popper.js, then Bootstrap JS &ndash;&gt;-->
+    <!--    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"-->
+    <!--            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"-->
+    <!--            crossorigin="anonymous"></script>-->
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"-->
+    <!--            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"-->
+    <!--            crossorigin="anonymous"></script>-->
+    <!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"-->
+    <!--            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"-->
+    <!--            crossorigin="anonymous"></script>-->
+
+    <style>
+        a {
+            color: white;
+            text-decoration: none;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            /*background: rgb(252, 248, 174);*/
+        }
+
+        .topnav {
+            overflow: hidden;
+            background-color: #333;
+            position: fixed;
+            width: 100%;
+            min-width: 1400px;
+            /*opacity: 0.9;*/
+        }
+
+        .topnav a {
+            float: left;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        .topnav a:hover {
+            background-color: #ccc;
+            color: black;
+        }
+
+        .topnav a.active {
+            background-color: #ddd;
+            color: black;
+        }
+
+        form {
+            padding-bottom: 70px;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        #outbox {
+            width: 100%;
+        }
+
+        #inbox {
+            margin: auto;
+        }
+        /*按钮样式*/
+        .button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            -webkit-transition-duration: 0.4s; /* Safari */
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        .button1 {
+            background-color: white;
+            color: black;
+            border: 2px solid #4CAF50;
+        }
+    </style>
+
+    <script type="text/javascript" src="/static/jquery.js"></script>
+
+    {% block head %} {% endblock %}
+</head>
+
+<body>
+<!--导航栏开始-->
+<!--<nav class="navbar navbar-expand-lg bg-dark navbar-dark">-->
+<!--    <ul class="navbar-nav">-->
+<!--        {% if userType=="doctor" %}-->
+<!--        <button class="button"><a class="nav-link" href="/patient_list">Back to Patient List</a></button>-->
+<!--        {% else %}-->
+<!--        <button class="button"><a class="nav-link" href="/report_list">Back to Report List</a></button>-->
+<!--        {% endif %}-->
+<!--    </ul>-->
+<!--</nav>-->
+<!--导航栏结束-->
+<div style="width: 100%;height: 40px;">
+
+</div>
+
+<div id="outbox">
+    <div id="inbox">
+        {% block content %} {% endblock %}
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var elements = document.getElementsByClassName('nav');
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].classList.remove('active');
+    }
+
+    var curr_url = window.location.href;
+    var name_loc = curr_url.split("/");
+    // alert(curr_url)
+    var target = name_loc[name_loc.length - 1];
+    var target_ele = document.getElementById(target);
+    // alert(target_ele.innerHTML)
+    target_ele.classList.add('active');
+
+</script>
+
+</body>
+</html>

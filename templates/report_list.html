@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>user list</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+  	<script src="/static/jquery.js"></script>
+
+  	<link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css"></style>
+	<script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+
+
+  	<script src="/static/js/bootstrap.min.js"></script>
+
+
+	<style type="text/css">
+		h1, legend {
+			font-family:Arial, Helvetica, sans-serif;
+		}
+        h1{
+            margin-top: 40px;
+        }
+		label, input, select {
+			display:block;
+		}
+		input, select {
+			margin-bottom: 1em;
+		}
+		fieldset {
+			margin-bottom: 2em;
+			padding: 1em;
+		}
+		fieldset fieldset {
+			margin-top: 1em;
+			margin-bottom: 1em;
+		}
+		input[type="checkbox"] {
+			display:inline;
+		}
+		.range {
+			margin-bottom:1em;
+		}	
+		.card-type input, .card-type label {
+			display:inline-block;
+		}
+
+        ul li{
+            list-style: none;
+        }
+
+        #graph_list li{
+            float:left;
+        }
+        table {
+          font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+
+        td, th {
+          border: 1px solid #ddd;
+          padding: 6px;
+          font-size:20px;
+        }
+
+        tr:nth-child(even){background-color: #f2f2f2;}
+
+        /*tr:hover {background-color: #ddd;}*/
+
+        thead{
+        	background-color: #99D8F5;
+        }
+
+        th {
+          /*padding-top: 6px;*/
+          /*padding-bottom: 6px;*/
+          /*text-align: left;*/
+          /*background-color: #4CAF50;*/
+          /*color: white;*/
+        }
+        body {
+	      margin: 0;
+	      font-family: Arial, Helvetica, sans-serif;
+	    }
+
+	    .topnav {
+	      overflow: hidden;
+	      background-color: #333;
+	      position:fixed;
+	      width:100%;
+	      min-width: 1000px;
+	      z-index: 100;
+	      /*opacity: 0.9;*/
+	    }
+
+	    .topnav a {
+	      float: left;
+	      color: #f2f2f2;
+	      text-align: center;
+	      padding: 14px 16px;
+	      text-decoration: none;
+	      font-size: 17px;
+	    }
+
+	    .topnav a:hover {
+	      background-color: #ccc;
+	      color: black;
+	    }
+
+	    .topnav a.active {
+	      background-color: #ddd;
+	      color: black;
+	    }
+	    </style>
+	</head>
+
+	 <body>
+
+	    <div class="topnav" id='navbar'>
+		  
+		  <a href="#" style="float:left; color:yellow;">hello {{username}}</a>
+      
+	      <a href="/logout" style="float:right">Logout</a>
+	      <a href="/basic_form" style="float:right">Edit User Info</a>
+
+	    </div>
+
+	    <div style="clear: both;"></div>
+
+	    <div style="padding:40px;width: 1400px;margin: auto; padding-top:80px;">
+	    	<table id="table" class="table table-striped table-bordered table-sm" style="margin-top:30px;"> 
+	    	<thead>
+	    		<tr>
+					<th>Test No</th>
+					<th>Test Date</th>
+					<th>Link to the Report</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for rep in report %}
+				<tr>
+					<td><span>test_{{rep[0]}}</span></td>
+					<td>{{rep[2]}}</td>
+					<td><a href="/result_m?name={{rep[1]}}">CHECK MY REPORT</a></td>					
+				</tr>
+				{% endfor %}
+			</tbody>
+			</table>
+	  
+	    </div>    
+	</body>
+
+	<script type="text/javascript">
+    	 $(document).ready(function () {
+            $('#table').DataTable();
+          });
+	</script>
+</html>

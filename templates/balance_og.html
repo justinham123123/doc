@@ -1,0 +1,642 @@
+{% extends "nav.html" %}
+
+    {% block head %}
+<!--     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+ -->
+    <script type="text/javascript" src="/static/jquery.js"></script>
+	<style type="text/css">
+		html{
+            width: 100%;
+        }
+        body{
+            width: 100%;
+        }
+        fieldset{
+            width: 100%;
+        }
+		h1, legend {
+			font-family:Arial, Helvetica, sans-serif;
+		}
+		label, input, select {
+			display:block;
+		}
+		input, select {
+			margin-bottom: 1em;
+		}
+		fieldset {
+			margin-bottom: 2em;
+		}
+		input[type="checkbox"] {
+			display:inline;
+		}
+		.range {
+			margin-bottom:1em;
+		}	
+		.card-type input, .card-type label {
+			display:inline-block;
+		}
+
+        .fl{
+            float:left;
+            width: 220px;
+            margin-bottom: 20px;
+            margin-left: 20px;
+            background: rgb(134, 197, 247);
+            padding:10px;
+            border-radius: 5px;
+            height: 54px;
+        }
+        .flb{
+            float:left;
+            width: 220px;
+            margin-right:40px;
+            margin-bottom: 20px;
+            background: rgb(134, 197, 247);
+            padding:10px;
+            border-radius: 5px;
+            height: 70px;
+        }
+        .fl label{
+            margin-bottom:10px;
+        }
+        .flb label{
+            margin-bottom:10px;
+        }
+        legend{
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .subt{
+            width: 300px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        #sub{
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 140px;
+            font-size: 18px;
+            margin: auto;
+        }
+
+        .tog{
+            float:left; 
+            width:55px;
+            margin-right: 10px;
+        }
+        fieldset{
+            width: 100%;
+        }
+        .ii{
+            width: 40px;
+            height: 17px;
+            display: inline-block;
+        }
+
+	</style>
+ 
+    {% endblock %}
+
+
+    {% block content %}
+   
+    	<!-- <h1>Balance {{ name }}</h1> -->
+        <div style="display:none" id="asis">{{asis}}</div>
+   		
+   		<form id="form2" onsubmit="cal_sub()" action="/balance_form_submit" method="post">
+          <fieldset> 
+          <input type="text" name="Username" value={{name}} style="display: none;">
+            <legend>BESS Test <span href="" id="bess_skip" style="background-color: rgb(245, 120, 81);padding-left: 10px;padding-right: 10px;border-radius: 5px;margin-left: 4px; cursor:pointer;" >skip</span></legend>
+            
+            <div id="bess_test_hover" style="width: 100%">
+                <div style="display:none"> 
+                    <!-- <label>Feet Together (Faults)</label> -->
+                    <!-- Feet Together = (Double Leg Stance) + (Double Leg Stance (Pad))  -->
+                    <input id="ft" name="ft" type="number" >
+                </div> 
+                <div class="subt"> 
+                    <div>Double Leg Stance (Number of Faults)</div>
+                </div>
+                <div>
+                    <div  class="fl"> 
+                        <label>Double Leg Stance (Faults)</label>
+                        <input id="dls" name="dls" type="number" step=0.01   value={{dict.dls}}>
+                    </div> 
+                    <div  class="fl"> 
+                        <label>Double Leg with Pad (Faults)</label>
+                        <input id="dlsp" name="dlsp" type="number"   value={{dict.dlsp}}>
+                    </div> 
+
+                <div style="clear:both;"></div>
+
+                <div style="display:none"> 
+                    <!-- <label>Left Foot (Faults)</label> -->
+                    <!-- Left Foot = (Single Leg Stance) + Tandem Stance) + (Single Leg Stance (Pad)) + (Tandem Stance (Pad))  -->
+                    <input id="lf" name="lf" type="number" >
+                </div> 
+                <div class="subt"> 
+                    <div>Left Leg Stance (Number of Faults)</div>
+                </div>
+                <div  class="fl"> 
+                    <label>Single Leg Stance (Faults)</label>
+                    <input id="lsls" name="lsls" type="number"   value={{dict.lsls}}>
+                </div> 
+                <div class="fl"> 
+                    <label>Single Leg with Pad (Faults)</label>
+                    <input id="lslsp" name="lslsp" type="number"   value={{dict.lslsp}}>
+                </div> 
+                <div  class="fl"> 
+                    <label>Tandem Stance (Faults)</label>
+                    <input id="lts" name="lts" type="number"   value={{dict.lts}}>
+                </div> 
+                <div class="fl"> 
+                    <label>Tandem with Pad (Faults)</label>
+                    <input id="ltsp" name="ltsp" type="number"   value={{dict.ltsp}}>
+                </div> 
+
+                <div style="clear:both;"></div>
+
+                <div style="display:none"> 
+                    <!-- <label>Right Foot (Faults)</label> -->
+                    <!-- Right Foot = (Single Leg Stance) + Tandem Stance) + (Single Leg Stance (Pad)) + (Tandem Stance (Pad))  -->
+                    <input id="rf" name="rf" type="number" >
+                </div> 
+                <div class="subt"> 
+                    <div>Right Leg Stance (Number of Faults)</div>
+                </div>
+                <div class="fl"> 
+                    <label>Single Leg Stance (Faults)</label>
+                    <input id="rsls" name="rsls" type="number"   value={{dict.rsls}}>
+                </div>
+                <div class="fl"> 
+                    <label>Single Leg with Pad (Faults)</label>
+                    <input id="rslsp" name="rslsp" type="number"   value={{dict.rslsp}}>
+                </div>
+                <div class="fl"> 
+                    <label>Tandem Stance (Faults)</label>
+                    <input id="rts" name="rts" type="number"   value={{dict.rts}}>
+                </div>
+                <div class="fl"> 
+                    <label>Tandem with Pad (Faults)</label>
+                    <input id="rtsp" name="rtsp" type="number"   value={{dict.rtsp}}>
+                </div>
+                <div style="display:none"> 
+                    <!-- <label>Total Faults (Faults)</label> -->
+                    <!-- Total Score = Feet Together (Faults) + Left Foot (Faults) + Right Foot (Faults)  -->
+                    <input id="tf" name="tf" type="number" >
+                </div> 
+            </div>
+          </fieldset>
+          
+
+          <fieldset> 
+            <legend>A-N Balance Test<span href="" id="an_skip" style="background-color: rgb(245, 120, 81);padding: 5px;padding-left: 10px;padding-right: 10px;border-radius: 5px;margin-left: 10px;margin-right: 4px; cursor:pointer;" >skip</span></legend>
+            
+            <div id="an_test_hover"> 
+            <div class="subt"> 
+                <div>Left Foot <!-- <span id="tg_btn1" onclick="abc()">a</span> --></div>
+            </div>
+
+            <div id="tg1">
+            <div class="fl"> 
+                <label>Knee Up</label>
+                <input id="lkup" name="lkup" type="number"   value={{dict.lkup}}>
+            </div>
+            <div class="fl"> 
+                <label>Bottom Block</label>
+                <input id="lbb" name="lbb" type="number"   value={{dict.lbb}}>
+            </div>  
+            <div class="fl"> 
+                <label>Knee 2 T</label>
+                <input id="lk2t" name="lk2t" type="number"   value={{dict.lk2t}}>
+            </div>
+            <div class="fl"> 
+                <label>Heel Tap</label>
+                <input id="lh" name="lh" type="number"   value={{dict.lh}}>
+            </div>  
+            <div class="fl"> 
+                <label>Reach Back</label>
+                <input id="lrb" name="lrb" type="number"   value={{dict.lrb}}>
+            </div>  
+            <div style="display:none"> 
+                <!-- <label>Left Foot Score</label> -->
+                <!-- Left Foot Score = (Bottom Block) + (Knee 2 T) + (Heel Tap) + (Reach Back)  -->
+                <input id="lfs" name="lfs" type="number" >
+            </div>  
+            <div style="display:none"> 
+                <!-- <label>Composite Score </label> -->
+                <!-- Composite Score = (Left Foot Score) / 16 -->
+                <input id="cs" name="cs" type="number" >
+            </div> 
+            
+            <div style="clear:both;"></div>
+            </div>
+            
+            <div class="subt"> 
+                <label>Right Foot</label>
+            </div>  
+            <div class="fl"> 
+                <label>Knee Up</label>
+                <input id="rkup" name="rkup" type="number"   value={{dict.rkup}}>
+            </div>
+            <div class="fl"> 
+                <label>Bottom Block</label>
+                <input id="rbb" name="rbb" type="number"  value={{dict.rbb}}>
+            </div>  
+            <div class="fl"> 
+                <label>Knee 2 T </label>
+                <input id="rk2t" name="rk2t" type="number"  value={{dict.rk2t}}>
+            </div>
+            <div class="fl"> 
+                <label>Heel Tap</label>
+                <input id="rh" name="rh" type="number"  value={{dict.rh}}>
+            </div>  
+            <div class="fl"> 
+                <label>Reach Back</label>
+                <input id="rrb" name="rrb" type="number"  value={{dict.rrb}}>
+            </div>  
+            <div style="display:none"> 
+                <!-- <label>Right Foot Score</label> -->
+                <!-- Right Foot Score = (Bottom Block) + (Knee 2 T) + (Heel Tap) + (Reach Back) -->
+                <input id="rfs" name="rfs" type="number" >
+            </div>  
+            <div style="display:none"> 
+                <!-- <label>Composite Score </label> -->
+                <!-- Composite Score = (Right Foot Score) / 16 -->
+                <input id="cs2" name="cs2" type="number" >
+            </div>  
+            </div>  
+          </fieldset>
+
+          <fieldset> 
+            <legend>Modified Y Balance Test<span href="" id="y_skip" style="background-color: rgb(245, 120, 81);padding: 5px;padding-left: 10px;padding-right: 10px;border-radius: 5px;margin-left: 10px;margin-right: 4px; cursor:pointer;" >skip</span></legend>
+            
+            <div id="y_test_hover">
+            <div class="subt"> 
+                <label>Left Foot</label>
+            </div>   
+            <div class="fl"> 
+                <label>Anterior Trial 1,2,3 (cm)</label>
+                <input class="ii" id="lat1" name="lat1" class="tog" type="number" step=0.01   value={{dict.lat1}}>
+                <input class="ii" id="lat2" name="lat2" class="tog" type="number" step=0.01   value={{dict.lat2}}>
+                <input class="ii" id="lat3" name="lat3" class="tog" type="number" step=0.01   value={{dict.lat3}}>
+            </div> 
+            <!-- 
+            <div class="fl"> 
+                <label>Anterior Trial 2 (cm)</label>
+                <input id="lat2" name="lat2" type="number" step=0.01   value={{dict.lat2}}>
+            </div> 
+            <div class="fl"> 
+                <label>Anterior Trial 3 (cm)</label>
+                <input id="lat3" name="lat3" type="number" step=0.01   value={{dict.lat3}}>
+            </div> 
+             -->
+             <div style="display:none"> 
+                <!-- <label>Anterior Absolute Score (cm)</label> -->
+                <!-- ((Anterior Trial I) + (Anterior Trial 2) + (Anterior Trial 3)) / 3  -->
+                 <input id="laas" name="laas" type="number" step=0.01  >
+            </div>
+            <div style="display:none"> 
+                <!-- <label>Anterior Relative (Normalized) Reach Distance (%)</label> -->
+                <!-- (Anterior Absolute Score) / (limb lengtn, ASIS) * 100  -->
+                 <input id="larrd" name="larrd" type="number" step=0.01  >
+            </div>
+            <div style="display:none"> 
+                <!-- <label>Anterior Composite Reach Distance (%)</label> -->
+                <!-- ((Anterior Trial 1) + (Anterior Trial 2) + (Anterior Trial 3)) / (3) * (limb length, ASIS) x 100  -->
+                 <input id="lacrd" name="lacrd" type="number" step=0.01 >
+            </div>
+            <div class="fl"> 
+                <label>Posterolateral Trial 1,2,3 (cm)</label>
+                <input class="ii" id="lpt1" class="tog" name="lpt1" type="number" step=0.01   value={{dict.lpt1}}>
+                <input class="ii" id="lpt2" class="tog" name="lpt2" type="number" step=0.01   value={{dict.lpt2}}>
+                <input class="ii" id="lpt3" class="tog" name="lpt3" type="number" step=0.01   value={{dict.lpt3}}>
+            </div> 
+            <!-- <div class="fl"> 
+                <label>Posterolateral Trial 2 (cm)</label>
+                <input id="lpt2" name="lpt2" type="number" step=0.01   value={{dict.lpt2}}>
+            </div> 
+            <div class="fl"> 
+                <label>Posterolateral Trial 3 (cm)</label>
+                <input id="lpt3" name="lpt3" type="number" step=0.01   value={{dict.lpt3}}>
+            </div> -->
+            <div style="display:none"> 
+                <!-- <label>Posterolateral Absolute Score (cm)</label> -->
+               <!-- ((Posterolateral Trial 1) + (Posterolateral Trial 2) + (Posterolateral Trial 3)) / 3  -->
+                <input id="lpas" name="lpas" type="number" step=0.01  >
+            </div>
+            <div style="display:none"> 
+                <!-- <label>Posterolateral Relative (Normalized) Reach distance (%)</label> -->
+                <!-- (Posterolateral Absolute Score) / (limb lengtn, ASIS) * 100  -->
+                <input id="lprrd" name="lprrd" type="number" step=0.01  >
+            </div>
+            <div style="display:none"> 
+                <!-- <label>Posterolateral Composite Reach distance (%)</label> -->
+                <!-- ((Posterolateral Trial 1) + (Posterolateral Trial 2) + (Posterolateral Trial 3)) / (3) * (limb length, ASIS) * 100 -->
+                <input id="lpcrd" name="lpcrd" type="number" step=0.01  >
+            </div> 
+            <div class="fl"> 
+                <label>Posteromedial Trial 1,2,3 (cm)</label>
+                <input class="ii" id="lpt21" class="tog" name="lpt21" type="number" step=0.01   value={{dict.lpt21}} >
+                <input class="ii" id="lpt22" class="tog" name="lpt22" type="number" step=0.01   value={{dict.lpt22}} >
+                <input class="ii" id="lpt23" class="tog" name="lpt23" type="number" step=0.01   value={{dict.lpt23}} >
+            </div> 
+            <!-- <div class="fl"> 
+                <label>Posteromedial Trial 2 (cm)</label>
+                <input id="lpt22" name="lpt22" type="number" step=0.01   value={{dict.lpt22}}>
+            </div> 
+            <div class="fl"> 
+                <label>Posteromedial Trial 3 (cm)</label>
+                <input id="lpt23" name="lpt23" type="number" step=0.01   value={{dict.lpt23}}>
+            </div> -->
+            <div style="display:none"> 
+                <!-- <label>Posteromedial Absolute Score (cm)</label> -->
+               <!-- ((Posteromedial Trial 1) + (Posteromedial Trial 2) + (Posteromedial Trial 3)) / 3  -->
+               <input id="lpas2" name="lpas2" type="number" step=0.01 >
+            </div>
+            <div style="display:none"> 
+                <!-- <label>Posteromedial Relative (Normalized) Reach distance (%)</label> -->
+                <!-- (Posteromedial Absolute Score) / (limb lengtn, ASIS) * 100  -->
+                <input id="lprrd2" name="lprrd2" type="number" step=0.01 >
+            </div>
+            <div style="display:none"> 
+                <!-- <label>Posteromedial Composite Reach distance (%)</label> -->
+                <!-- ((Posteromedial Trial 1) + (Posteromedial Trial 2) + (Posteromedial Trial 3)) / (3) * (limb length, ASIS) * 100 -->
+                <input id="lpcrd2" name="lpcrd2" type="number" step=0.01 >
+            </div> 
+            <div style="display:none"> 
+                <!-- <label>Composite Score (%)</label> -->
+                <!-- ((Anterior Composite Reach Distance) + (Posterolateral Composite Reach Distance) + (Posteromedial Composite Reach Distance)) / 3 -->
+                <input id="cs3" name="cs3" type="number" step=0.01  >
+            </div> 
+
+            <div style="clear:both;"></div>
+            <div class="subt"> 
+                <label>Right Foot</label>
+            </div>   
+            <div class="fl"> 
+                <label>Anterior Trial 1,2,3 (cm)</label>
+                <input class="ii" id="rat1" class="tog" name="rat1" type="number" step=0.01   value={{dict.rat1}} >
+                <input class="ii" id="rat2" class="tog" name="rat2" type="number" step=0.01   value={{dict.rat2}}>
+                <input class="ii" id="rat3" class="tog" name="rat3" type="number" step=0.01   value={{dict.rat3}}>
+            </div> 
+            <!-- <div class="fl"> 
+                <label>Anterior Trial 2 (cm)</label>
+                <input id="rat2" name="rat2" type="number" step=0.01   value={{dict.rat2}}>
+            </div> 
+            <div class="fl"> 
+                <label>Anterior Trial 3 (cm)</label>
+                <input id="rat3" name="rat3" type="number" step=0.01   value={{dict.rat3}}>
+            </div> --> 
+            <div style="display:none"> 
+                <!-- <label>Anterior Absolute Score (cm)</label> -->
+                <!-- ((Anterior Trial I) + (Anterior Trial 2) + (Anterior Trial 3)) / 3  -->
+                <input id="raas" name="raas" type="number" step=0.01 >
+            </div>
+            <div style="display:none"> 
+                <!-- <label>Anterior Relative (Normalized) Reach distance (%)</label> -->
+                <!-- (Anterior Absolute Score) / (limb lengtn, ASIS) * 100  -->
+                <input id="rarrd" name="rarrd" type="number" step=0.01 >
+            </div>
+            <div style="display:none"> 
+                <!-- <label>Anterior Composite Reach distance (%)</label> -->
+                <!-- ((Anterior Trial 1) + (Anterior Trial 2) + (Anterior Trial 3)) / (3) * (limb length, ASIS) x 100  -->
+                <input id="racrd" name="racrd" type="number" step=0.01 >
+            </div>
+            <div class="fl"> 
+                <label>Posterolateral Trial 1,2,3 (cm)</label>
+                <input class="ii" id="rpt1" class="tog" name="rpt1" type="number" step=0.01   value={{dict.rpt1}} >
+                <input class="ii" id="rpt2" class="tog" name="rpt2" type="number" step=0.01   value={{dict.rpt2}}>
+                <input class="ii" id="rpt3" name="rpt3" class="tog" type="number" step=0.01   value={{dict.rpt3}}>
+            </div> 
+            <!-- <div class="fl"> 
+                <label>Posterolateral Trial 2 (cm)</label>
+                <input id="rpt2" name="rpt2" type="number" step=0.01   value={{dict.rpt2}}>
+            </div> 
+            <div class="fl"> 
+                <label>Posterolateral Trial 3 (cm)</label>
+                <input id="rpt3" name="rpt3" type="number" step=0.01   value={{dict.rpt3}}>
+            </div> -->
+            <div style="display:none"> 
+                <!-- <label>Posterolateral Absolute Score (cm)</label> -->
+               <!-- ((Posterolateral Trial 1) + (Posterolateral Trial 2) + (Posterolateral Trial 3)) / 3  -->
+               <input class="ii" id="rpas" name="rpas" type="number" step=0.01 >
+            </div>
+            <div style="display:none"> 
+                <!-- <label>Posterolateral Relative (Normalized) Reach distance (%)</label> -->
+                <!-- (Posterolateral Absolute Score) / (limb lengtn, ASIS) * 100 -->
+                <input id="rprrd" name="rprrd" type="number" step=0.01 > 
+            </div>
+            <div style="display:none"> 
+                <!-- <label>Posterolateral Composite Reach distance (%)</label> -->
+                <!-- ((Posterolateral Trial 1) + (Posterolateral Trial 2) + (Posterolateral Trial 3)) / (3) * (limb length, ASIS) * 100 -->
+                <input id="rpcrd" name="rpcrd" type="number" step=0.01 >
+            </div> 
+            <div class="fl"> 
+                <label>Posteromedial Trial 1,2,3 (cm)</label>
+                <input class="ii" id="rpt21" class="tog" name="rpt21" type="number" step=0.01   value={{dict.rpt21}}>
+                <input class="ii" id="rpt22" class="tog" name="rpt22" type="number" step=0.01   value={{dict.rpt22}} >
+                <input class="ii" id="rpt23" class="tog" name="rpt23" type="number" step=0.01   value={{dict.rpt23}}>
+            </div> 
+           <!--  <div class="fl"> 
+                <label>Posteromedial Trial 2 (cm)</label>
+                <input id="rpt22" name="rpt22" type="number" step=0.01   value={{dict.rpt22}}>
+            </div> 
+            <div class="fl"> 
+                <label>Posteromedial Trial 3 (cm)</label>
+                <input id="rpt23" name="rpt23" type="number" step=0.01   value={{dict.rpt23}}>
+            </div> -->
+            <div style="display:none"> 
+                <!-- <label>Posteromedial Absolute Score (cm)</label> -->
+               <!-- ((Posteromedial Trial 1) + (Posteromedial Trial 2) + (Posteromedial Trial 3)) / 3  -->
+               <input id="rpas2" name="rpas2" type="number" step=0.01 >
+            </div>
+            <div style="display:none"> 
+                <!-- <label>Posteromedial Relative (Normalized) Reach distance (%)</label> -->
+                <!-- (Posteromedial Absolute Score) / (limb lengtn, ASIS) * 100  -->
+                <input  class="ii" id="rprrd2" name="rprrd2" type="number" step=0.01 >
+            </div>
+            <div style="display:none"> 
+                <!-- <label>Posteromedial Composite Reach distance (%)</label> -->
+                <!-- ((Posteromedial Trial 1) + (Posteromedial Trial 2) + (Posteromedial Trial 3)) / (3) * (limb length, ASIS) * 100 -->
+                <input  class="ii" id="rpcrd2" name="rpcrd2" type="number" step=0.01 >
+            </div> 
+            <div style="display:none"> 
+                <!-- <label>Composite Score (%)</label> -->
+                <!-- ((Anterior Composite Reach Distance) + (Posterolateral Composite Reach Distance) + (Posteromedial Composite Reach Distance)) / 3 -->
+                <input  class="ii" id="cs4" name="cs4" type="number" step=0.01 >
+            </div> 
+            </div>
+            
+          </fieldset>
+            <div>
+                <div style="width: 350px; margin: auto">
+                    <input type="submit" class="button button1" value="submit" onsubmit="cal_sub()">
+                    <button class="button button1" ><a href="/patient_list" style="color: #000000">Back to Patient List</a></button>
+                </div>
+            </div>
+        </form>
+
+
+    <script type="text/javascript">
+
+
+    $(document).ready(function(){
+      $("#bess_skip").click(function(){
+        $("#bess_test_hover").slideToggle("slow");
+        // alert("hide")
+      });
+      $("#an_skip").click(function(){
+        $("#an_test_hover").slideToggle("slow");
+        // alert("hide")
+      });
+      $("#y_skip").click(function(){
+        $("#y_test_hover").slideToggle("slow");
+        // alert("hide")
+      });
+    });
+
+      function cal_sub(){
+
+        // var asis = 100;
+        
+        var asis = parseFloat(document.getElementById("asis").innerHTML);
+        
+        var dls = parseFloat(document.getElementById("dls").value);
+        var dlsp = parseFloat(document.getElementById("dlsp").value);
+        var ft = dls + dlsp;
+        document.getElementById("ft").value = ft;
+
+        var lsls = parseFloat(document.getElementById("lsls").value);
+        var lts = parseFloat(document.getElementById("lts").value);
+        var lslsp = parseFloat(document.getElementById("lslsp").value);
+        var ltsp = parseFloat(document.getElementById("ltsp").value);
+        var lf = lsls + lts + lslsp + ltsp;
+        document.getElementById("lf").value = lf;
+
+        var rsls = parseFloat(document.getElementById("rsls").value);
+        var rts = parseFloat(document.getElementById("rts").value);
+        var rslsp = parseFloat(document.getElementById("rslsp").value);
+        var rtsp = parseFloat(document.getElementById("rtsp").value);
+        var rf = rsls + rts + rslsp + rtsp;
+        document.getElementById("rf").value = rf;
+
+        var tf = ft + lf + rf; 
+        document.getElementById("tf").value = tf;
+
+        var lbb = parseFloat(document.getElementById("lbb").value);
+        var lk2t = parseFloat(document.getElementById("lk2t").value);
+        var lh = parseFloat(document.getElementById("lh").value);
+        var lrb = parseFloat(document.getElementById("lrb").value);
+        var lkup = parseFloat(document.getElementById("lkup").value);
+        var lfs = lbb + lk2t + lh + lrb + lkup;
+        document.getElementById("lfs").value = lfs;
+        // var cs = lfs/16;
+        var cs = 100*lfs/15;
+        document.getElementById("cs").value = cs.toFixed(2);
+
+        var rbb = parseFloat(document.getElementById("rbb").value);
+        var rk2t = parseFloat(document.getElementById("rk2t").value);
+        var rh = parseFloat(document.getElementById("rh").value);
+        var rrb = parseFloat(document.getElementById("rrb").value);
+        var rkup = parseFloat(document.getElementById("rkup").value);
+        var rfs = rbb + rk2t + rh + rrb + rkup;
+        document.getElementById("rfs").value = rfs;
+        // var cs2 = rfs/16;
+        var cs2 = 100*rfs/15;
+        document.getElementById("cs2").value = cs2.toFixed(2);
+
+        var lat1 = parseFloat(document.getElementById("lat1").value);
+        var lat2 = parseFloat(document.getElementById("lat2").value);
+        var lat3 = parseFloat(document.getElementById("lat3").value);
+        var laas = ((lat1 + lat2 + lat3)/3).toFixed(2);
+        document.getElementById("laas").value = laas;
+        var larrd = 0;
+        if (asis>0){
+            larrd = laas*100/asis;
+        }
+        document.getElementById("larrd").value = larrd.toFixed(0);
+        var lacrd = laas*100*asis;
+        document.getElementById("lacrd").value = lacrd.toFixed(0);
+        
+        var lpt1 = parseFloat(document.getElementById("lpt1").value);
+        var lpt2 = parseFloat(document.getElementById("lpt2").value);
+        var lpt3 = parseFloat(document.getElementById("lpt3").value);
+        var lpas = ((lpt1 + lpt2 + lpt3)/3).toFixed(2);
+        document.getElementById("lpas").value = lpas;
+        var lprrd = 0;
+        if (asis>0){
+            lprrd = lpas*100/asis;
+        }
+        document.getElementById("lprrd").value = lprrd.toFixed(0);
+        var lpcrd = lpas*100*asis;
+        document.getElementById("lpcrd").value = lpcrd.toFixed(0);
+        
+        var lpt21 = parseFloat(document.getElementById("lpt21").value);
+        var lpt22 = parseFloat(document.getElementById("lpt22").value);
+        var lpt23 = parseFloat(document.getElementById("lpt23").value);
+        var lpas2 = ((lpt21 + lpt22 + lpt23)/3).toFixed(2);
+        document.getElementById("lpas2").value = lpas2;
+        if (asis>0){
+            lprrd2 = lpas2*100/asis;
+        }
+        document.getElementById("lprrd2").value = lprrd2.toFixed(0);
+        var lpcrd2 = lpas2*100*asis;
+        document.getElementById("lpcrd2").value = lpcrd2.toFixed(0);
+        
+        var cs3 = ((larrd+lprrd+lprrd2)/3).toFixed(2)
+        document.getElementById("cs3").value = cs3;
+
+        var rat1 = parseFloat(document.getElementById("rat1").value);
+        var rat2 = parseFloat(document.getElementById("rat2").value);
+        var rat3 = parseFloat(document.getElementById("rat3").value);
+        var raas = ((rat1 + rat2 + rat3)/3).toFixed(2);
+        document.getElementById("raas").value = raas;
+        if (asis>0){
+            rarrd = raas*100/asis;
+        }
+        document.getElementById("rarrd").value = rarrd.toFixed(0);
+        var racrd = raas*100*asis;
+        document.getElementById("racrd").value = racrd.toFixed(0);
+        
+        var rpt1 = parseFloat(document.getElementById("rpt1").value);
+        var rpt2 = parseFloat(document.getElementById("rpt2").value);
+        var rpt3 = parseFloat(document.getElementById("rpt3").value);
+        var rpas = ((rpt1 + rpt2 + rpt3)/3).toFixed(2);
+        document.getElementById("rpas").value = rpas;
+        var rprrd = 0;
+        if (asis>0){
+            rprrd = rpas*100/asis;
+        }
+        document.getElementById("rprrd").value = rprrd.toFixed(0);
+        var rpcrd = rpas*100*asis;
+        document.getElementById("rpcrd").value = rpcrd.toFixed(0);
+        
+        var rpt21 = parseFloat(document.getElementById("rpt21").value);
+        var rpt22 = parseFloat(document.getElementById("rpt22").value);
+        var rpt23 = parseFloat(document.getElementById("rpt23").value);
+        var rpas2 = ((rpt21 + rpt22 + rpt23)/3).toFixed(2);
+        document.getElementById("rpas2").value = rpas2;
+        var rprrd2 = 0;
+        if (asis>0){
+            rprrd2 = rpas2*100/asis;
+        }
+        document.getElementById("rprrd2").value = rprrd2.toFixed(0);
+        var rpcrd2 = rpas2*100*asis;
+        document.getElementById("rpcrd2").value = rpcrd2.toFixed(0);
+        
+        var cs4 = ((rarrd+rprrd+rprrd2)/3).toFixed(2)
+        document.getElementById("cs4").value = cs4;
+        
+        return false;
+    }
+
+    </script>
+    {% endblock %}

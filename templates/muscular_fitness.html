@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title></title>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+
+    <style>
+        html body{
+            background-color: #F5F5F5;
+        }
+        #sub_but {
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .sub_but {
+            width: 150px;
+        }
+
+        .fl label {
+            width: 150px;
+        }
+
+        .fl input {
+            width: 100px;
+        }
+
+        .top-m {
+            width: 100%;
+            height: 20px;
+        }
+    </style>
+</head>
+<div class="container">
+    <div class="top-m">
+
+    </div>
+    <!--提交form-->
+    <div style="display:none" id="weight">{{weight}}</div>
+
+    <form id="form2" onsubmit="cal_sub()" action="/muscular_fitness_form_submit" method="post">
+        <!--数据传输-->
+        <div>
+            <input type="text" name="Username" style="display: none;" value={{name}}>
+        </div>
+
+        <!--check button-->
+        <div class="row">
+            <div class="m-auto">
+                <div >Choose Unit</div>
+                <input id="lb" name="lb" type="radio" value='lb' checked onclick="change_lb()">
+                <label for="lb">lb</label>
+                <input id="kg" name="kg" type="radio" value='kg' onclick="change_kg()">
+                <label for="kg">kg</label>
+            </div>
+        </div>
+
+        <!--check button end-->
+        <div id="accordion">
+            <!--第一组折叠-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                        <h4>Muscular Strength Push</h4>
+                    </a>
+                </div>
+                <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="fl">
+                            <label>1RM Push (<span class="unit">lb</span>):</label>
+                            <input id="rmp" name="rmp" type="number" step="0.01"   value={{dict.rmp}} min="0">
+                        </div>
+                        <!--数据传输-->
+                        <div style="display:none">
+                            <!-- <label>Bench Press Weight Ratio (%)</label> -->
+                            <!-- weight pushed in lb / body weight in lb -->
+                            <input id="bpwr" name="bpwr" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--第二组折叠-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                        <h4>Muscular Strength Pull</h4>
+                    </a>
+                </div>
+                <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="fl">
+                            <label>1RM Pull (<span class="unit">lb</span>):</label>
+                            <input id="rmp2" name="rmp2" type="number" step="0.01"   value={{dict.rmp2}} min="0">
+                        </div>
+                        <!--数据传输-->
+                        <div style="display:none">
+                            <!-- <label>Pulldown Weight Ratio (%)</label> -->
+                            <!-- weight pulled in lb / body weight in lb -->
+                            <input id="pwr" name="pwr" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--第三组折叠-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                        <h4>Muscular Strength Legs</h4>
+                    </a>
+                </div>
+                <div id="collapseThree" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="card-type">
+                            <div class="fl">
+                                <label>1RM Leg (<span class="unit">lb</span>):</label>
+                                <input id="rml" name="rml" type="number" step="0.01"  value={{dict.rml}}min="0">
+                            </div>
+                            <!--数据传输-->
+                            <div style="display:none">
+                                <!-- <label>Leg Press Weight Ratio (%)</label> -->
+                                <!-- weight pushed in lb / body weight in lb -->
+                                <input id="lpwr" name="lpwr" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--第四组折叠-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapse4">
+                        <h4>Grip Strength</h4>
+                    </a>
+                </div>
+                <div id="collapse4" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="card-type">
+                            <div class="fl">
+                                <label>Right Hand Dynamometer (<span>kg</span>):</label>
+                                <input id="rhd" name="rhd" type="number" step="0.01"  value={{dict.rhd}} min="0">
+                            </div>
+                            <div class="fl">
+                                <label>Left Hand Dynamometer (<span>kg</span>):</label>
+                                <input id="lhd" name="lhd" type="number" step="0.01"  value={{dict.lhd}} min="0">
+                            </div>
+                            <!--数据传输-->
+                            <div style="display:none">
+                                <!-- <label>Combined Dynamometer (kg/lbs)</label> -->
+                                <!-- (Right Hand Dynamometer) + (Left Hand Dynamometer) -->
+                                <input id="cd" name="cd" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--第五组折叠-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapse5">
+                        <h4>Muscular Endurance</h4>
+                    </a>
+                </div>
+                <div id="collapse5" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="card-type">
+                            {% if mf=="male" %}
+                            <div class="fl">
+                                <label>Push-Up (reps):</label>
+                                <input id="pu" name="pu" type="number" step="0.01"   value={{dict.pu}} min="0">
+                            </div>
+                            {% elif mf=="female" %}
+                            <div class="fl">
+                                <label>Knee Push-Up (reps):</label>
+                                <input id="kpu" name="kpu" type="number" step="0.01"   value={{dict.kpu}} min="0">
+                            </div>
+                            {% endif %}
+                            <div class="fl" id='pull_skip'>
+                                <label>Pull-Up (reps):</label>
+                                <input id="pu2" name="pu2" type="number" step="0.01"   value={{dict.pu2}} min="0">
+                            </div>
+                            <div class="fl" id='squ_skip'>
+                                <label>Squat (reps):</label>
+                                <input id="squ" name="squ" type="number" step="0.01"   value={{dict.squ}} min="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--        提交按钮-->
+        <div class="row">
+            <div class="d-flex justify-content-center" id="sub_but">
+                <div>
+                    <button class="btn btn-primary sub_but" type="submit" onsubmit="cal_sub()"> submit</button>
+                    <a href="/patient_list" style="color: #ffffff"><button class="btn btn-danger sub_but" type="button">Back</button></a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<body>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+
+        $("#pu2_btn").click(function(){
+            // $("#pull_skip").slideToggle("slow", { direction: "left" });
+            $("#pull_skip").animate({'width': 'toggle'});
+        });
+        $("#squ_btn").click(function(){
+            // $("#squ_skip").slideToggle("slow");
+            $("#squ_skip").animate({'width': 'toggle'});
+        });
+
+    });
+
+    var lb_kg = "lb";
+
+    function change_lb(){
+        if (lb_kg=="lb"){
+            return;
+        }
+        // var ids = ["rmp", "rmp2", "rml", "rhd", "lhd"];
+        var ids = ["rmp", "rmp2", "rml"];
+        lb_kg = "lb";
+        document.getElementById("kg").checked=false;
+        document.getElementById("lb").checked=true;
+        var units = document.getElementsByClassName("unit");
+        for (var i=0; i<units.length; i++){
+            units[i].innerHTML = "lb";
+            var kg_val = parseFloat(document.getElementById(ids[i]).value);
+            // alert(inch_val)
+            var lb_val = kg_val*2.205;
+            document.getElementById(ids[i]).value = lb_val.toFixed(2);
+        }
+    }
+
+
+    function change_kg(){
+        if (lb_kg=="kg"){
+            return;
+        }
+        // var ids = ["rmp", "rmp2", "rml", "rhd", "lhd"];
+        var ids = ["rmp", "rmp2", "rml"];
+        lb_kg = "kg";
+        document.getElementById("lb").checked=false;
+        document.getElementById("kg").checked=true;
+        var units = document.getElementsByClassName("unit");
+        for (var i=0; i<units.length; i++){
+            units[i].innerHTML = "kg";
+            var lb_val = parseFloat(document.getElementById(ids[i]).value);
+            // alert(inch_val)
+            var kg_val = lb_val/2.205;
+            document.getElementById(ids[i]).value = kg_val.toFixed(2);
+        }
+    }
+
+    function cal_sub(){
+        // alert("abc")
+        // var weight = 160;
+
+        // transfer to inch if needed
+        if (lb_kg=="kg"){
+            // var ids = ["rmp", "rmp2", "rml", "rhd", "lhd"];
+            var ids = ["rmp", "rmp2", "rml"];
+            var units = document.getElementsByClassName("unit");
+            for (var i=0; i<units.length; i++){
+                var kg_val = parseFloat(document.getElementById(ids[i]).value);
+                // alert(inch_val)
+                var lb_val = kg_val*2.205;
+                // alert(lb_val)
+                document.getElementById(ids[i]).value = lb_val.toFixed(2);
+            }
+        }
+
+        var weight = parseFloat(document.getElementById("weight").innerHTML);
+
+        var rmp = parseFloat(document.getElementById("rmp").value);
+        var rmp2 = parseFloat(document.getElementById("rmp2").value);
+        var rml = parseFloat(document.getElementById("rml").value);
+
+        if (weight>0){
+            document.getElementById("bpwr").value = (rmp*1.0/weight).toFixed(2);
+            document.getElementById("pwr").value = (rmp2*1.0/weight).toFixed(2);
+            document.getElementById("lpwr").value = (rml*1.0/weight).toFixed(2);
+        }else{
+            document.getElementById("bpwr").value = 0;
+            document.getElementById("pwr").value = 0;
+            document.getElementById("lpwr").value = 0;
+        }
+
+        var lhd = parseFloat(document.getElementById("lhd").value);
+        var rhd = parseFloat(document.getElementById("rhd").value);
+        document.getElementById("cd").value = lhd + rhd;
+
+
+        return false;
+    }
+</script>
+</body>
+</html>

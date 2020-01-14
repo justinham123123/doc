@@ -1,0 +1,548 @@
+{% extends "nav2.html" %}
+
+    {% block head %}
+        <script type="text/javascript" src="/static/polar.js"></script>
+        <link rel="stylesheet" type="text/css" href="/static/style/result_mf.css">
+        
+ <!--
+        <script type="text/javascript" src="/static/jspdf/jspdf.js"></script>
+        <script type="text/javascript" src="/static/jspdf/plugins/from_html.js"></script>
+        <script type="text/javascript" src="/static/jspdf/plugins/split_text_to_size.js"></script> 
+        <script type="text/javascript" src="/static/jspdf/plugins/standard_fonts_metrics.js"></script>
+-->
+        <!-- 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script> -->
+        <!-- <link rel="stylesheet" type="text/css" media="screen" href="/css/print_version.css"> -->
+    {% endblock %}
+
+    {% block content %}
+    <div id="w_page">
+
+        <div id="title1">Muscular Fitness Results</div>
+<!--         <a href="/print" target= "_blank">Save as PDF</a> -->
+        <!-- <button onclick="generatePDF4()">save as pdf</button> -->
+    <!-- <div style="width:100%;padding-bottom: 40px;"> -->
+    <!-- <div style="width:100%;background:rgb(250, 239, 193);padding-bottom: 40px;"> -->
+        <div id="left_column">
+            <div>
+                <h1>OVERALL</h1>
+                <table>
+                    <tr><th>KEY</th></tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon/mf_res_ave_ms.svg">Muscular Strength: <span id='ms_s'></span>/10</td>   
+                    </tr>
+                    <tr>
+                        <td><img class="icon"  src="/static/icon/mf_res_ave_grip.svg">Grip: <span id='g_s'>{{score[5]}}</span>/10</td>   
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon/mf_res_ave_me.svg">Muscular Endurance: <span id='me_s'>{{score[6]}}</span>/10</td>   
+                    </tr>
+                   
+                </table>
+
+                <div class="gra">
+                    <div id="per_ms">
+                        <img id="icon_ms" src="/static/icon/mf_res_ave_ms.svg">
+                        <span id='ms_s2'></span>%
+                    </div>
+                    <div id="per_grip">
+                        <img id="icon_grip" src="/static/icon/mf_res_ave_grip.svg">
+                        <span id='g_s2'>{{score[5]*10}}</span>%
+                    </div>
+                    <div id="per_me">
+                        <img id="icon_me" src="/static/icon/mf_res_ave_me.svg">
+                        <span id='me_s2'></span>%
+                    </div>
+                    <div class="can">
+                        <canvas id="myChart4"></canvas>   
+                    </div>     
+                    <div class="cl_line"></div>
+                </div>
+            </div>
+
+
+            <div>
+                <h1>MUSCULAR STRENGTH</h1>
+                <table>
+                    <tr>
+                        <th>KEY</th>
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon/mf_res_ms_pull.svg">Pull: <span id='pull_s'>{{score[0]}}</span>/10</td>
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon/mf_res_ms_push.svg">Push: <span id='push_s'>{{score[1]}}</span>/10</td>   
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon/mf_res_ms_legs.svg">Leg: <span id='leg_s'>{{score[2]}}</span>/10</td>   
+                    </tr>
+                </table>
+
+                <div class="cl_line"></div>
+                
+                <div class="gra">
+                     <div id="per_pull">
+                        <img id="icon_pull" src="/static/icon/mf_res_ms_pull.svg">
+                        <span id='b_l'>{{score[0]*10}}</span>%
+                    </div>
+                    <div id="per_push">
+                        <img id="icon_push" src="/static/icon/mf_res_ms_push.svg">
+                        <span id='b_l'>{{score[1]*10}}</span>%
+                    </div>
+                    <div id="per_leg">
+                        <img id="icon_leg" src="/static/icon/mf_res_ms_legs.svg">
+                        <span id='b_l'>{{score[2]*10}}</span>%
+                    </div>
+                    <div class="can">
+                        <canvas id="myChart1"></canvas>  
+                    </div>      
+                </div>
+                <div class="cl_line"></div>
+                
+
+                <div>
+                    <table>
+                        <tr>
+                            <th><img class="icon" src="/static/icon/mf_push.svg">PUSH</th>
+                        </tr>
+                        <tr>
+                            <td>1 Rep Max Chest Press: <span id="rmp">{{dict.rmp}}</span> lbs (<span id="rmp_kg">x</span> kg)</td>
+                        </tr>
+                    </table>           
+                </div>
+
+                <div>
+                    <table>
+                        <tr>
+                            <th><img class="icon" src="/static/icon/mf_pull.svg">PULL</th>
+                        </tr>
+                        <tr>
+                            <td>1 Rep Max Pulldown: <span id="rmp2">{{dict.rmp2}}</span> lbs (<span id="rmp2_kg">x</span> kg)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div>
+                    <table>
+                        <tr>
+                            <th><img class="icon" src="/static/icon/mf_legs.svg">LEGS</th>
+                        </tr>
+                        <tr>
+                            <td>1 Rep Max Leg Press: <span id="rml">{{dict.rml}}</span> lbs (<span id="rml_kg">x</span> kg)</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="cl_line"></div>
+                    
+            </div>
+
+        </div>  <!-- left column end -->
+
+        <div id="right_column">
+
+            <div id="mst" style="display:none;">{{score[7]}}</div>
+            <div>
+
+                <h1>MUSCULAR STRENGTH - GRIP</h1>
+                <table>
+                    <tr>
+                        <th>KEY</th>
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon/mf_res_grip_l.svg">Grip (Left): <span id='gl_s'>{{score[3]}}</span>/10</td>   
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon/mf_res_grip_r.svg">Grip (Right): <span id='gr_s'>{{score[4]}}</span>/10</td>   
+                    </tr>
+                </table>
+
+                <div class="gra">
+                    <div id="per_l1">Left</div>
+                    <div id="per_r1">Right</div>
+                    <div id="per_l2">
+                        <img id="icon_l" src="/static/icon/mf_res_grip_r.svg">
+                        <span id='b_l'>{{score[3]*10}}</span>%
+                    </div>
+                    <div id="per_r2">
+                        <img id="icon_r" src="/static/icon/mf_res_grip_r.svg">
+                        <span id='b_l'>{{score[4]*10}}</span>%
+                    </div>
+                    <div class="can">
+                        <canvas id="myChart2"></canvas>        
+                    </div>
+                </div>
+                <div class="cl_line"></div>
+                
+                <table>
+                    <tr>
+                        <th><img class="icon" src="/static/icon/mf_grip.svg">GRIP</th>
+                    </tr>
+                    <tr>
+                        <td>Left Hand Dynamometer: <span id="lhd">{{dict.lhd}}</span> kg</td>
+                    </tr>
+                    <tr>
+                        <td>Right Hand Dynamometer: <span id="rhd">{{dict.rhd}}</span> kg</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div>
+                <h1>MUSCULAR ENDURANCE</h1>
+                <table>
+                    <tr>
+                        <th>KEY</th>
+                    </tr>
+                    <tr>
+                        <td><img class="icon" src="/static/icon/mf_res_ave_me.svg">Endurance: <span id='end_s'>{{score[6]}}</span>/10</td>   
+                    </tr>
+                </table>
+
+                <div class="gra" style="margin-top:70px;">
+                    <div id="per_me2">
+                        <img id="icon_me2" src="/static/icon/mf_res_ave_me.svg">
+                        <span id='b_l'>{{score[6]*10}}</span>%
+                    </div>
+                    <div class="can">
+                        <canvas id="myChart3"></canvas>  
+                    </div>      
+                </div>
+                <div class="cl_line"></div>
+            
+                
+                <table>
+                    <tr>
+                        <th><img class="icon" src="/static/icon/mf_me.svg">MUSCULAR ENDURANCE</th>
+                    </tr>
+                    <tr>
+                        <td>Push-up/Knee Push-Up: <span id="pu">{{dict.pu}}</span>/<span id="kpu">{{dict.kpu}}</span> reps</td>
+                    </tr>
+                    <tr>
+                        <td>Squat: <span id="squ">{{dict.squ}}</span> reps</td>
+                    </tr>
+                    <tr>
+                        <td>Pull-Up: <span id="pu2">{{dict.pu2}}</span> reps</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="cl_line"></div>
+        </div>
+
+        
+
+        <script type="text/javascript">
+
+
+        function generatePDF(){
+            // Choose the element that our invoice is rendered in.
+            // const element = document.getElementById("left_column");
+            const element = document.getElementById("w_page");
+            // Choose the element and save the PDF for our user.
+            html2pdf().from(element).save();
+        }
+
+        function generatePDF2(){
+            var doc = new jsPDF()
+            doc.fromHTML(
+                // $("#left_column").get(0), 
+                document.getElementById('#pull_s'),
+                10, 
+                10, 
+                {'width': 180}
+            );
+            // doc.fromHTML($("#left_column"))
+            // doc.save()
+            // doc.autoPrint();
+            doc.output("dataurlnewwindow");
+        }
+
+
+        function generatePDF3(){
+              var pdf = new jsPDF('p', 'pt', 'a4');
+              pdf.setFontSize(18);
+              pdf.fromHTML(document.getElementById('left_column'), 
+                10, // x coord
+                10,
+                {
+                  // y coord
+                  width: 400 // max width of content on PDF
+                },function(dispose) {
+                  headerFooterFormatting(pdf)
+                }, 
+                margins);
+                
+              var iframe = document.createElement('iframe');
+              iframe.setAttribute('style','position:absolute;right:0; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+              document.body.appendChild(iframe);
+              
+              iframe.src = pdf.output('datauristring');
+
+        };
+
+        // function generatePDF4(){
+        //     html2canvas(document.querySelector("#left_column")).then(canvas => {
+        //         document.body.appendChild(canvas)
+        //     });
+        // }
+
+        
+
+
+        function to_kg(){
+            var rmp = parseFloat(document.getElementById("rmp").innerHTML);
+            var rmp_kg = rmp/2.2;
+            document.getElementById("rmp_kg").innerHTML = rmp_kg.toFixed(2);
+
+            var rmp2 = parseFloat(document.getElementById("rmp2").innerHTML);
+            var rmp2_kg = rmp2/2.2;
+            document.getElementById("rmp2_kg").innerHTML = rmp2_kg.toFixed(2);
+
+            var rml = parseFloat(document.getElementById("rml").innerHTML);
+            var rml_kg = rml/2.2;
+            document.getElementById("rml_kg").innerHTML = rml_kg.toFixed(2);
+
+            var lhd = parseFloat(document.getElementById("lhd").innerHTML);
+            // var lhd_kg = lhd/2.2;
+            // document.getElementById("lhd_kg").innerHTML = lhd_kg.toFixed(2);
+
+            var rhd = parseFloat(document.getElementById("rhd").innerHTML);
+            // var rhd_kg = rhd/2.2;
+            // document.getElementById("rhd_kg").innerHTML = rhd_kg.toFixed(2);
+
+            var pu = parseFloat(document.getElementById("pu").innerHTML);
+            // var pu_kg = pu/2.2;
+            // document.getElementById("pu_kg").innerHTML = pu_kg.toFixed(2);
+
+            var pu2 = parseFloat(document.getElementById("pu2").innerHTML);
+            // var pu2_kg = pu2/2.2;
+            // document.getElementById("pu2_kg").innerHTML = pu2_kg.toFixed(2);
+        
+            var squ = parseFloat(document.getElementById("squ").innerHTML);
+            // var squ_kg = squ/2.2;
+            // document.getElementById("squ_kg").innerHTML = squ_kg.toFixed(2);
+        }
+
+        function bal1(){
+            var push = parseFloat(document.getElementById("push_s").innerHTML);
+            var pull = parseFloat(document.getElementById("pull_s").innerHTML);
+            var leg = parseFloat(document.getElementById("leg_s").innerHTML);
+            
+            var ctx = document.getElementById('myChart1').getContext('2d');
+            
+            // // fake value test
+            // push = 5
+            // pull = 4
+            // leg = 3
+
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'polarArea',
+                
+                data: {
+                    labels: ['PULL','PUSH', 'LEGS'],
+
+                    datasets: [{
+                        label: 'AVERAGE',
+                        // borderColor: 'rgb(255, 99, 132)',
+                        data: [pull, push, leg],
+                        backgroundColor: [
+                          "rgba(255, 200, 50, 0.5)",
+                          "rgba(200, 180, 0, 0.5)",
+                          "rgba(150, 50, 0, 0.5)"
+                        ]
+                    }]
+                },
+
+                options: {
+                    startAngle: Math.PI*7.0/6,
+                    legend: {
+                        display: false
+                    },
+                    scale: {
+                        ticks: {
+                            suggestedMin: 10,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+        }
+
+        function bal2(){
+            var l2 = parseFloat(document.getElementById("gl_s").innerHTML);
+            var r2 = parseFloat(document.getElementById("gr_s").innerHTML);      
+
+            var ctx = document.getElementById('myChart2').getContext('2d');
+
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'polarArea',
+                
+                data: {
+                    labels: ['LEFT', 'RIGHT'],
+
+                    datasets: [{
+                        label: 'AVERAGE',
+                        // borderColor: 'rgb(255, 99, 132)',
+                        data: [l2, r2],
+                        backgroundColor: [
+                          "rgba(255, 200, 50, 0.5)",
+                          "rgba(200, 180, 0, 0.5)"
+                        ]
+                    }]
+                },
+
+                options: {
+                    startAngle: 0.5*Math.PI,
+                    legend: {
+                        display: false
+                    },
+                    scale: {
+                        ticks: {
+                            suggestedMin: 10,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+        }
+
+        function bal3(){
+            var end = parseFloat(document.getElementById("end_s").innerHTML);      
+
+            var ctx = document.getElementById('myChart3').getContext('2d');
+
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'polarArea',
+                
+                data: {
+                    labels: ['Endurance'],
+
+                    datasets: [{
+                        label: 'AVERAGE',
+                        // borderColor: 'rgb(255, 99, 132)',
+                        data: [end],
+                        backgroundColor: [
+                          "rgba(255, 200, 50, 0.5)"
+                        ]
+                    }]
+                },
+
+                options: {
+                    legend: {
+                        display: false
+                    },
+                    scale: {
+                        ticks: {
+                            suggestedMin: 10,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+        }
+
+        function bal4(){
+            // var push = parseFloat(document.getElementById("push_s").innerHTML);
+            // var pull = parseFloat(document.getElementById("pull_s").innerHTML);
+            // var leg = parseFloat(document.getElementById("leg_s").innerHTML);
+            // var count = 0;
+            // var tot = 0;
+            // if (push>0){
+            //     count += 1;
+            //     tot += push;
+            // }
+            // if (pull>0){
+            //     count += 1;
+            //     tot += pull;
+            // }
+            // if (leg>0){
+            //     count += 1;
+            //     tot += leg;
+            // }
+            // var ms = 0;
+            // if (count>0){
+            //     ms = (tot/count).toFixed(1);    
+            // }
+            
+            var ms = parseFloat(document.getElementById("mst").innerHTML);
+            // var ms = ((push+pull+leg)/3).toFixed(2);
+            document.getElementById("ms_s").innerHTML = ms;
+            document.getElementById("ms_s2").innerHTML = ms*10;
+
+            // var l2 = parseFloat(document.getElementById("gl_s").innerHTML);
+            // var r2 = parseFloat(document.getElementById("gr_s").innerHTML); 
+            // var count = 0;
+            // var tot = 0;
+            // if (l2>0){
+            //     count += 1;
+            //     tot += l2;
+            // }
+            // if (r2>0){
+            //     count += 1;
+            //     tot += r2;
+            // }
+            // var grip = 0;
+            // if (count>0){
+            //     grip = (tot/count).toFixed(1);
+            // }
+            // // var grip = ((l2+r2)/2).toFixed(2);
+            // document.getElementById("g_s").innerHTML = grip;
+            // document.getElementById("g_s2").innerHTML = grip;
+
+            var grip = parseFloat(document.getElementById("g_s").innerHTML);
+
+
+
+            var end = parseFloat(document.getElementById("end_s").innerHTML);      
+            document.getElementById("me_s").innerHTML = (end).toFixed(1);
+            document.getElementById("me_s2").innerHTML = (end*10).toFixed(1); 
+
+            var ctx = document.getElementById('myChart4').getContext('2d');
+
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'polarArea',
+                
+                data: {
+                    labels: ['MUSCULAR STRENGTH', 'GRIP', 'MUSCULAR ENDURANCE'],
+
+                    datasets: [{
+                        label: 'AVERAGE',
+                        // borderColor: 'rgb(255, 99, 132)',
+                        data: [ms, grip, end],
+                        backgroundColor: [
+                          "rgba(255, 200, 50, 0.5)",
+                          "rgba(200, 180, 0, 0.5)",
+                          "rgba(150, 50, 0, 0.5)"
+                        ]
+                    }]
+                },
+
+                options: {
+                    startAngle: 8.0*Math.PI/6,
+                    legend: {
+                        display: false
+                    },
+                    scale: {
+                        ticks: {
+                            suggestedMin: 10,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+        }
+
+        to_kg();
+        bal1();
+        bal2();
+        bal3();
+        bal4();
+        
+
+        </script>
+    </div>
+
+    {% endblock %}

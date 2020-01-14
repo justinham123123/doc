@@ -1,0 +1,378 @@
+{% extends "nav.html" %}
+
+    {% block head %}
+    <script type="text/javascript" src="/static/jquery.js"></script>
+    
+	<style type="text/css">
+        html{
+            width: 100%;
+        }
+        body{
+            width: 100%;
+        }
+        form{
+            width: 100%;
+        }
+        fieldset{
+            width: 320px;
+        }
+		h1, legend {
+			font-family:Arial, Helvetica, sans-serif;
+		}
+		label, input, select {
+			display:block;
+		}
+		input, select {
+			margin-bottom: 1em;
+		}
+		fieldset {
+			margin-bottom: 2em;
+
+		}
+		fieldset fieldset {
+			margin-top: 1em;
+			margin-bottom: 1em;
+		}
+		input[type="checkbox"] {
+			display:inline;
+		}
+		.range {
+			margin-bottom:1em;
+		}	
+		.card-type input, .card-type label {
+			display:inline-block;
+		}
+        .fl{
+            float:left;
+            width: 240px;
+            margin-left:30px;
+            margin-bottom: 20px;
+            background: rgb(134, 197, 247);
+            padding:10px;
+            border-radius: 5px;
+            height: 54px;
+        }
+        
+        .fl label{
+            margin-bottom:10px;
+        }
+       
+        legend{
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        #sub{
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 140px;
+            font-size: 18px;
+            margin: auto;
+        }
+	</style>
+    {% endblock %}
+
+
+    {% block content %}
+    	<!-- <h1>Range of Motion {{ name }}</h1> -->
+   		
+   		<form id="form2" onsubmit="cal_sub()" action="/range_of_motion_form_submit" method="post">
+        <input type="text" name="Username" value={{name}} style="display: none;">
+          <fieldset> 
+            <legend>Lumbar<span href="" id="lumbar_skip" style="background-color: rgb(245, 120, 81);padding: 5px;padding-left: 10px;padding-right: 10px;border-radius: 5px;margin-left: 10px;margin-right: 4px; cursor:pointer;" >skip</span></legend> 
+            <div id="lumbar_test_hover">
+                <div class="fl"> 
+                    <label>Flexion:</label>
+                    <input id="fle" name="fle" type="number" step=0.5  value={{dict.fle}}>
+                </div> 
+                <div class="fl"> 
+                    <label>Extension:</label>
+                    <input id="ext" name="ext" type="number" step=0.5 value={{dict.ext}}>
+                </div> 
+            </div>
+          </fieldset>
+
+          <fieldset> 
+            <legend>Adductor<span href="" id="a_skip" style="background-color: rgb(245, 120, 81);padding: 5px;padding-left: 10px;padding-right: 10px;border-radius: 5px;margin-left: 10px;margin-right: 4px; cursor:pointer;" >skip</span></legend> 
+            <div id="a_test_hover">
+                <div class="fl"> 
+                    <label>Hinge:</label>
+                    <input id="hin" name="hin" type="number"  step=0.5  value={{dict.hin}}>
+                </div>
+            </div>
+          </fieldset>
+
+          <fieldset> 
+            <legend>Shoulder<span href="" id="s_skip" style="background-color: rgb(245, 120, 81);padding: 5px;padding-left: 10px;padding-right: 10px;border-radius: 5px;margin-left: 10px;margin-right: 4px; cursor:pointer;" >skip</span></legend> 
+            <div id="s_test_hover">
+                <div class="fl"> 
+                    <label>Flexion - R:</label>
+                    <input id="fler" name="fler" type="number"  step=0.5  value={{dict.fler}}>
+                </div>
+                <div class="fl"> 
+                    <label>Flexion - L:</label>
+                    <input id="flel" name="flel" type="number"  step=0.5  value={{dict.flel}}>
+                </div>
+                <div class="fl"> 
+                    <label>Extension - R:</label>
+                    <input id="extr" name="extr" type="number"  step=0.5  value={{dict.extr}}>
+                </div>
+                <div class="fl"> 
+                    <label>Extension - L:</label>
+                    <input id="extl" name="extl" type="number"  step=0.5  value={{dict.extl}}>
+                </div>
+                <div class="fl"> 
+                    <label>Abduction - R:</label>
+                    <input id="abdr" name="abdr" type="number"  step=0.5  value={{dict.abdr}}>
+                </div>
+                <div class="fl"> 
+                    <label>Abduction - L:</label>
+                    <input id="abdl" name="abdl" type="number"  step=0.5  value={{dict.abdl}}>
+                </div>
+                <div class="fl"> 
+                    <label>Lateral Rotation - R:</label>
+                    <input id="lrr" name="lrr" type="number"  step=0.5  value={{dict.lrr}}>
+                </div>
+                <div class="fl"> 
+                    <label>Lateral Rotation - L:</label>
+                    <input id="lrl" name="lrl" type="number"  step=0.5  value={{dict.lrl}}>
+                </div>
+            </div>
+          </fieldset>
+
+          <fieldset> 
+            <legend>Cervical<span href="" id="c_skip" style="background-color: rgb(245, 120, 81);padding: 5px;padding-left: 10px;padding-right: 10px;border-radius: 5px;margin-left: 10px;margin-right: 4px; cursor:pointer;" >skip</span></legend> 
+            <div id="c_test_hover">
+                <div class="fl"> 
+                    <label>Lateral Rotation - R:</label>
+                    <input id="lrr_c" name="lrr_c" type="number"  step=0.5  value={{dict.lrr_c}}>
+                </div>
+                <div class="fl"> 
+                    <label>Lateral Rotation - L:</label>
+                    <input id="lrl_c" name="lrl_c" type="number"  step=0.5  value={{dict.lrl_c}}>
+                </div>
+                <div class="fl"> 
+                    <label>Flexion:</label>
+                    <input id="fle_c" name="fle_c" type="number"  step=0.5  value={{dict.fle_c}}>
+                </div>
+                <div class="fl"> 
+                    <label>Extension:</label>
+                    <input id="ext_c" name="ext_c" type="number"  step=0.5  value={{dict.ext_c}}>
+                </div>
+            </div>
+          </fieldset>
+          <fieldset> 
+            <legend>Ankle<span href="" id="an_skip" style="background-color: rgb(245, 120, 81);padding: 5px;padding-left: 10px;padding-right: 10px;border-radius: 5px;margin-left: 10px;margin-right: 4px; cursor:pointer;" >skip</span></legend> 
+            <div id="an_test_hover">
+                <div class="fl"> 
+                    <label>Dorsiflexion - R:</label>
+                    <input id="fler_a" name="fler_a" type="number"  step=0.5  value={{dict.fler_a}}>
+                </div>
+                <div class="fl"> 
+                    <label>Dorsiflexion - L:</label>
+                    <input id="flel_a" name="flel_a" type="number"  step=0.5  value={{dict.flel_a}}>
+                </div>
+                <div class="fl"> 
+                    <label>Plantar Flexion - R:</label>
+                    <input id="extr_a" name="extr_a" type="number"  step=0.5  value={{dict.extr_a}}>
+                </div>
+                <div class="fl"> 
+                    <label>Plantar Flexion - L:</label>
+                    <input id="extl_a" name="extl_a" type="number"  step=0.5 value={{dict.extl_a}}>
+                </div>
+            </div>
+          </fieldset>
+          <fieldset> 
+            <legend>Wrist<span href="" id="w_skip" style="background-color: rgb(245, 120, 81);padding: 5px;padding-left: 10px;padding-right: 10px;border-radius: 5px;margin-left: 10px;margin-right: 4px; cursor:pointer;" >skip</span></legend> 
+            <div id="w_test_hover">
+                <div class="fl"> 
+                    <label>Flexion - R:</label>
+                    <input id="fler_w" name="fler_w" type="number"  step=0.5  value={{dict.fler_w}}>
+                </div>
+                <div class="fl"> 
+                    <label>Flexion - L:</label>
+                    <input id="flel_w" name="flel_w" type="number"  step=0.5  value={{dict.flel_w}}>
+                </div>
+                <div class="fl"> 
+                    <label>Extension - R:</label>
+                    <input id="extr_w" name="extr_w" type="number"  step=0.5  value={{dict.extr_w}}>
+                </div>
+                <div class="fl"> 
+                    <label>Extension - L:</label>
+                    <input id="extl_w" name="extl_w" type="number"  step=0.5  value={{dict.extl_w}}>
+                </div>
+            </div>
+          </fieldset>
+          <fieldset> 
+            <legend>Elbow<span href="" id="e_skip" style="background-color: rgb(245, 120, 81);padding: 5px;padding-left: 10px;padding-right: 10px;border-radius: 5px;margin-left: 10px;margin-right: 4px; cursor:pointer;" >skip</span></legend> 
+            <div id="e_test_hover">
+                <div class="fl"> 
+                    <label>Flexion - R:</label>
+                    <input id="fler_e" name="fler_e" type="number"  step=0.5  value={{dict.fler_e}}>
+                </div>
+                <div class="fl"> 
+                    <label>Flexion - L:</label>
+                    <input id="flel_e" name="flel_e" type="number"  step=0.5  value={{dict.flel_e}}>
+                </div>
+                <div class="fl"> 
+                    <label>Extension - R:</label>
+                    <input id="extr_e" name="extr_e" type="number"  step=0.5  value={{dict.extr_e}}>
+                </div>
+                <div class="fl"> 
+                    <label>Extension - L:</label>
+                    <input id="extl_e" name="extl_e" type="number"  step=0.5  value={{dict.extl_e}}>
+                </div>
+                <div class="fl"> 
+                    <label>Pronation - R:</label>
+                    <input id="pror_e" name="pror_e" type="number"  step=0.5  value={{dict.pror_e}}>
+                </div>
+                <div class="fl"> 
+                    <label>Pronation - L:</label>
+                    <input id="prol_e" name="prol_e" type="number"  step=0.5  value={{dict.prol_e}}>
+                </div>
+                <div class="fl"> 
+                    <label>Supination - R:</label>
+                    <input id="supr_e" name="supr_e" type="number"  step=0.5  value={{dict.supr_e}}>
+                </div>
+                <div class="fl"> 
+                    <label>Supination - L:</label>
+                    <input id="supl_e" name="supl_e" type="number"  step=0.5  value={{dict.supl_e}}>
+                </div>
+            </div>
+          </fieldset>
+          <fieldset> 
+            <legend>Knee<span href="" id="k_skip" style="background-color: rgb(245, 120, 81);padding: 5px;padding-left: 10px;padding-right: 10px;border-radius: 5px;margin-left: 10px;margin-right: 4px; cursor:pointer;" >skip</span></legend> 
+            <div id="k_test_hover">
+                <div class="fl"> 
+                    <label>Flexion - R:</label>
+                    <input id="fler_k" name="fler_k" type="number"  step=0.5  value={{dict.fler_k}}>
+                </div>
+                <div class="fl"> 
+                    <label>Flexion - L:</label>
+                    <input id="flel_k" name="flel_k" type="number"  step=0.5  value={{dict.flel_k}}>
+                </div>
+                <div class="fl"> 
+                    <label>Extension - R:</label>
+                    <input id="extr_k" name="extr_k" type="number"  step=0.5  value={{dict.extr_k}}>
+                </div>
+                <div class="fl"> 
+                    <label>Extension - L:</label>
+                    <input id="extl_k" name="extl_k" type="number"  step=0.5  value={{dict.extl_k}}>
+                </div>
+            </div>
+          </fieldset>
+
+          <fieldset> 
+            <legend>Hamstring<span href="" id="h_skip" style="background-color: rgb(245, 120, 81);padding: 5px;padding-left: 10px;padding-right: 10px;border-radius: 5px;margin-left: 10px;margin-right: 4px; cursor:pointer;" >skip</span></legend> 
+            <div id="h_test_hover">
+                <div class="fl"> 
+                    <label>SLR Test - R:</label>
+                    <input id="slrr" name="slrr" type="number"  step=0.5  value={{dict.slrr}}>
+                </div> 
+                <div class="fl"> 
+                    <label>SLR Test - L:</label>
+                    <input id="slrl" name="slrl" type="number"   step=0.5 value={{dict.slrl}}>
+                </div>
+                <div class="fl"> 
+                    <label>Standing Hinge:</label>
+                    <input id="th" name="th" type="number"  step=0.5  value={{dict.th}}>
+                </div>
+            </div> 
+          </fieldset>
+
+          <fieldset> 
+            <legend>Hip<span href="" id="hip_skip" style="background-color: rgb(245, 120, 81);padding: 5px;padding-left: 10px;padding-right: 10px;border-radius: 5px;margin-left: 10px;margin-right: 4px; cursor:pointer;" >skip</span></legend> 
+            <div id="hip_test_hover">
+                <div class="fl"> 
+                    <label>Flexion - R:</label>
+                    <input id="fler_h" name="fler_h" type="number"  step=0.5  value={{dict.fler_h}}>
+                </div>
+                <div class="fl"> 
+                    <label>Flexion - L:</label>
+                    <input id="flel_h" name="flel_h" type="number"  step=0.5  value={{dict.flel_h}}>
+                </div>
+                <div class="fl"> 
+                    <label>Hyperextension - R:</label>
+                    <input id="hypr_h" name="hypr_h" type="number"  step=0.5  value={{dict.hypr_h}}>
+                </div>
+                <div class="fl"> 
+                    <label>Hyperextension - L:</label>
+                    <input id="hypl_h" name="hypl_h" type="number"  step=0.5  value={{dict.hypl_h}}>
+                </div>
+                <div class="fl"> 
+                    <label>Abduction - R:</label>
+                    <input id="abdr_h" name="abdr_h" type="number" step=0.5   value={{dict.abdr_h}}>
+                </div>
+                <div class="fl"> 
+                    <label>Abduction - L:</label>
+                    <input id="abdl_h" name="abdl_h" type="number"  step=0.5  value={{dict.abdl_h}}>
+                </div>
+            </div>
+          </fieldset>
+
+            <div>
+                <div style="width: 350px; margin: auto">
+                    <input type="button" class="button button1" value="submit" onsubmit="cal_sub()">
+                    <button class="button button1" ><a href="/patient_list" style="color: #000000">Back to Patient List</a></button>
+                </div>
+            </div>
+
+        </form>
+
+
+    <script type="text/javascript">
+     
+        $(document).ready(function(){
+          $("#lumbar_skip").click(function(){
+            $("#lumbar_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+          $("#h_skip").click(function(){
+            $("#h_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+          $("#a_skip").click(function(){
+            $("#a_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+          $("#s_skip").click(function(){
+            $("#s_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+          $("#c_skip").click(function(){
+            $("#c_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+          $("#an_skip").click(function(){
+            $("#an_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+          $("#w_skip").click(function(){
+            $("#w_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+          $("#e_skip").click(function(){
+            $("#e_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+          $("#k_skip").click(function(){
+            $("#k_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+          $("#hip_skip").click(function(){
+            $("#hip_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+        });
+
+      function cal_sub(){
+        return false;
+      }
+
+    </script>
+
+    {% endblock %}

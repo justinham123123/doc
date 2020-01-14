@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title></title>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+
+    <style>
+        html body{
+            background-color: #F5F5F5;
+        }
+        #sub_but {
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .sub_but {
+            width: 150px;
+        }
+
+        .fl label {
+            width: 150px;
+        }
+
+        .fl input {
+            width: 100px;
+        }
+
+        .top-m {
+            width: 100%;
+            height: 20px;
+        }
+    </style>
+</head>
+<div class="container">
+    <div class="top-m">
+
+    </div>
+    <!--提交form-->
+    <form id="form2" onsubmit="cal_sub()" action="/range_of_motion_form_submit" method="post">
+        <!--数据传输-->
+        <input type="text" name="Username" style="display: none;" value={{name}} >
+
+
+        <div id="accordion">
+            <!--第一组折叠-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                        <h4>Lumbar (degrees)</h4>
+                    </a>
+                </div>
+                <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6 fl">
+                                <label>Flexion:</label>
+                                <input id="fle" name="fle" type="number" step=0.5  value={{dict.fle}} min="0">
+                            </div>
+                            <div class="col-6 fl">
+                                <label>Extension:</label>
+                                <input id="ext" name="ext" type="number" step=0.5 value={{dict.ext}} min="0">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!--第二组折叠-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                        <h4>Adductor (degrees)</h4>
+                    </a>
+                </div>
+                <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="fl">
+                            <label>Hinge:</label>
+                            <input id="hin" name="hin" type="number"  step=0.5  value={{dict.hin}} min="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--第三组折叠Shoulder-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                        <h4>Shoulder (degrees)</h4>
+                    </a>
+                </div>
+                <div id="collapseThree" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="card-type">
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Flexion - R:</label>
+                                    <input id="fler" name="fler" type="number"  step=0.5  value={{dict.fler}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Flexion - L:</label>
+                                    <input id="flel" name="flel" type="number"  step=0.5  value={{dict.flel}} min="0">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Extension - R:</label>
+                                    <input id="extr" name="extr" type="number"  step=0.5  value={{dict.extr}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Extension - L:</label>
+                                    <input id="extl" name="extl" type="number"  step=0.5  value={{dict.extl}} min="0">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Abduction - R:</label>
+                                    <input id="abdr" name="abdr" type="number"  step=0.5  value={{dict.abdr}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Abduction - L:</label>
+                                    <input id="abdl" name="abdl" type="number"  step=0.5  value={{dict.abdl}} min="0">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Lateral Rotation - R:</label>
+                                    <input id="lrr" name="lrr" type="number"  step=0.5  value={{dict.lrr}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Lateral Rotation - L:</label>
+                                    <input id="lrl" name="lrl" type="number"  step=0.5  value={{dict.lrl}} min="0">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--第四组折叠-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapse4">
+                        <h4>Cervical (degrees)</h4>
+                    </a>
+                </div>
+                <div id="collapse4" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="card-type">
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Lateral Rotation - R:</label>
+                                    <input id="lrr_c" name="lrr_c" type="number"  step=0.5  value={{dict.lrr_c}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Lateral Rotation - L:</label>
+                                    <input id="lrl_c" name="lrl_c" type="number"  step=0.5  value={{dict.lrl_c}} min="0">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Flexion:</label>
+                                    <input id="fle_c" name="fle_c" type="number"  step=0.5  value={{dict.fle_c}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Extension:</label>
+                                    <input id="ext_c" name="ext_c" type="number"  step=0.5  value={{dict.ext_c}} min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--第五组折叠-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapse5">
+                        <h4>Ankle (degrees)</h4>
+                    </a>
+                </div>
+                <div id="collapse5" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="card-type">
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Dorsiflexion - R:</label>
+                                    <input id="fler_a" name="fler_a" type="number"  step=0.5  value={{dict.fler_a}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Dorsiflexion - L:</label>
+                                    <input id="flel_a" name="flel_a" type="number"  step=0.5  value={{dict.flel_a}} min="0">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Plantar Flexion - R:</label>
+                                    <input id="extr_a" name="extr_a" type="number"  step=0.5  value={{dict.extr_a}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Plantar Flexion - L:</label>
+                                    <input id="extl_a" name="extl_a" type="number"  step=0.5 value={{dict.extl_a}} min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--第六组折叠-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapse6">
+                        <h4>Wrist (degrees)</h4>
+                    </a>
+                </div>
+                <div id="collapse6" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="card-type">
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Flexion - R:</label>
+                                    <input id="fler_w" name="fler_w" type="number"  step=0.5  value={{dict.fler_w}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Flexion - L:</label>
+                                    <input id="flel_w" name="flel_w" type="number"  step=0.5  value={{dict.flel_w}} min="0">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Extension - R:</label>
+                                    <input id="extr_w" name="extr_w" type="number"  step=0.5  value={{dict.extr_w}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Extension - L:</label>
+                                    <input id="extl_w" name="extl_w" type="number"  step=0.5  value={{dict.extl_w}} min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--第七组折叠-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapse7">
+                        <h4>Elbow (degrees)</h4>
+                    </a>
+                </div>
+                <div id="collapse7" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="card-type">
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Flexion - R:</label>
+                                    <input id="fler_e" name="fler_e" type="number"  step=0.5  value={{dict.fler_e}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Flexion - L:</label>
+                                    <input id="flel_e" name="flel_e" type="number"  step=0.5  value={{dict.flel_e}} min="0">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Extension - R:</label>
+                                    <input id="extr_e" name="extr_e" type="number"  step=0.5  value={{dict.extr_e}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Extension - L:</label>
+                                    <input id="extl_e" name="extl_e" type="number"  step=0.5  value={{dict.extl_e}} min="0">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Pronation - R:</label>
+                                    <input id="pror_e" name="pror_e" type="number"  step=0.5  value={{dict.pror_e}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Pronation - L:</label>
+                                    <input id="prol_e" name="prol_e" type="number"  step=0.5  value={{dict.prol_e}} min="0">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Supination - R:</label>
+                                    <input id="supr_e" name="supr_e" type="number"  step=0.5  value={{dict.supr_e}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Supination - L:</label>
+                                    <input id="supl_e" name="supl_e" type="number"  step=0.5  value={{dict.supl_e}} min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--第八组折叠-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapse8">
+                        <h4>Knee (degrees)</h4>
+                    </a>
+                </div>
+                <div id="collapse8" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="card-type">
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Flexion - R:</label>
+                                    <input id="fler_k" name="fler_k" type="number"  step=0.5  value={{dict.fler_k}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Flexion - L:</label>
+                                    <input id="flel_k" name="flel_k" type="number"  step=0.5  value={{dict.flel_k}} min="0">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Extension - R:</label>
+                                    <input id="extr_k" name="extr_k" type="number"  step=0.5  value={{dict.extr_k}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Extension - L:</label>
+                                    <input id="extl_k" name="extl_k" type="number"  step=0.5  value={{dict.extl_k}} min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--第九组折叠-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapse9">
+                        <h4>Hamstring (degrees)</h4>
+                    </a>
+                </div>
+                <div id="collapse9" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="card-type">
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>SLR Test - R:</label>
+                                    <input id="slrr" name="slrr" type="number"  step=0.5  value={{dict.slrr}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>SLR Test - L:</label>
+                                    <input id="slrl" name="slrl" type="number"   step=0.5 value={{dict.slrl}} min="0">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Standing Hinge:</label>
+                                    <input id="th" name="th" type="number"  step=0.5  value={{dict.th}} min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--第十组折叠-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapse10">
+                        <h4>Hip (degrees)</h4>
+                    </a>
+                </div>
+                <div id="collapse10" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="card-type">
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Flexion - R:</label>
+                                    <input id="fler_h" name="fler_h" type="number"  step=0.5  value={{dict.fler_h}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Flexion - L:</label>
+                                    <input id="flel_h" name="flel_h" type="number"  step=0.5  value={{dict.flel_h}} min="0">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Hyperextension - R:</label>
+                                    <input id="hypr_h" name="hypr_h" type="number"  step=0.5  value={{dict.hypr_h}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Hyperextension - L:</label>
+                                    <input id="hypl_h" name="hypl_h" type="number"  step=0.5  value={{dict.hypl_h}} min="0">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 fl">
+                                    <label>Abduction - R:</label>
+                                    <input id="abdr_h" name="abdr_h" type="number" step=0.5   value={{dict.abdr_h}} min="0">
+                                </div>
+                                <div class="col-6 fl">
+                                    <label>Abduction - L:</label>
+                                    <input id="abdl_h" name="abdl_h" type="number"  step=0.5  value={{dict.abdl_h}} min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!--        提交按钮-->
+        <div class="row">
+            <div class="d-flex justify-content-center" id="sub_but">
+                <div>
+                    <button class="btn btn-primary sub_but" type="submit" onsubmit="cal_sub()"> submit</button>
+                    <a href="/patient_list" style="color: #ffffff"><button class="btn btn-danger sub_but" type="button">Back</button></a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<body>
+
+
+<script type="text/javascript">
+
+        $(document).ready(function(){
+          $("#lumbar_skip").click(function(){
+            $("#lumbar_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+          $("#h_skip").click(function(){
+            $("#h_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+          $("#a_skip").click(function(){
+            $("#a_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+          $("#s_skip").click(function(){
+            $("#s_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+          $("#c_skip").click(function(){
+            $("#c_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+          $("#an_skip").click(function(){
+            $("#an_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+          $("#w_skip").click(function(){
+            $("#w_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+          $("#e_skip").click(function(){
+            $("#e_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+          $("#k_skip").click(function(){
+            $("#k_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+          $("#hip_skip").click(function(){
+            $("#hip_test_hover").slideToggle("slow");
+            // alert("hide")
+          });
+        });
+
+      function cal_sub(){
+        return false;
+      }
+
+    </script>
+</body>
+</html>

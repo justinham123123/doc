@@ -1,0 +1,306 @@
+{% extends "nav.html" %}
+
+    {% block head %}
+    <script type="text/javascript" src="/static/jquery.js"></script>
+    
+	<style type="text/css">
+		
+		h1, legend {
+			font-family:Arial, Helvetica, sans-serif;
+		}
+		label, input, select {
+			display:block;
+		}
+		input, select {
+			margin-bottom: 1em;
+		}
+		fieldset {
+			margin-bottom: 2em;
+		}
+		fieldset fieldset {
+			/*margin-top: 1em;*/
+			/*margin-bottom: 1em;*/
+		}
+		input[type="checkbox"] {
+			display:inline;
+		}
+		.range {
+			margin-bottom:1em;
+		}	
+		.card-type input, .card-type label {
+			display:inline-block;
+		}
+        .fl{
+            float:left;
+            width: 250px;
+            margin-right:40px;
+            margin-bottom: 20px;
+            background: rgb(134, 197, 247);
+            padding:10px;
+            border-radius: 5px;
+            height: 54px;
+        }
+        
+        .fl label{
+            margin-bottom:10px;
+        }
+       
+        legend{
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        #sub{
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 140px;
+            font-size: 18px;
+            margin: auto;
+        }
+
+        .skip2{
+            float:left;
+            margin-right: 5px;
+            margin-top: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            background: rgb(247, 129, 51);
+            padding: 5px;
+            border-radius: 5px;
+            text-align: center;
+        }
+	</style>
+    {% endblock %}
+
+
+    {% block content %}
+   
+    	<!-- <h1>Muscular Fitness</h1> -->
+        <div style="display:none" id="weight">{{weight}}</div>
+      
+   		
+   		<form id="form2" onsubmit="cal_sub()" action="/muscular_fitness_form_submit" method="post">
+      <!-- <form> -->
+        <input type="text" name="Username" value={{name}} style="display: none;">
+            <div style="font-size: 18px; margin-left:2px;">
+                <div style="float:left;">choose unit</div>
+                <input style="float:left;margin-left:20px;" id="lb" name="lb" type="radio" value='lb' checked onclick="change_lb()"> 
+                <label style="float:left;" for="lb">lb</label>
+                <input style="float:left;margin-left:20px;" id="kg" name="kg" type="radio" value='kg' onclick="change_kg()"> 
+                <label style="float:left;" for="kg">kg</label>
+            </div>
+            <div style="clear:both; margin-bottom: 10px;"></div>
+
+          <fieldset> 
+            <legend>Muscular Strength Push</legend>
+            <div class="fl"> 
+                <label>1RM Push (<span class="unit">lb</span>)</label>
+                <input id="rmp" name="rmp" type="number" step=0.01   value={{dict.rmp}}>
+            </div> 
+            <div style="display:none"> 
+                <!-- <label>Bench Press Weight Ratio (%)</label> -->
+                <!-- weight pushed in lb / body weight in lb -->
+                <input id="bpwr" name="bpwr" type="text">
+            </div> 
+          </fieldset>
+
+          <fieldset> 
+            <legend>Muscular Strength Pull</legend> 
+            <div class="fl"> 
+                <label>1RM Pull (<span class="unit">lb</span>)</label>
+                <input id="rmp2" name="rmp2" type="number" step=0.01   value={{dict.rmp2}}>
+            </div> 
+            <div style="display:none"> 
+                <!-- <label>Pulldown Weight Ratio (%)</label> -->
+                <!-- weight pulled in lb / body weight in lb -->
+                <input id="pwr" name="pwr" type="text">
+            </div> 
+          </fieldset>
+
+          <fieldset> 
+            <legend>Muscular Strength Legs</legend> 
+            <div class="fl"> 
+                <label>1RM Leg (<span class="unit">lb</span>)</label>
+                <input id="rml" name="rml" type="number" step=0.01  value={{dict.rml}}>
+            </div> 
+            <div style="display:none"> 
+                <!-- <label>Leg Press Weight Ratio (%)</label> -->
+                <!-- weight pushed in lb / body weight in lb -->
+                <input id="lpwr" name="lpwr" type="text">
+            </div> 
+          </fieldset>
+
+          <fieldset> 
+            <legend>Grip Strength</legend> 
+            <div class="fl"> 
+                <label>Right Hand Dynamometer (<span>kg</span>)</label>
+                <input id="rhd" name="rhd" type="number" step=0.01  value={{dict.rhd}}>
+            </div> 
+            <div class="fl"> 
+                <label>Left Hand Dynamometer (<span>kg</span>)</label>
+                <input id="lhd" name="lhd" type="number" step=0.01  value={{dict.lhd}}>
+            </div> 
+            <div style="display:none"> 
+                <!-- <label>Combined Dynamometer (kg/lbs)</label> -->
+                <!-- (Right Hand Dynamometer) + (Left Hand Dynamometer) -->
+                <input id="cd" name="cd" type="text">
+            </div> 
+          </fieldset>
+
+          <fieldset> 
+            <legend>Muscular Endurance</legend> 
+            {% if mf=="male" %}
+            <div class="fl"> 
+                <label>Push-Up (reps)</legend></label>
+                <input id="pu" name="pu" type="number" step=0.01   value={{dict.pu}}>
+            </div> 
+            {% elif mf=="female" %}
+            <div class="fl"> 
+                <label>Knee Push-Up (reps)</label>
+                <input id="kpu" name="kpu" type="number" step=0.01   value={{dict.kpu}}>
+            </div> 
+            {% endif %}
+            
+            <div id="pu2_btn" class="skip2">skip <br/> pull-up</div>
+            <div class="fl" id='pull_skip'> 
+                <label>Pull-Up (reps)</label> 
+                <input id="pu2" name="pu2" type="number" step=0.01   value={{dict.pu2}}>
+            </div> 
+            
+            <div id="squ_btn" class="skip2">skip <br/> squat</div>
+            <div class="fl" id='squ_skip'> 
+                <label>Squat (reps)</label>
+                <input id="squ" name="squ" type="number" step=0.01   value={{dict.squ}}>
+            </div> 
+          </fieldset>
+
+            <div>
+                <div style="width: 350px; margin: auto">
+                    <input type="button" class="button button1" value="submit" onsubmit="cal_sub()">
+                    <button class="button button1" ><a href="/patient_list" style="color: #000000">Back to Patient List</a></button>
+                </div>
+            </div>
+
+        </form>
+
+    <script type="text/javascript">
+
+
+        
+
+        $(document).ready(function(){
+          // $("#pu_skip").click(function(){
+          //   $("#pu").slideToggle("slow");
+          //   // alert("hide")
+          // });
+          // $("#an_skip").click(function(){
+          //   $("#an_test_hover").slideToggle("slow");
+          //   // alert("hide")
+          // });
+          // $("#y_skip").click(function(){
+          //   $("#y_test_hover").slideToggle("slow");
+          //   // alert("hide")
+          // });
+
+          $("#pu2_btn").click(function(){
+            // $("#pull_skip").slideToggle("slow", { direction: "left" });
+            $("#pull_skip").animate({'width': 'toggle'});
+          });
+          $("#squ_btn").click(function(){
+            // $("#squ_skip").slideToggle("slow");
+            $("#squ_skip").animate({'width': 'toggle'});
+          });
+
+        });
+
+        var lb_kg = "lb";
+
+        function change_lb(){
+            if (lb_kg=="lb"){
+                return;
+            }
+            // var ids = ["rmp", "rmp2", "rml", "rhd", "lhd"];
+            var ids = ["rmp", "rmp2", "rml"];
+            lb_kg = "lb";
+            document.getElementById("kg").checked=false;
+            document.getElementById("lb").checked=true;
+            var units = document.getElementsByClassName("unit");
+            for (var i=0; i<units.length; i++){
+                units[i].innerHTML = "lb";
+                var kg_val = parseFloat(document.getElementById(ids[i]).value);
+                // alert(inch_val)
+                var lb_val = kg_val*2.205;
+                document.getElementById(ids[i]).value = lb_val.toFixed(2);
+            }
+        }
+
+
+        function change_kg(){
+            if (lb_kg=="kg"){
+                return;
+            }
+            // var ids = ["rmp", "rmp2", "rml", "rhd", "lhd"];
+            var ids = ["rmp", "rmp2", "rml"];
+            lb_kg = "kg";
+            document.getElementById("lb").checked=false;
+            document.getElementById("kg").checked=true;
+            var units = document.getElementsByClassName("unit");
+            for (var i=0; i<units.length; i++){
+                units[i].innerHTML = "kg";
+                var lb_val = parseFloat(document.getElementById(ids[i]).value);
+                // alert(inch_val)
+                var kg_val = lb_val/2.205;
+                document.getElementById(ids[i]).value = kg_val.toFixed(2);
+            }
+        }
+
+        function cal_sub(){
+            // alert("abc")
+            // var weight = 160;
+
+            // transfer to inch if needed
+            if (lb_kg=="kg"){
+                // var ids = ["rmp", "rmp2", "rml", "rhd", "lhd"];
+                var ids = ["rmp", "rmp2", "rml"];
+                var units = document.getElementsByClassName("unit");
+                for (var i=0; i<units.length; i++){
+                    var kg_val = parseFloat(document.getElementById(ids[i]).value);
+                    // alert(inch_val)
+                    var lb_val = kg_val*2.205;
+                    // alert(lb_val)
+                    document.getElementById(ids[i]).value = lb_val.toFixed(2);
+                }
+            }
+            
+            var weight = parseFloat(document.getElementById("weight").innerHTML);
+            
+            var rmp = parseFloat(document.getElementById("rmp").value);
+            var rmp2 = parseFloat(document.getElementById("rmp2").value);
+            var rml = parseFloat(document.getElementById("rml").value);
+            
+            if (weight>0){
+                document.getElementById("bpwr").value = (rmp*1.0/weight).toFixed(2);
+                document.getElementById("pwr").value = (rmp2*1.0/weight).toFixed(2);
+                document.getElementById("lpwr").value = (rml*1.0/weight).toFixed(2);
+            }else{
+                document.getElementById("bpwr").value = 0;
+                document.getElementById("pwr").value = 0;
+                document.getElementById("lpwr").value = 0;
+            }
+
+            var lhd = parseFloat(document.getElementById("lhd").value);
+            var rhd = parseFloat(document.getElementById("rhd").value);
+            document.getElementById("cd").value = lhd + rhd;
+            
+            
+            return false;
+        }
+
+    </script>
+
+
+    {% endblock %}

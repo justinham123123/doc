@@ -1,0 +1,273 @@
+{% extends "nav.html" %}
+
+{% block head %}
+<style type="text/css">
+    html {
+        width: 100%;
+    }
+
+    body {
+        width: 100%;
+    }
+
+    form {
+        width: 100%;
+    }
+
+    fieldset {
+        width: 100%;
+    }
+
+    h1, legend {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    label, input, select {
+        display: block;
+    }
+
+
+    input[type="checkbox"] {
+        display: inline;
+    }
+
+    .range {
+        margin-bottom: 1em;
+    }
+
+    .card-type input, .card-type label {
+        display: inline-block;
+    }
+
+    .fl {
+        float: left;
+        width: 300px;
+        margin-right: 30px;
+        margin-left: 30px;
+        margin-bottom: 20px;
+        background: rgb(134, 197, 247);
+        padding: 10px;
+        border-radius: 5px;
+        height: 54px;
+        text-align: center;
+    }
+
+    .fl label {
+        color: white;
+        margin-bottom: 10px;
+    }
+
+    .fl input {
+        color: white;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+
+    legend {
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    #sub {
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        cursor: pointer;
+        width: 140px;
+        font-size: 18px;
+        margin: auto;
+    }
+
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<!-- <h1>Hello</h1> -->
+
+<form id="register" onsubmit="cal_sub()" action="/basic_form_submit" method="post">
+    <!-- <h1>Basic Form</h1> -->
+
+    {% if dict.id=="" %}
+    <!--Accound 框-->
+    <fieldset>
+        <legend>Account</legend>
+        <div class="fl" style="display: none;">
+            <label>Register as a</label>
+            <input style="float:left;" id="doc" name="whor" type="radio" value='doctor' disabled>
+            <label style="float:left;" for="doc">Admin</label>
+
+            <input style="float:left;margin-left:20px;" id="pat" name="whor" type="radio" value='patient' checked>
+            <label style="float:left;" for="pat">User</label>
+
+            <input id="who" name="who" type="text" style="display: none;">
+        </div>
+        <div class="fl">
+            <label>User Name</label>
+            <input id="uname" name="uname" type="text" placeholder="user name" required autofocus value={{dict.id}}>
+        </div>
+        <div class="fl">
+            <label>Password</label>
+            <input id="passw1" name="passw1" type="password" required value={{dict.ps}}>
+        </div>
+        <div class="fl">
+            <label>Repeat Password</label>
+            <input id="passw2" name="passw2" type="password" required value={{dict.ps}}>
+        </div>
+    </fieldset>
+    <!--Accound 框结束-->
+    <input id="typ" name="typ" type="text" value='new' style="display:none;">
+
+    {% else %}
+    <fieldset style="display: none;">
+        <legend>Account</legend>
+        <div class="fl">
+            <label>Register as a</label>
+            {% if dict.userType=="doctor" %}
+            <input style="float:left;" id="doc" name="whor" type="radio" value='doctor' checked>
+            <label style="float:left;" for="doc">Admin</label>
+
+            <input style="float:left;margin-left:20px;" id="pat" name="whor" type="radio" value='patient'>
+            <label style="float:left;" for="pat">User</label>
+
+            <input id="who" name="who" type="text" style="display: none;">
+            {% else %}
+            <input style="float:left;" id="doc" name="whor" type="radio" value='doctor'>
+            <label style="float:left;" for="doc">Admin</label>
+
+            <input style="float:left;margin-left:20px;" id="pat" name="whor" type="radio" value='patient' checked>
+            <label style="float:left;" for="pat">User</label>
+
+            <input id="who" name="who" type="text" style="display: none;">
+            {% endif %}
+        </div>
+        <input id="who" name="who" type="text" style="display: none;" value={{dict.userType}}>
+        <div class="fl">
+            <label>User Name</label>
+            <input id="uname" name="uname" type="text" placeholder="user name" required autofocus value={{dict.id}}>
+        </div>
+        <div class="fl">
+            <label>Password</label>
+            <input id="passw1" name="passw1" type="password" required value={{dict.ps}}>
+        </div>
+        <div class="fl">
+            <label>Repeat Password</label>
+            <input id="passw2" name="passw2" type="password" required value={{dict.ps}}>
+        </div>
+    </fieldset>
+    <div>
+        <h2>{{dict.id}}</h2>
+    </div>
+    <input id="typ" name="typ" type="text" value='update' style="display: none;">
+    {% endif %}
+
+    <!--Personal Info框-->
+    <fieldset>
+        <legend>Personal Info</legend>
+        <div class="fl">
+            <label>Real Name </label>
+            <input id="rname" name="rname" type="text" placeholder="" value={{dict.rname}}>
+        </div>
+        <div class="fl">
+            <label>Date of Birth</label>
+
+            <input id="dob" name="dob" type="text" required placeholder="mm/dd/yyyy" value={{dict.dob}}>
+            <input id="age" name="age" type="number" style="display:none">
+        </div>
+        {% if dict.gender=="male" %}
+        <div class="card-type fl">
+            <label>Gender</lable>
+                <div style="height: 10px;"></div>
+                <input id="male" name="gender" type="radio" checked value="male">
+                <label for="visa">male</label>
+                <input id="female" name="gender" type="radio" value="female">
+                <label for="mastercard">female</label>
+        </div>
+        {% else %}
+        <div class="card-type fl">
+            <label>Gender</lable>
+                <div style="height: 10px;"></div>
+                <input id="male" name="gender" type="radio" value="male">
+                <label for="visa">male</label>
+                <input id="female" name="gender" type="radio" checked value="female">
+                <label for="mastercard">female</label>
+        </div>
+        {% endif %}
+        <div class="fl">
+            <label>Email </label>
+            <input id="email" name="email" type="email" placeholder="example@domain.com" required value={{dict.email}}>
+        </div>
+        <div class="fl">
+            <label>Telephone </label>
+            <input id="phone" name="phone" type="tel" placeholder="Eg. +447000 000000" required value={{dict.phone}}>
+        </div>
+        <div class="fl">
+            <label>Address </label>
+            <input id="address" name="address" rows=5 required value={{dict.address}}>
+        </div>
+        <div class="fl" style="display:none;">
+            <label>Post code </label>
+            <input id="postCode" name="postCode" type="text" value={{dict.postCode}}>
+        </div>
+        <div class="fl" style="display:none;">
+            <label>Country </label>
+            <input id="country" name="country" type="text" value={{dict.Country}}>
+        </div>
+    </fieldset>
+    <!--Personal Info框结束-->
+
+    <div style="color:red;"><b>{{error}}</b></div>
+
+    <input id="fin" name="fin" type="text" style="display: none;" value={{dict.fin}}>
+    <input style="display:none" type="text" id="fr_doc" name="fr_doc" value={{fr_doc}}>
+
+
+    <div>
+        <div style="width: 350px; margin: auto">
+            <input type="button" class="button button1" value="submit" onsubmit="cal_sub()">
+            <button class="button button1"><a href="/patient_list" style="color: #000000">Back to Patient List</a>
+            </button>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+
+
+    function getAge(dateString) {
+        var today = new Date();
+        var birthDate = new Date(dateString);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
+
+
+    function cal_sub() {
+        var dob = document.getElementById("dob").value;
+        age = getAge(dob);
+        // var age = 24;
+        document.getElementById("age").value = age;
+
+        var userType = "";
+        var eles = document.getElementsByName("whor");
+        for (var i = 0; i < eles.length; i++) {
+            if (eles[i].checked) {
+                userType = eles[i].value;
+                document.getElementById("who").value = userType;
+                break;
+            }
+        }
+        return userType
+    }
+
+</script>
+
+{% endblock %}

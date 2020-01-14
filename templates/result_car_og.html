@@ -1,0 +1,318 @@
+{% extends "nav2.html" %}
+
+    {% block head %}
+    <script type="text/javascript" src="/static/polar.js"></script>
+	<style type="text/css">
+		
+		h1, legend {
+			font-family:Arial, Helvetica, sans-serif;
+		}
+        h1{
+            margin-top: 40px;
+        }
+		label, input, select {
+			display:block;
+		}
+		input, select {
+			margin-bottom: 1em;
+		}
+		fieldset {
+			margin-bottom: 2em;
+			padding: 1em;
+		}
+		fieldset fieldset {
+			margin-top: 1em;
+			margin-bottom: 1em;
+		}
+		input[type="checkbox"] {
+			display:inline;
+		}
+		.range {
+			margin-bottom:1em;
+		}	
+		.card-type input, .card-type label {
+			display:inline-block;
+		}
+
+        ul li{
+            list-style: none;
+        }
+        table {
+          font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+          border-collapse: collapse;
+          width: 600px;
+        }
+
+        td, th {
+          border: 1px solid #ddd;
+          padding: 6px;
+          font-size:20px;
+        }
+
+        tr:nth-child(even){background-color: #f2f2f2;}
+
+        tr:hover {background-color: #ddd;}
+
+        th {
+          padding-top: 6px;
+          padding-bottom: 6px;
+          text-align: left;
+          background-color: #E5533E;
+          color: white;
+        }
+        .icon{
+            width: 34px;
+            margin-right: 20px;
+            display: block;
+            float: left;
+            margin-top: -7px;
+            margin-bottom: -4px;
+            overflow: hidden;
+        }
+        h1{
+            font-size: 24px;
+        }
+	</style>
+    
+    {% endblock %}
+    {% block content %}
+
+
+    <div style="text-align: center;font-size: 36px;font-weight: bold;margin-top: 42px;">Cardiopulmonary Fitness Results</div>
+
+    <div style="width:100%;padding-bottom: 40px;">
+        <div style="float:left; width:600px; margin-left: 50px;">
+  	    <div style="margin-top:40px;"> 
+            <table style="width:600px;">
+                <tr>
+                    <th>KEY</th>
+                </tr>
+                <tr>
+                    <td><img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;" src="/static/icon/cf_res_vo2.svg">VO2 Max: <span id='vo2max'>{{score[0]}}</span>/10</td>
+                </tr>
+                <tr>
+                    <td><img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;" src="/static/icon/cf_res_hrr.svg">Heart Rate Recovery: <span id='hrr'>{{score[1]}}</span>/10</td>   
+                </tr>
+               
+            </table>
+
+            <div style="font-size: 28px; position: absolute; margin-left: 250px; margin-top: 95px;"><img class="icon" style="width: 80px; margin-right:10px; margin-bottom: -10px;position: absolute;margin-top: -70px;margin-left: 8px;" src="/static/icon/cf_res_vo2.svg"><span id='vo2max' style="margin-left:10px;">{{score[0]*10}}</span>%</div>
+            
+            <div style="font-size: 28px; position: absolute; margin-left: 250px; margin-top: 560px;"><img class="icon" style="width: 80px; margin-right:10px; margin-bottom: -10px;position: absolute;margin-top: -70px;margin-left: 8px;" src="/static/icon/cf_res_hrr.svg"><span id='hrr' style="margin-left:10px;">{{score[1]*10}}</span>%</div>   
+
+            <div style="width:700px;margin-top: 140px;margin-left: -50px;">
+                <canvas id="myChart"></canvas>        
+            </div>  
+
+        </div>
+        <div style="margin-top: 135px;">
+            
+            <table>
+                <tr><th>VO2 MAX<img class="icon" src="/static/icon/cf_vo2max.svg"></th></tr>
+                <tr>
+                    <td>VO2 Max: <span>{{dict.ymca}}</span>ml/kg/min</td>
+                </tr>
+                <tr>
+                    <td>HR Max: <span>{{dict.hrm_w}}</span></td>
+                </tr>
+                <tr>
+                    <td>Target HR/70% HR Reserve: <span>{{dict.thr}}</span></td>
+                </tr>
+                <tr>
+                    <td>85% HR Max: <span>{{dict.hrm}}</span></td>
+                </tr>
+            </table>
+        </div>
+        <br/><br/>
+
+        </div>
+        
+        
+        <div style="float:left; width:550px; margin-left: 100px;">
+        <div style="margin-top:40px;">
+                <div style="display: none;">
+                    <span id="sp601">{{dict.sp60_pre}}</span>
+                    <span id="sp602">{{dict.sp60}}</span>
+                    <span id="sp1201">{{dict.sp120_pre}}</span>
+                    <span id="sp1202">{{dict.sp120}}</span>
+                </div>
+
+             <table>
+                <tr><th>HEART RATE RECOVERY<img class="icon" src="/static/icon/cf_hr_w.svg"></th></tr>
+                
+                <tr>
+                    <td>60 Second Post-exercise: <span id="rec60"></span> bpm</td>
+                </tr>
+                <tr>
+                    <td>120 Second Post-exercise: <span id="rec120"></span> bpm</td>
+                </tr>
+            </table>
+        </div>
+        
+
+        <div>
+            <h1>HEART RATE ZONES</h1>
+            <div style="display:none">
+                <div id=ap50>{{dict.aphrm50}}</div>
+                <div id=ap60>{{dict.aphrm60}}</div>
+                <div id=ap70>{{dict.aphrm70}}</div>
+                <div id=ap80>{{dict.aphrm80}}</div>
+                <div id=ap90>{{dict.aphrm90}}</div>
+            </div>
+            <table>
+                <tr>
+                    <th>
+                        <span>ZONE 1</span>
+                        <span>VERY LIGHT</span>
+                        <span><span>{{dict.aphrm50}}</span>-<span>{{dict.aphrm60}}</span>bpm</span>
+                    </th>
+                </tr>
+                <tr>
+                    <td>50-60% HR Max</td>
+                </tr>
+                <tr>
+                    <td>Walking, Body and Mind</td>
+                </tr>
+                <tr>
+                    <td>Improves overall health and helps recovery</td>
+                </tr>
+
+                <tr>
+                    <th>
+                        <span>ZONE 2</span>
+                        <span>LIGHT</span>
+                        <span><span>{{dict.aphrm60}}</span>-<span>{{dict.aphrm70}}</span>bpm</span>
+                    </th>
+                </tr>
+                <tr>
+                    <td>60-70% HR Max</td>
+                </tr>
+                <tr>
+                    <td>Walking, Body and Mind</td>
+                </tr>
+                <tr>
+                    <td>Improves basic endurance</td>
+                </tr>
+
+                <tr>
+                    <th>
+                        <span>ZONE 3</span>
+                        <span>MODERATE</span>
+                        <span><span>{{dict.aphrm70}}</span>-<span>{{dict.aphrm80}}</span>bpm</span>
+                    </th>
+                </tr>
+                <tr>
+                    <td>70-80% HR Max</td>
+                </tr>
+                <tr>
+                    <td>Strength Training, Cardio Classes, Dancing</td>
+                </tr>
+                <tr>
+                    <td>Improve aerobic fitness</td>
+                </tr>
+
+                <tr>
+                    <th>
+                        <span>ZONE 4</span>
+                        <span>HARD</span>
+                        <span><span>{{dict.aphrm80}}</span>-<span>{{dict.aphrm90}}</span>bpm</span>
+                    </th>
+                </tr>
+                <tr>
+                    <td>80-90% HR Max</td>
+                </tr>
+                <tr>
+                    <td>Spinning, Circuit Training</td>
+                </tr>
+                <tr>
+                    <td>Increase maximum performance capacity</td>
+                </tr>
+
+                <tr>
+                    <th>
+                        <span>ZONE 5</span>
+                        <span>MAXIMUM</span>
+                        <span><span>{{dict.aphrm90}}</span>-<span>{{dict.aphrm}}</span>bpm</span>
+                    </th>
+                </tr>
+                <tr>
+                    <td>90-100% HR Max</td>
+                </tr>
+                <tr>
+                    <td>HIIT, Crossfit</td>
+                </tr>
+                <tr>
+                    <td>Develops maximum performance</td>
+                </tr>
+            </table>
+            <div style="clear:both;"></div>
+        </div>
+        
+        </div>
+
+        <div style="clear:both;"></div>
+        
+
+        
+
+        <script type="text/javascript">
+
+        var rec60 = parseInt(document.getElementById("sp601").innerHTML)-parseInt(document.getElementById("sp602").innerHTML);
+        document.getElementById("rec60").innerHTML = rec60;
+        var rec120 = parseInt(document.getElementById("sp1201").innerHTML)-parseInt(document.getElementById("sp1202").innerHTML);
+        document.getElementById("rec120").innerHTML = rec120;
+        // alert(rec60)
+
+        function car(){
+            // var d1 = 10;
+            // var d2 = 10;
+            var d1 = parseFloat(document.getElementById('vo2max').innerHTML);
+            var d2 = parseFloat(document.getElementById('hrr').innerHTML);
+
+            var ctx = document.getElementById('myChart').getContext('2d');
+
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'polarArea',
+                
+                data: {
+                    labels: ['VO2 Max', 'Heart Rate Recovery'],
+
+                    datasets: [{
+                        label: 'AVERAGE',
+                        // borderColor: 'rgb(255, 99, 132)',
+                        data: [d1, d2],
+                        backgroundColor: [
+                          "rgba(255, 50, 50, 0.5)",
+                          "rgba(255, 100, 50, 0.5)"
+                        ]
+                    }]
+                },
+
+                options: {
+                    startAngle: Math.PI,
+                    legend: {
+                      display: false
+                        // position: 'top',
+                        // maxWidth: 400
+                    },
+                    scale: {
+                        ticks: {
+                            suggestedMin: 0.1,
+                            suggestedMax: 10
+                        }
+                    }
+                }
+            });
+
+            // add legend
+
+        }
+        
+        car();
+        
+
+        </script>
+        </div>
+
+   	{% endblock %}

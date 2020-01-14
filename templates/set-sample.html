@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title></title>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+
+    <style>
+        html body{
+            background-color: #F5F5F5;
+        }
+        #sub_but {
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .sub_but {
+            width: 150px;
+        }
+
+        .fl label {
+            width: 150px;
+        }
+
+        .fl input {
+            width: 100px;
+        }
+
+        .top-m {
+            width: 100%;
+            height: 20px;
+        }
+    </style>
+</head>
+<div class="container">
+    <div class="top-m">
+
+    </div>
+    <!--提交form-->
+    <form id="bc" onsubmit="cal_sub()" action="/body_composition_form_submit" method="post">
+        <div id="accordion">
+            <!--第一组折叠-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                        <h4>Calculated Composition</h4>
+                    </a>
+                </div>
+                <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                    <div class="card-body">
+
+                    </div>
+                </div>
+            </div>
+            <!--第二组折叠-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                        <h4>Anthropometry / Circumference</h4>
+                    </a>
+                </div>
+                <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+
+                    </div>
+                </div>
+            </div>
+            <!--第三组折叠-->
+            <div class="card">
+                <div class="card-header">
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                        <h4>Activity Level</h4>
+                    </a>
+                </div>
+                <div id="collapseThree" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="card-type">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--        提交按钮-->
+        <div class="row">
+            <div class="d-flex justify-content-center" id="sub_but">
+                <div>
+                    <button class="btn btn-primary sub_but" type="button" onsubmit="cal_sub()"> submit</button>
+                    <button class="btn btn-danger sub_but" type="button"><a href="/patient_list" style="color: #ffffff">Back</a>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<body>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+</script>
+</body>
+</html>

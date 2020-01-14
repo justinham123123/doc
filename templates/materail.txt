@@ -1,0 +1,886 @@
+
+2.
+Item Sets 
+Body Density and 
+Percent Fat 
+Collected Data 
+Thigh 
+SUM7 
+SUM3m1 
+SUM3m2 
+SUM3f1 
+SUM3f2 
+Body Density 1m 
+Body Density 2m 
+Body Density 3m 
+Body Density If 
+Body Density 2f 
+Units 
+mm 
+rh/f 
+m 
+m 
+1m 
+2m 
+3m 
+If 
+2 
+Equation 
+SUM7 = (Abdomen) 
++ (Triceps) + (Chest) 
++ (Midaxillary) + 
+(Subscapular) + 
+(Suprailiac) + 
+(Thigh) 
+SUM3m1 = (Chest) 
++ (Abdomen) + 
+(Thigh) 
+SUM3m2 = (Chest) 
++ (Triceps) + 
+(Subscapular) 
+SUM3f1 = Uriceps) 
++ (Suprailiac) + 
+(Thigh) 
+SUM3f2 = (Triceps) 
++ (Suprailiac) + 
+(Abdominal) 
+
+Body Density 1m 
+1.112 - 0.00043499 
+(SUM7) 
++ 0.00000055 
+(SUM7)A2 
+- 0.00028826 (age) 
+Body Density 2m — 
+1.10938- 
+0.0008267 
+(SUM3m1) 
++ 0.0000016 
+(SUM3m1)A2 
+0.0002574 (age) 
+
+Body Density 3m 
+1.1125025 
+0.0013125 
+(SUM3m2) 
++ 0.0000055 
+(SUM3m2)A2 
+0.000244 (age) 
+Body Density If 
+1.097 - 0.00046971 
+(SUM7) 
++ 0.00000056 
+(SUM7)A2 
+0.00012828 (age) 
+Body Density 2f 
+1.0994921 
+0.0009929 
+(SUM3f1) 
++ 0.0000023 
+(SUM3f1)A2 
+0.0001329 (age) 
+Notes 
+
+
+
+
+
+
+
+
+
+
+
+
+3.
+Item Sets 
+Calculated 
+Composition 
+Collected Data 
+Body Density 3f 
+Body Fat % 1m 
+Body Fat % 2m 
+Body Fat % 3m 
+Body Fat % If 
+Body Fat % 2f 
+Body Fat 0/0 3f 
+Body Fat 0/0 Male 
+Body Fat % Female 
+Fat Mass 
+Lean Body Mass 
+Circumference 
+Totals 
+Waist-to-Hip Ratio 
+Units 
+3f 
+lbs and kg 
+lbs and kg 
+in and cm 
+3 
+Equation 
+Body Density 3f 
+1.089733 - 
+0.0009245 
+(SUM3f2) 
++ 0.0000025 
+(SUM3f2)A2 
+0.0000979 (age) 
+Body Fat % 1m 
+(457/Body Density 
+1m) 414.2 
+Body Fat % 2m 
+(457/Body Density 
+2m) - 414.2 
+Body Fat % 3m 
+(457/Body Density 
+3m) - 414.2 
+Body Fat % If 
+(457/Body Density 
+If)- 414.2 
+Body Fat % 2f - 
+(457/Body Density 
+2f) - 414.2 
+Body Fat % 3f 
+(457/Body Density 
+3f) - 414.2 
+
+Body Fat % Male 
+(Body Fat % 1m) + 
+(Body Fat % 2m) + 
+(Body Fat % 3m) = 
+total % / 3 
+Body Fat % Female 
+(Body Fat 0/0 If) + 
+(Body Fat % 20 + 
+(Body Fat % 30 - 
+total % / 3 
+Fat Mass = (Body 
+Fat 0/0, Male or 
+Female) x weight in 
+lbs 
+(weight in lbs) - Fat 
+Mass 
+
+(Neck) + (Chest) + 
+(Waist) + 
+(Abdomen) + (Arm 
+R) + (Arm L) + 
+(Forearm R) + 
+(Forearm L) + 
+(Buttocks/Hips) + 
+(Midthigh R) + 
+(Midthigh L) + (Calf 
+R) + (Calf L) 
+
+(Waist 
+Circumference in 
+cm) / (Buttocks/Hip 
+Circumference in 
+cm) 
+Notes 
+
+
+
+
+
+
+
+
+
+4.
+Item Sets 
+1.2 
+1.9 
+BESS Test 
+Collected Data 
+Basal Metabolic 
+Rate Men 
+Basal Metabolic 
+Rate Women 
+
+Basal 
+bolic 
+Rat (BMR 
+
+
+Activi level 
+Sedentary (no 
+exercise) 
+Light (1-3 days of 
+exercise) 
+Moderate (3-5 days 
+of exercise) 
+Heavy (6-7 days of 
+exercise) 
+Extreme (7 days of 
+exercise/physical 
+job) 
+Total Daily Energy 
+Expenditure (TDEE) 
+
+Feet Together 
+Double Leg Stance 
+Double Leg Stance 
+(Pad) 
+Left Foot 
+Single Leg Stance 
+Tandem Stance 
+Single Leg Stance 
+(Pad) 
+Tandem Stance 
+(Pad) 
+Right Foot 
+Single Leg Stance
+
+Units 
+kcal 
+kcal 
+kcal 
+1 .375 
+1 55 
+1 .725 
+kcal 
+Faults 
+Number of Faults 
+Number of Faults 
+Faults 
+Number of Faults 
+Number of Faults 
+Number of Faults 
+Number of Faults 
+Faults 
+Number of Faults 
+4 
+Equation 
+[(10 x kg) + (6.25 x 
+cm)] - [(5 x age) + 5] 
+[(10 x kg) + (6.25 x 
+cm)] - [(5 x age) 
+-161] 
+(21.6 x kg Lean 
+Body Mass) + 370 
+
+(BMR) x (Activity 
+Level value) = TDEE 
+
+Feet Together = (Double Leg 
+Stance) + (Double 
+Leg Stance (Pad)) 
+Left Foot = (Single 
+Leg Stance) + 
+Tandem Stance) + 
+(Single Leg Stance 
+(Pad)) + (Tandem 
+Stance (Pad)) 
+Right Foot = (Single 
+Leg Stance) + 
+Tandem Stance) + 
+(Single Leg Stance 
+(Pad)) + (Tandem 
+Stance (Pad)) 
+
+Notes 
+Mifflin-St Jeor 
+Mifflin-St Jeor 
+Katch-McArdle 
+Select one or two 
+for Total Daily 
+Energy Expenditure 
+ODEE) 
+Left Foot Down 
+Left Foot Back 
+Right Foot Down 
+
+
+
+
+
+
+
+
+5.
+Item Sets 
+A-N Balance Test 
+Modified Y Balance 
+Test 
+Collected Data 
+Tandem Stance 
+Single Leg Stance 
+(Pad) 
+Tandem Stance 
+(Pad) 
+Total Faults 
+Left Foot 
+Bottom Block 
+Knee 2 T 
+Heel 
+Reach Back 
+Left Foot Score 
+Composite Score 
+Right Foot 
+Bottom Block 
+Knee 2 T 
+Heel Tap 
+Reach Back 
+Right Foot Score 
+Composite Score 
+
+
+Left Foot 
+Anterior Trial 1 
+Anterior Trial 2 
+Anterior Trial 3 
+Anterior Absolute 
+Score 
+Anterior Relative 
+(Normalized) Reach 
+distance 
+Units 
+Number of Faults 
+Number of Faults 
+Number of Faults 
+Faults 
+Numerical Value 
+Numerical Value 
+Numerical Value 
+Numerical Value 
+Numerical Value 
+Numerical Value 
+Numerical Value 
+Numerical Value 
+cm 
+cm 
+cm 
+cm 
+5 
+Equation 
+Notes 
+Right Foot Back 
+Total Score = Feet 
+Together (Faults) + 
+Left Foot (Faults) + 
+Right Foot (Faults) 
+*'woo 
+Left Foot Score = 
+(Bottom Block) + 
+(Knee 2 T) + (Heel 
+Tap) + (Reach Back) 
+Composite Score — 
+(Left Foot Score) / 
+16 
+Right Foot Score = 
+(Bottom Block) + 
+(Knee 2 T) + (Heel 
+Tap) + (Reach Back) 
+Composite Score — 
+(Right Foot Score) / 
+16 
+Test order = RA, 
+LA, RPM, LPM, 
+RPL, LPL 
+I
+[(Anterior Trial I) + 
+(Anterior Trial 2) + 
+(Anterior Trial 3)] / 3 
+(Anterior Absolute 
+Score) / (jimbP 
+'lengtn,ÄSl ) x 100 
+vet) e 
+
+
+
+
+
+
+
+
+
+
+6.
+Item Sets 
+Collected D ta 
+nte r C mposite 
+Reach 
+ance 
+Posterolateral Trial 
+1 
+Posterolateral Trial 
+2 
+Posterolateral Trial 
+3 
+Posterolateral 
+Absolute Score 
+Posterolateral 
+Relative 
+(Normalized) Reach 
+distance 
+—-POsterolateral 
+Composite 
+h 
+Distance 
+Posteromedial Trial 
+1 
+Posteromedial Trial 
+2 
+Posteromedial Trial 
+3 
+Posteromedial 
+Absolute Score 
+Posteromedial 
+Relative 
+(Normalized) Reach 
+distance 
+p 
+ro dial 
+Com te Reach 
+Distan 
+Compo •te Score 
+Right Foot 
+Units 
+cm 
+cm 
+cm 
+cm 
+cm 
+cm 
+cm 
+cm 
+Equation 
+[(Anterior Trial 1) + 
+(Anterior Trial 2) + 
+(Anterior Trial 3)] / 
+(3) x (limb length, 
+ASIS) x 100 
+[(Posterolateral Trial 
+1) + (Posterolateral 
+Trial 2) + 
+(Posterolateral Trial 
+(Posterolateral 
+Absolute Score) / 
+(limb length, ASIS) 
+x 100
+
+[(PosteroIateral 
+1) + (Posterolateral 
+Trial 2) + 
+(Posterolateral Trial 
+3)] / (3) x (limb 
+[(Posteromedial 
+Trial 1) + 
+(Posteromedial Trial 
+2) + (Posteromedial 
+Trial 3)] / 3 
+(Posteromedial 
+Absolute Score) / 
+(limb length, ASIS) 
+x 100 
+
+
+A(Posterorpedial 
+Trial 1) + 
+(Posteromedial Trial 
+2) ± (Posteromedia 
+Trial 3)] / (3) x (limb 
+length, ASIS) x 100 
+[(Anterior 
+Composite Reach 
+Distance) + 
+(Posterolateral 
+Composite Reach 
+Distance) + 
+(Posteromedial 
+Composite Reach 
+Distance)] / 3 
+Notes 
+
+
+
+
+
+
+
+
+
+
+
+
+7.
+Sets 
+Collected Data 
+Anterior Trial 1 
+Anterior Trial 2 
+Anterior Trial 3 
+Anterior Absolute 
+Score 
+Anterior Relative 
+(Normalized) Reach 
+distance 
+"riorosalte 
+ReachDl>tance 
+Posterolateral Trial 
+1 
+Posterolateral Trial 
+2 
+Posterolateral Trial 
+3 
+Posterolateral 
+Absolute Score 
+Posterolateral 
+Composite Reach 
+Distance 
+Posteromedial Trial 
+1 
+Posteromedial Trial 
+2 
+Posteromedial Trial 
+3 
+Posteromedial 
+Absolute Score 
+P9 eromedial 
+omposite Reach 
+istance 
+Units 
+cm 
+cm 
+cm 
+cm 
+cm 
+cm 
+cm 
+cm 
+cm 
+cm 
+cm 
+cm 
+Equation 
+[(Anterior Trial 1) + 
+(Anterior Trial 2) + 
+(Anterior Trial 3)] / 3 
+(Anterior Absolute 
+Score) / (limb 
+length, ASE) x 100 
+[(Anterjor Trial 1) + 
+(Anterior Trial 2) + 
+(Anterior Trial 3)] / 
+(3) x (limb length, 
+[(PosterolateraI Trial 
+1) + (Posterolateral 
+Trial 2) + 
+(Posterolateral Trial 
+[(PosterolateraI Trial 
+1) + (Posterolateral 
+Trial 2) + 
+(Posterolateral Trial 
+3)] / (3) x (limb 
+length, ASE) x 100 
+[(Posteromedial 
+Trial 1) + 
+(Posteromedial Trial 
+Trial 3)] 73 
+[(Posteromedial 
+Trial 1) + 
+(Posteromedial Trial 
+2) + (Posteromedial 
+Trial 3)] / (3) x (limb 
+-length, ASIS) x 100 
+Notes 
+
+
+
+
+
+
+
+8.
+Item Sets 
+V02max 
+Sin 
+-c 
+Heart Rate 
+Recovery 
+Zone 1 
+Zone 2 
+Zone 3 
+Zone 4 
+Zone 5 
+Muscular Strength - 
+Push 
+Collected Data 
+Composite Score 
+YMCA cycle 
+Ergornetry Prot col 
+Age Predicted HR 
+Max 
+Gellish HR Max 
+Target Heart Rate 
+85% HR Max 
+60 Second post- 
+exercise 
+120 Second post- 
+exercise 
+50-60% HR Max 
+60-70% HR Max 
+70-80% HR Max 
+80-90% HR Max 
+90-100% HR Max 
+IRM Push 
+Units 
+ml/kg/rnin 
+bpm 
+bpm 
+bpm 
+bpm 
+bpm 
+bpm 
+bpm 
+bpm 
+bpm 
+bpm 
+bpm 
+kg & lbs 
+8 
+Equation 
+[(Anterior 
+Composite Reach 
+Distance) + 
+(Posterolateral 
+Composite Reach 
+Distance) + 
+(Posteromedial 
+Composite Reach 
+(220 - Age) = Age 
+Predicted HR Max 
+206.9 - (0.67 x Age) 
+= Gellish HR Max 
+Target Heart Rate — 
+[(HR Max - HR 
+Rest) x 700/0] + HR 
+Rest 
+(220 - Age) = HR 
+Max x 
+(50% x Age 
+Predicted HR Max) 
+to (60% Age 
+Predicted HR Max) 
+(60% x Age 
+Predicted HR Max) 
+to (70% Age 
+Predicted HR Max) 
+(70% x Age 
+Predicted HR Max) 
+to (80% Age 
+Predicted HR Max) 
+(80% x Age 
+Predicted HR Max) 
+to (90% Age 
+Predicted HR Max) 
+(90% x Age 
+Predicted HR Max) 
+to (100% Age 
+Predicted HR Max) 
+Notes 
+Heart Ra 
+e S erve 
+
+
+
+
+
+
+
+
+
+
+
+9.
+Equation 
+Bench Press 
+Weight Ratio - 
+weight pushed in 
+1b/ body weight in 
+1b 
+Pulldown Weight 
+Ratio = weight 
+pulled in 1b/ body 
+weight in 1b 
+Leg Press Weight 
+Ratio = weight 
+pushed in 1b/ body 
+weight in 1b 
+(Right Hand 
+Dynamometer) + 
+(Left Hand 
+Dynamometer) 
+V 
+Of 
+Item Sets 
+Muscular Strength - 
+Muscular Strength - 
+Legs 
+Grip Strength 
+uscular 
+Endurance 
+Lumbar 
+Hamstring 
+Adductor 
+Shoulder 
+Collected Data 
+IRM Pull 
+IRM Leg 
+Right Hand 
+Dynamometer 
+Left Hand 
+Dynamometer 
+Combined 
+Dynamometer 
+Push-Up 
+Knee Push-Up 
+Pull-Up 
+Squat 
+Flexio 
+o 
+Extension 
+SLR Test - 
+SLR Test - L 
+Standing Hinge 
+units 
+ratio 
+kg & lbs 
+ratio 
+kg & lbs 
+ratio 
+kg & lbs 
+kg & lbs 
+kg & lbs 
+reps 
+reps 
+reps 
+reps 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+9 
+Notes 
+Hinge 
+Flexion - R 
+Flexion - L 
+Extension - 
+Extension 
+Abduction 
+Abduction 
+R 
+Lateral Rotation 
+R 
+
+
+
+
+
+
+
+
+
+10.
+Item Sets 
+Cervical 
+Wrist 
+Elbow 
+Knee 
+Hip 
+Collected Data 
+Lateral Rotation 
+L 
+Lateral Rotation 
+R 
+Lateral Rotation - 
+Flexion 
+Extension 
+Dorsiflexion - R 
+Dorsiflexion - L 
+Plantar Flexion 
+R 
+Plantar Flexion - L 
+Flexion - R 
+Flexion - L 
+Extension - 
+Extension 
+Flexion - R 
+Flexion - L 
+Extension - 
+Extension - L 
+Pronation - R 
+Pronation - L 
+Supination 
+Supination - 
+L 
+Flexion - R 
+Flexion - L 
+Extension - R 
+Extension - 
+Flexion - R 
+Flexion - L 
+Hyperextension - R 
+Hyperextension - L 
+Abduction - R 
+Abduction - L 
+Units 
+Equation 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+deg rees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+d rees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+degrees 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

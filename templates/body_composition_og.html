@@ -1,0 +1,680 @@
+{% extends "nav.html" %}
+
+{% block head %}
+
+<style type="text/css">
+    html {
+        width: 100%;
+    }
+
+    body {
+        width: 100%;
+    }
+
+    form {
+        width: 100%;
+    }
+
+    h1, legend {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    label, input, select {
+        display: block;
+    }
+
+    input, select {
+        /*margin-bottom: 1em;*/
+    }
+
+    fieldset {
+        margin-bottom: 2em;
+
+    }
+
+    fieldset fieldset {
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+
+    input[type="checkbox"] {
+        display: inline;
+    }
+
+    .card-type input, .card-type label {
+        display: inline-block;
+    }
+
+    .fl {
+        float: left;
+        width: 200px;
+        margin-left: 55px;
+        margin-right: 40px;
+        margin-bottom: 20px;
+        background: rgb(134, 197, 247);
+        padding: 10px;
+        border-radius: 5px;
+        height: 54px;
+    }
+
+    .fl label {
+        margin-bottom: 10px;
+    }
+
+    legend {
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+</style>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="/static/jquery.js"></script>
+<script src="/static/jquery_ui.js"></script>
+
+{% endblock %}
+
+
+{% block content %}
+
+<!-- <h1>Body Composition {{ name }}</h1> -->
+
+<form id="bc" onsubmit="cal_sub()" action="/body_composition_form_submit" method="post">
+    <!--    不显示1-->
+    <fieldset style="display: none;">
+        <input type="text" name="Username" value={{name}} style="display: none;">
+        <legend>Resting Measurements</legend>
+
+        <div id="age" style="display:none">{{dict.age}}</div>
+        <div id="mf" style="display:none">{{dict.gender}}</div>
+
+
+        <div style="display:none" id="hei_inch">{{dict.height}}</div>
+
+
+        <div class="col">
+            <label>Height (inch)</label>
+            <input id="height" name="height" type="number" step=0.01 value={{dict.height}}>
+        </div>
+
+        <div class="col-6 fl" style="display:none;">
+            <label>Weight (lbs)</label>
+            <input id="weight" name="weight" type="number" step=0.01 default=0 value="{{dict.weight}}">
+            <!-- (kg) = lbs / 2.2 -->
+        </div>
+
+        <div class="col-6 fl" style="display:none">
+            <!-- <label>BMI</label> -->
+            <!-- (kg)/(m^2) -->
+            <input id="bmi" name="bmi" type="number" step=0.01 value="{{dict.bmi}}">
+        </div>
+<!--        血压更改-->
+        <div class="col-6 fl">
+            <label>BP (mmHg)</label>
+            <input id="bp" name="bp" type="text" placeholder="(low)-(high)" value="{{dict.bp}}">
+        </div>
+
+        <div class="col-6 fl" style="display:none;">
+            <label>Resting HR (bpm)</label>
+            <input id="rhr" name="rhr" type="number" step=0.01 value="{{dict.rhr}}">
+            <input id='hrm' type="number" name="hrm" style="display:none" value={{dict.hrm}}>
+        </div>
+    </fieldset>
+
+
+    <fieldset>
+
+        <legend>Calculated Composition</legend>
+        <div>
+            <!-- <label>Body Fat % Male</label> -->
+            <!-- ((Body Fat % 1m) + (Body Fat % 2m) + (Body Fat % 3m)) / 3  -->
+            <input id="bfm" name="bfm" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Body Fat % Female</label> -->
+            <!-- ((Body Fat % 1f) + (Body Fat % 2f) + (Body Fat % 3f)) / 3  -->
+            <input id="bff" name="bff" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Fat Mass (lbs)</label> -->
+            <!-- (Body Fat %, Male or Female) * weight in lbs  -->
+            <input id="fm" name="fm" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Lean Body Mass (lbs)</label> -->
+            <!-- (weight in lbs) - Fat Mass  -->
+            <input id="lbm" name="lbm" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Circumference</label> -->
+            <!-- (Neck) + (Chest) + (Waist) + (Abdomen) + (Arm R) + (Arm L) + (Forearm R) + (Forearm L) + (Buttocks/Hips) + (Midthigh R) + (Midthigh L) + (Calf R) + (Calf L)  -->
+            <input id="circumference" name="circumference" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Waist-to-Hip Ratio</label> -->
+            <!-- (Waist Circumference in cm) / (Buttocks/Hip Circumference in cm)  -->
+            <input id="wthr" name="wthr" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Basal Metabolic Rate Men</label> -->
+            <!-- ((10 * kg) + (6.25 * cm)) - ((5 * age) + 5) -->
+            <input id="bmrm" name="bmrm" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Basal Metabolic Rate Women</label> -->
+            <!-- ((10 * kg) + (6.25 * cm)) - ((5 x age) -161)  -->
+            <input id="bmrw" name="bmrw" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Basal Metabolic Rate (BMR)</label> -->
+            <!-- (21.6 * kg Lean Body Mass) + 370 -->
+            <input id="bmr" name="bmr" type="number" step=0.01 style="display:none">
+        </div>
+
+        <div style="display: none" id="al_db">{{dict.act_level}}</div>
+
+        <div style="margin-bottom: 20px; background: rgb(134, 197, 247); padding:10px; border-radius: 5px; width:300px;">
+            <div style="margin-top:5px;margin-bottom:8px;margin-left:6px;"><b>Activity Level</b></div>
+            <div class="card-type">
+                <input id="l1" name="al" type="radio" value='1.2'>
+                <label for="l1">Sedentary (no exercise)</label><br/>
+                <input id="l2" name="al" type="radio" value='1.375'>
+                <label for="l2">Light (1-3 days of exercise)</label> <br/>
+                <input id="l3" name="al" type="radio" value='1.55'>
+                <label for="l3">Moderate (3-5 days of exercise)</label><br/>
+                <input id="l4" name="al" type="radio" value='1.725'>
+                <label for="l4">Heavy (6-7 days of exercise)</label><br/>
+                <input id="l5" name="al" type="radio" value='1.9'>
+                <label for="l5" style="font-size: 12px">Extreme (7 days of exercise/physical job)</label>
+                <input id="act_level" name="act_level" type="number" step=0.01 style="display:none">
+            </div>
+        </div>
+
+        <div>
+            <!-- <label>Total Daily Energy Expenditure (TDEE)</label> -->
+            <!-- (BMR) x (Activity Level value) -->
+            <input id="tdee" name="tdee" type="number" step=0.01 style="display:none">
+        </div>
+    </fieldset>
+
+
+    <fieldset>
+        <legend>Anthropometry / Circumference</legend>
+        <div style="font-size: 18px; margin-left:2px;">
+            <div style="float:left; margin-left: 55px">choose unit</div>
+            <input style="float:left;margin-left:20px;" id="cm" name="inch_cm" type="radio" value='cm' checked
+                   onclick="change_cm()">
+            <label style="float:left;" for="cm">cm</label>
+            <input style="float:left;margin-left:20px;" id="inch" name="inch_cm" type="radio" value='inch'
+                   onclick="change_inch()">
+            <label style="float:left;" for="inch">inch</label>
+        </div>
+        <div style="clear:both;margin-bottom: 10px;"></div>
+        <div class="col-6 fl">
+            <label>Neck (<span class="unit">cm</span>)</label>
+            <input id="neck" name="neck" type="number" step=0.01 value="{{dict.neck}}">
+        </div>
+        <div class="col-6 fl">
+            <label>Chest (<span class="unit">cm</span>)</label>
+            <input id="chest" name="chest" type="number" step=0.01 value="{{dict.chest}}">
+        </div>
+        <div class="col-6 fl">
+            <label>Waist (<span class="unit">cm</span>)</label>
+            <input id="waist" name="waist" type="number" step=0.01 value="{{dict.waist}}">
+        </div>
+        <div class="col-6 fl">
+            <label>Abdomen (<span class="unit">cm</span>)</label>
+            <input id="abdomen" name="abdomen" type="number" step=0.01 value="{{dict.abdomen}}">
+        </div>
+        <div class="col-6 fl">
+            <label>Arm Right (<span class="unit">cm</span>)</label>
+            <input id="armr" name="armr" type="number" step=0.01 value="{{dict.armr}}">
+        </div>
+        <div class="col-6 fl">
+            <label>Arm Left (<span class="unit">cm</span>)</label>
+            <input id="arml" name="arml" type="number" step=0.01 value="{{dict.arml}}">
+        </div>
+        <div class="col-6 fl">
+            <label>Forearm Right (<span class="unit">cm</span>)</label>
+            <input id="forearmr" name="forearmr" type="number" step=0.01 value="{{dict.forearmr}}">
+        </div>
+        <div class="col-6 fl">
+            <label>Forearm Left (<span class="unit">cm</span>)</label>
+            <input id="forearml" name="forearml" type="number" step=0.01 value="{{dict.forearml}}">
+        </div>
+        <div class="col-6 fl">
+            <label>Buttocks/Hips (<span class="unit">cm</span>)</label>
+            <input id="buttocks" name="buttocks" type="number" step=0.01 value="{{dict.buttocks}}">
+        </div>
+        <div class="col-6 fl">
+            <label>Midthigh Right (<span class="unit">cm</span>)</label>
+            <input id="midthighr" name="midthighr" type="number" step=0.01 value="{{dict.midthighr}}">
+        </div>
+        <div class="col-6 fl">
+            <label>Midthigh Left (<span class="unit">cm</span>)</label>
+            <input id="midthighl" name="midthighl" type="number" step=0.01 value="{{dict.midthighl}}">
+        </div>
+        <div class="col-6 fl">
+            <label>Calf Right (<span class="unit">cm</span>)</label>
+            <input id="calfr" name="calfr" type="number" step=0.01 value="{{dict.calfr}}">
+        </div>
+        <div class="col-6 fl">
+            <label>Calf Left (<span class="unit">cm</span>)</label>
+            <input id="calfl" name="calfl" type="number" step=0.01 value="{{dict.calfl}}">
+        </div>
+        <div class="col-6 fl">
+            <label>Foot Length (<span class="unit">cm</span>)</label>
+            <input id="foot" name="foot" type="number" step=0.01 value="{{dict.foot}}">
+        </div>
+        <div class="col-6 fl">
+            <label>Knee Joint (<span class="unit">cm</span>)</label>
+            <input id="knee" name="knee" type="number" step=0.01 value="{{dict.knee}}">
+        </div>
+        <div class="col-6 fl" style="display:none;">
+            <!-- <label>Anterior Superior LLiac Spine [ASIS] (inch)</label> -->
+            <label>ASIS (<span class="unit">cm</span>)</label>
+            <input id="asis" name="asis" type="number" step=0.01 value="{{dict.asis}}">
+        </div>
+        <div class="col-6 fl">
+            <label>Shoulder Joint (<span class="unit">cm</span>)</label>
+            <input id="shoulder" name="shoulder" type="number" step=0.01 value="{{dict.shoulder}}">
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Skinfold Values</legend>
+        <div class="col-6 fl">
+            <label>Abdomen (mm)</label>
+            <input id="abdomen2" name="abdomen2" type="number" step=0.01 value="{{dict.abdomen2}}">
+        </div>
+        <div class="fl">
+            <label>Triceps (mm)</label>
+            <input id="triceps" name="triceps" type="number" step=0.01 value="{{dict.triceps}}">
+        </div>
+        <div class="fl">
+            <label>Chest (mm)</label>
+            <input id="chest2" name="chest2" type="number" step=0.01 value="{{dict.chest2}}">
+        </div>
+        <div class="fl">
+            <label>Midaxillary (mm)</label>
+            <input id="midaxillary" name="midaxillary" type="number" step=0.01 value="{{dict.midaxillary}}">
+        </div>
+        <div class="fl">
+            <label>Subscapular (mm)</label>
+            <input id="subscapular" name="subscapular" type="number" step=0.01 value="{{dict.subscapular}}">
+        </div>
+        <div class="fl">
+            <label>Suprailiac (mm)</label>
+            <input id="suprailiac" name="suprailiac" type="number" step=0.01 value="{{dict.suprailiac}}">
+        </div>
+        <div class="fl">
+            <label>Thigh (mm)</label>
+            <input id="thigh" name="thigh" type="number" step=0.01 value="{{dict.thigh}}">
+        </div>
+
+
+        <div style="display:none">
+            <!-- <label>SUM7 according to m/f</label> -->
+            <!-- SUM7 = (Abdomen) + (Triceps) + (Chest) + (Midaxillary) + (Subscapular) + (Suprailiac) + (Thigh)  -->
+            <input id="sum7" name="sum7" type="number" step=0.01>
+        </div>
+        <div style="display:none">
+            <!-- <label>SUM3m1 for male</label> -->
+            <!-- SUM3m1 = (Chest) + (Abdomen) + (Thigh)  -->
+            <input id="sum3m1" name="sum3m1" type="number" step=0.01>
+        </div>
+        <div style="display:none">
+            <!-- <label>SUM3m2 for male</label> -->
+            <!-- SUM3m2 = (Chest) + (Triceps) + (Subscapular) -->
+            <input id="sum3m2" name="sum3m2" type="number" step=0.01>
+        </div>
+        <div style="display:none">
+            <!-- <label>SUM3f1 for female</label> -->
+            <!-- SUM3f1 = Triceps + (Suprailiac) + (Thigh)  -->
+            <input id="sum3f1" name="sum3f1" type="number" step=0.01>
+        </div>
+        <div style="display:none">
+            <!-- <label>SUM3f2 for female</label> -->
+            <!-- SUM3f2 = (Triceps) + (Suprailiac) + (Abdominal)  -->
+            <input id="sum3f2" name="sum3f2" type="number" step=0.01>
+        </div>
+
+    </fieldset>
+
+    <fieldset style="display: none;">
+        <legend>Body Density and Percent Fat</legend>
+        <div>
+            <!-- <label>Body Density 1m</label> -->
+            <!-- 1.112 - 0.00043499(SUM7) + 0.00000055(SUM7)^2 - 0.00028826(age) -->
+            <input id="bd1m" name="bd1m" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Body Density 2m</label> -->
+            <!-- 1.10938 - 0.0008267(SUM3m1) + 0.0000016(SUM3m1)^2 - 0.0002574 (age)  -->
+            <input id="bd2m" name="bd2m" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Body Density 3m</label> -->
+            <!-- 1.1125025 - 0.0013125(SUM3m2) + 0.0000055(SUM3m2)^2 - 0.000244 (age)  -->
+            <input id="bd3m" name="bd3m" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Body Density 1f</label> -->
+            <!-- 1.097 - 0.00046971(SUM7) + 0.00000056(SUM7)^2 - 0.00012828 (age) -->
+            <input id="bd1f" name="bd1f" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Body Density 2f</label> -->
+            <!-- 1.0994921 - 0.0009929(SUM3f1) + 0.0000023(SUM3f1)^2 - 0.0001329 (age) -->
+            <input id="bd2f" name="bd2f" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Body Density 3f</label> -->
+            <!-- 1.089733 - 0.0009245(SUM3f2) + 0.0000025(SUM3f2)^2 - 0.0000979 (age) -->
+            <input id="bd3f" name="bd3f" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Body Fat % 1m</label> -->
+            <!-- (457/Body Density 1m) - 414.2  -->
+            <input id="bf1m" name="bf1m" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Body Fat % 2m</label> -->
+            <!-- (457/Body Density 2m) - 414.2 -->
+            <input id="bf2m" name="bf2m" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Body Fat % 3m</label> -->
+            <!-- (457/Body Density 3m) - 414.2  -->
+            <input id="bf3m" name="bf3m" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Body Fat % 1f</label> -->
+            <!-- (457/Body Density 1f)- 414.2 -->
+            <input id="bf1f" name="bf1f" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Body Fat % 2f</label> -->
+            <!-- (457/Body Density 2f) - 414.2  -->
+            <input id="bf2f" name="bf2f" type="number" step=0.01 style="display:none">
+        </div>
+        <div>
+            <!-- <label>Body Fat % 3f</label> -->
+            <!-- (457/Body Density 3f) - 414.2 -->
+            <input id="bf3f" name="bf3f" type="number" step=0.01 style="display:none">
+        </div>
+
+    </fieldset>
+
+</form>
+
+
+<script type="text/javascript">
+
+    // onload
+    var hei_inch = parseFloat(document.getElementById("hei_inch").innerHTML);
+    // var hei_f = parseInt(hei_inch/12);
+    // var hei_i = parseInt(hei_inch%12);
+    // document.getElementById("height1").value = hei_f;
+    // document.getElementById("height2").value = hei_i;  
+
+    var al_db = parseFloat(document.getElementById("al_db").innerHTML);
+    if (al_db == 1.2) {
+        document.getElementById("l1").setAttribute("checked", true);
+    } else if (al_db == 1.375) {
+        document.getElementById("l2").setAttribute("checked", true);
+    } else if (al_db == 1.55) {
+        document.getElementById("l3").setAttribute("checked", true);
+    } else if (al_db == 1.725) {
+        document.getElementById("l4").setAttribute("checked", true);
+    } else if (al_db == 1.9) {
+        document.getElementById("l5").setAttribute("checked", true);
+    } else {
+        document.getElementById("l1").setAttribute("checked", true);
+    }
+
+
+    $(function () {
+        $("#dob").datepicker({
+            // changeMonth: true,
+            changeYear: true
+        });
+    });
+
+    function get_act_level() {
+        var al = 0;
+        var als = document.getElementsByName("al");
+        for (var i = 0; i < als.length; i++) {
+            if (als[i].checked) {
+                al = als[i].value;
+                break;
+            }
+        }
+        return parseFloat(al);
+    }
+
+
+    var inch_cm = "cm";
+
+    function change_inch() {
+        if (inch_cm == "inch") {
+            return;
+        }
+        inch_cm = "inch";
+        var ids = ["neck", "chest", "waist", "abdomen", "armr", "arml", "forearmr", "forearml", "buttocks", "midthighr", "midthighl", "calfr", "calfl", "foot", "knee", "asis", "shoulder"]
+        document.getElementById("cm").checked = false;
+        document.getElementById("inch").checked = true;
+        var units = document.getElementsByClassName("unit");
+        for (var i = 0; i < units.length; i++) {
+            units[i].innerHTML = "inch";
+            var cm_val = parseFloat(document.getElementById(ids[i]).value);
+            // alert(inch_val)
+            var inch_val = cm_val / 2.54;
+            document.getElementById(ids[i]).value = inch_val.toFixed(2);
+        }
+    }
+
+    function change_cm() {
+        if (inch_cm == "cm") {
+            return;
+        }
+        inch_cm = "cm";
+        var ids = ["neck", "chest", "waist", "abdomen", "armr", "arml", "forearmr", "forearml", "buttocks", "midthighr", "midthighl", "calfr", "calfl", "foot", "knee", "asis", "shoulder"]
+        document.getElementById("inch").checked = false;
+        document.getElementById("cm").checked = true;
+        var units = document.getElementsByClassName("unit");
+        for (var i = 0; i < units.length; i++) {
+            units[i].innerHTML = "cm";
+            var inch_val = parseFloat(document.getElementById(ids[i]).value);
+            // alert(inch_val)
+            var cm_val = inch_val * 2.54;
+            document.getElementById(ids[i]).value = cm_val.toFixed(2);
+        }
+
+    }
+
+
+    function cal_sub() {
+
+        // var dob = document.getElementById("dob").value;
+
+        var age = parseFloat(document.getElementById("age").innerHTML);
+        var hrm = 220 - age;
+        document.getElementById("hrm").value = hrm;
+
+        // age = getAge(dob);
+        // var age = 24;
+        // document.getElementById("age").value = age;
+
+        // var height_feet = parseFloat(document.getElementById("height1").value);
+        // var height_inch = parseFloat(document.getElementById("height2").value);
+        // var height = height_feet*12 + height_inch;
+        var height = parseFloat(document.getElementById("height").value);
+        var height_m = height * 0.0254;
+        // document.getElementById("height").value = height.toFixed(2);
+
+        var weight = parseFloat(document.getElementById("weight").value);
+        var weight_kg = weight / 2.2;
+        document.getElementById("bmi").value = (weight_kg / (height_m * height_m)).toFixed(2);
+
+        // transfer to inch if needed
+        if (inch_cm == "inch") {
+            var ids = ["neck", "chest", "waist", "abdomen", "armr", "arml", "forearmr", "forearml", "buttocks", "midthighr", "midthighl", "calfr", "calfl", "foot", "knee", "asis", "shoulder"]
+            var units = document.getElementsByClassName("unit");
+            for (var i = 0; i < units.length; i++) {
+                // units[i].innerHTML = "inch";
+                var inch_val = parseFloat(document.getElementById(ids[i]).value);
+                // alert(inch_val)
+                var cm_val = inch_val * 2.54;
+                document.getElementById(ids[i]).value = cm_val.toFixed(2);
+            }
+        }
+
+        var abdomen2 = parseFloat(document.getElementById("abdomen2").value);
+        var triceps = parseFloat(document.getElementById("triceps").value);
+        var chest2 = parseFloat(document.getElementById("chest2").value);
+        var midaxillary = parseFloat(document.getElementById("midaxillary").value);
+        var subscapular = parseFloat(document.getElementById("subscapular").value);
+        var suprailiac = parseFloat(document.getElementById("suprailiac").value);
+        var thigh = parseFloat(document.getElementById("thigh").value);
+
+        var sum7 = abdomen2 + triceps + chest2 + midaxillary + subscapular + suprailiac + thigh;
+        document.getElementById("sum7").value = sum7.toFixed(2);
+        // alert(sum7);
+        // return
+
+        var sum3m1 = abdomen2 + chest2 + thigh;
+        var sum3m2 = chest2 + triceps + subscapular;
+        var sum3f1 = triceps + suprailiac + thigh;
+        var sum3f2 = triceps + suprailiac + abdomen2;
+        document.getElementById("sum3m1").value = sum3m1;
+        document.getElementById("sum3m2").value = sum3m2;
+        document.getElementById("sum3f1").value = sum3f1;
+        document.getElementById("sum3f2").value = sum3f2;
+
+        bd1m = bd2m = bd3m = bd1f = bd2f = bd3f = 0.0;
+        if (sum7 > 0) {
+            bd1m = 1.112 - 0.00043499 * sum7 + 0.00000055 * sum7 * sum7 - 0.00028826 * age;
+            bd1f = 1.097 - 0.00046971 * sum7 + 0.00000056 * sum7 * sum7 - 0.00012828 * age;
+        }
+        document.getElementById("bd1m").value = bd1m.toFixed(2);
+        document.getElementById("bd1f").value = bd1f.toFixed(2);
+
+        if (sum3m1 > 0) {
+            bd2m = 1.10938 - 0.0008267 * sum3m1 + 0.0000016 * sum3m1 * sum3m1 - 0.0002574 * age;
+        }
+        document.getElementById("bd2m").value = bd2m.toFixed(2);
+        if (sum3m2 > 0) {
+            bd3m = 1.1125025 - 0.0013125 * sum3m2 + 0.0000055 * sum3m2 * sum3m2 - 0.000244 * age;
+        }
+        document.getElementById("bd3m").value = bd3m.toFixed(2);
+
+        if (sum3f1 > 0) {
+            bd2f = 1.0994921 - 0.0009929 * sum3f1 + 0.0000023 * sum3f1 * sum3f1 - 0.0001329 * age;
+        }
+        document.getElementById("bd2f").value = bd2f.toFixed(2);
+        if (sum3f2 > 0) {
+            bd3f = 1.089733 - 0.0009245 * sum3f2 + 0.0000025 * sum3f2 * sum3f2 - 0.0000979 * age;
+        }
+        document.getElementById("bd3f").value = bd3f.toFixed(2);
+
+        bf1m = bf2m = bf3m = bf1f = bf2f = bf3f = 0;
+        if (bd1m > 0) {
+            bf1m = 457 / bd1m - 414.2;
+        }
+        if (bd2m > 0) {
+            bf2m = 457 / bd2m - 414.2;
+        }
+        if (bd3m > 0) {
+            bf3m = 457 / bd3m - 414.2;
+        }
+        if (bd1f > 0) {
+            bf1f = 457 / bd1f - 414.2;
+        }
+        if (bd2f > 0) {
+            bf2f = 457 / bd2f - 414.2;
+        }
+        if (bd3f > 0) {
+            bf3f = 457 / bd3f - 414.2;
+        }
+
+        document.getElementById("bf1m").value = bf1m.toFixed(2);
+        document.getElementById("bf2m").value = bf2m.toFixed(2);
+        document.getElementById("bf3m").value = bf3m.toFixed(2);
+        document.getElementById("bf1f").value = bf1f.toFixed(2);
+        document.getElementById("bf2f").value = bf2f.toFixed(2);
+        document.getElementById("bf3f").value = bf3f.toFixed(2);
+
+        var bfm = (bf1m + bf2m + bf3m) / 3;
+        var bff = (bf1f + bf2f + bf3f) / 3;
+        document.getElementById("bfm").value = bfm.toFixed(2);
+        document.getElementById("bff").value = bff.toFixed(2);
+
+        var fm = 0;
+
+        gender = "male";
+        if (document.getElementById("mf").innerHTML == "female") {
+            gender = "female"
+        }
+
+        if (gender == "male") {
+            fm = bfm * weight / 100;
+        } else if (gender == "female") {
+            fm = bff * weight / 100;
+        }
+        document.getElementById("fm").value = fm.toFixed(2);
+        document.getElementById("lbm").value = (weight - fm).toFixed(2);
+
+        // alert(bff)
+        // alert(fm)
+
+        var neck = parseFloat(document.getElementById("neck").value);
+        var chest = parseFloat(document.getElementById("chest").value);
+        var waist = parseFloat(document.getElementById("waist").value);
+        var abdomen = parseFloat(document.getElementById("abdomen").value);
+        var armr = parseFloat(document.getElementById("armr").value);
+        var arml = parseFloat(document.getElementById("arml").value);
+        var forearmr = parseFloat(document.getElementById("forearmr").value);
+        var forearml = parseFloat(document.getElementById("forearml").value);
+        var midthighr = parseFloat(document.getElementById("midthighr").value);
+        var midthighl = parseFloat(document.getElementById("midthighl").value);
+        var buttocks = parseFloat(document.getElementById("buttocks").value);
+        var calfr = parseFloat(document.getElementById("calfr").value);
+        var calfl = parseFloat(document.getElementById("calfl").value);
+        var circumference = neck + chest + waist + abdomen + arml + armr + forearml + forearmr + midthighl + midthighr + buttocks + calfl + calfr;
+        document.getElementById("circumference").value = circumference;
+        // in cm
+        var wthr = waist / buttocks;
+        document.getElementById("wthr").value = wthr.toFixed(2);
+
+        var bmrm = 0;
+        var bmrw = 0;
+        var bmr = 0;
+        if (height_m > 0 && weight_kg > 0) {
+            bmrm = 10 * weight_kg + 6.25 * height_m * 100 - (5 * age + 5);
+            bmrw = 10 * weight_kg + 6.25 * height_m * 100 - (5 * age - 161);
+        }
+        if (weight > 0 && fm > 0) {
+            bmr = 21.6 * ((weight - fm) / 2.2) + 370; //kg
+        }
+
+
+        document.getElementById("bmrm").value = bmrm.toFixed(2);
+        document.getElementById("bmrw").value = bmrw.toFixed(2);
+        document.getElementById("bmr").value = bmr.toFixed(2);
+
+        // var act_level = 1.9;
+        var act_level = get_act_level();
+        document.getElementById("act_level").value = act_level;
+        var tdee = bmr * act_level;
+        document.getElementById("tdee").value = tdee.toFixed(2);
+
+        // alert("abc")
+
+        return false;
+    }
+
+
+</script>
+{% endblock %}

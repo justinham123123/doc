@@ -1,0 +1,380 @@
+{% extends "navbar.html" %}
+
+{% block head %}
+<script type="text/javascript" src="/static/polar.js"></script>
+<style type="text/css">
+
+    h1, legend {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    h1 {
+        margin-top: 40px;
+    }
+
+    label, input, select {
+        display: block;
+    }
+
+    input, select {
+        margin-bottom: 1em;
+    }
+
+    fieldset {
+        margin-bottom: 2em;
+        padding: 1em;
+    }
+
+    fieldset fieldset {
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+
+    input[type="checkbox"] {
+        display: inline;
+    }
+
+    .range {
+        margin-bottom: 1em;
+    }
+
+    .card-type input, .card-type label {
+        display: inline-block;
+    }
+
+    ul li {
+        list-style: none;
+    }
+
+    #graph_list li {
+        float: left;
+    }
+
+    table {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 50px;
+    }
+
+    td, th {
+        border: 1px solid #ddd;
+        padding: 6px;
+        font-size: 20px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #ddd;
+    }
+
+    th {
+        padding-top: 6px;
+        padding-bottom: 6px;
+        text-align: left;
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .tagg {
+        /*position: absolute;*/
+        /*top: 80px;*/
+        width: 200px;
+        height: 50px;
+        line-height: 50px;
+        font-size: 20px;
+        background: rgb(77, 61, 61);
+        border-radius: 10px;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+        /*padding-left: 15px;*/
+        /*padding-right: 15px;*/
+    }
+
+    #outbox {
+        width: 100%;
+    }
+
+    #inbox {
+        margin: 30px auto 0 auto;
+    }
+
+    .ic_mass {
+        width: 100px;
+        display: inline-block;
+    }
+    .dd{
+        font-size: 18px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+
+
+{% if userType=="doctor" %}
+<!--<div id="outbox">-->
+<!--    <div id="inbox" class="tagg">Report of {{patient}}</div>-->
+<!--</div>-->
+{% endif %}
+<div>
+    <!-- <h1>RESULTS</h1> -->
+
+    <div style="width:100%; margin-top: 10px;">
+        <!-- Composite-->
+        <div style="width: 100%; text-align: center">
+            <div class="ic_mass">
+                <img class="icon" style="width: 100px;" src="/static/icon/home.svg">
+                <b style="font-size:16px;">Composite</b><br/>
+                <span id='b_ll'>{{score[5]}}</span>%
+            </div>
+
+        </div>
+        <!--        上面两个-->
+        <div class="d-flex justify-content-around" style="width: 100%">
+            <!-- Range of Motion-->
+            <div class="ic_mass" style="text-align: center">
+                {% if states[4]=='t' %}
+                <a href="/result_rom?name={{name}}">
+                    <img class="icon" style="width: 100px;" src="/static/icon/home_rom.svg">
+                </a>
+                {% else %}
+                <span>
+                <img class="icon" style="width: 100px;" src="/static/icon/home_rom.svg">
+            </span>
+                {% endif %}
+                <b style="font-size:16px;">Range of Motion</b><br/>
+                <span id='b_l'>{{score[4]*10}}</span>%
+            </div>
+            <!-- Body Composition-->
+            <div class="ic_mass" style="text-align: center">
+                <div class="ic_mass">
+                    {% if states[0]=='t' %}
+                    <a href="/result_bc?name={{name}}">
+                        <img class="icon" style="width: 100px;" src="/static/icon/home_bc.svg">
+                    </a>
+                    {% else %}
+                    <span>
+                <img class="icon" style="width: 100px;" src="/static/icon/home_bc.svg">
+            </span>
+                    {% endif %}
+                    <b style="font-size:16px;">Body Composition</b><br/>
+                    <span id='b_l'>{{score[0]*10}}</span>%
+                </div>
+            </div>
+        </div>
+        <!--图表-->
+        <div style="width: 100%;">
+            <canvas id="myChart"></canvas>
+        </div>
+        <!-- 下面两个-->
+        <div class="d-flex justify-content-around" style="width: 100%">
+            <!-- Muscular Fitness-->
+            <div class="ic_mass" style="text-align: center">
+                {% if states[3]=='t' %}
+                <a href="/result_mf?name={{name}}">
+                    <img class="icon" style="width: 100px;" src="/static/icon/home_mf.svg">
+                </a>
+                {% else %}
+                <span>
+                <img class="icon" style="width: 100px;" src="/static/icon/home_mf.svg">
+            </span>
+                {% endif %}
+                <b style="font-size:16px;">Muscular Fitness</b><br/>
+                <span id='b_l'>{{score[3]*10}}</span>%
+            </div>
+            <!-- Balance-->
+            <div class="ic_mass" style="text-align: center">
+                {% if states[1]=='t' %}
+                <a href="/result_balance?name={{name}}">
+                    <img class="icon" style="width: 100px;" src="/static/icon/home_b.svg">
+                </a>
+                {% else %}
+                <span>
+                <img class="icon" style="width: 100px;" src="/static/icon/home_b.svg">
+            </span>
+                {% endif %}
+                <b style="font-size:16px;">Balance</b><br/>
+                <span id='b_l'>{{score[1]*10}}</span>%
+            </div>
+        </div>
+        <!-- Cardiopulmonary Fitness-->
+        <div style="width: 100%; text-align: center">
+            <div class="ic_mass" style="text-align: center">
+                {% if states[2]=='t' %}
+                <a href="/result_cf?name={{name}}">
+                    <img class="icon" style="width: 100px;" src="/static/icon/home_car.svg">
+                </a>
+                {% else %}
+                <span>
+                <img class="icon" style="width: 100px;" src="/static/icon/home_car.svg">
+            </span>
+                {% endif %}
+                <b style="font-size:16px; width: 137px; text-align: center">Cardiopulmonary Fitness</b><br/>
+                <span id='b_l'>{{score[6]}}</span>%
+            </div>
+        </div>
+    </div>
+
+
+    <div style="clear:both;"></div>
+    <div id="test_id" style="display: none;">{{name}}</div>
+
+
+    <table style="display:none">
+        <!-- <tr>
+            <th colspan="3">KEY</th>
+        </tr> -->
+        <tr>
+            <td><img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;"
+                     src="/static/icon/home_bc.svg">Body Composition: <span id='d1'>{{score[0]}}</span>/10
+            </td>
+            <td><img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;"
+                     src="/static/icon/home_b.svg">Balance: <span id='d2'>{{score[1]}}</span>/10
+            </td>
+            <td><img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;"
+                     src="/static/icon/home_car.svg">Cardiopulmonary Fitness: <span id='d3'>{{score[2]}}</span>/10
+            </td>
+        </tr>
+        <tr>
+            <td><img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;"
+                     src="/static/icon/home_mf.svg">Muscular Fitness: <span id='d4'>{{score[3]}}</span>/10
+            </td>
+            <td><img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;"
+                     src="/static/icon/home_rom.svg">Range of Motion: <span id='d5'>{{score[4]}}</span>/10
+            </td>
+            <td><img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;"
+                     src="/static/icon/home.svg">Composite: <span id='d6'>{{score[5]}}</span>/10
+            </td>
+        </tr>
+    </table>
+
+    <div class="container-fluid" style="margin-top: 10px; margin-bottom: 20px">
+        <div class="row">
+            <div class="col-12 col-md-6 dd">
+                <img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;"
+                     src="/static/icon/home_bc.svg">Body Composition: <span style="float: right" class="dd" id='d1'>{{score[0]}}/10</span>
+            </div>
+            <div class="col-12 col-md-6 dd">
+                <img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;"
+                     src="/static/icon/home_b.svg">Balance: <span style="float: right" class="dd"id='d2'>{{score[1]}}/10</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6 dd">
+                <img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;"
+                     src="/static/icon/home_car.svg">Cardiopulmonary Fitness: <span style="float: right" class="dd" id='d3'>{{score[2]}}/10</span>
+            </div>
+            <div class="col-12 col-md-6 dd">
+                <img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;"
+                     src="/static/icon/home_mf.svg">Muscular Fitness: <span style="float: right" class="dd" id='d4'>{{score[3]}}/10</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6 dd">
+                <img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;"
+                     src="/static/icon/home_rom.svg">Range of Motion: <span style="float: right" class="dd" id='d5'>{{score[4]}}/10</span>
+            </div>
+            <div class="col-12 col-md-6 dd">
+                <img class="icon" style="width: 34px; margin-right:10px; margin-top: -4px; margin-bottom: -10px;"
+                     src="/static/icon/home.svg">Composite: <span style="float: right" class="dd" id='d6'>{{score[5]}}/10</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div style="width: 100%; height: 20px;"></div>
+
+<script type="text/javascript">
+
+    function gen() {
+
+        var d1 = parseFloat(document.getElementById("d1").innerHTML);
+        var d2 = parseFloat(document.getElementById("d2").innerHTML);
+        var d3 = parseFloat(document.getElementById("d3").innerHTML);
+        var d4 = parseFloat(document.getElementById("d4").innerHTML);
+        var d5 = parseFloat(document.getElementById("d5").innerHTML);
+        var d6 = parseFloat(document.getElementById("d6").innerHTML);
+        // var d6 = (0.2*d1+0.2*d2+0.2*d3+0.2*d4+0.2*d5).toFixed(2);
+        // document.getElementById("d6").innerHTML = d6;
+        // document.getElementById("b_ll").innerHTML = d6;
+        var ctx = document.getElementById('myChart').getContext('2d');
+
+        var test_id = document.getElementById("test_id").innerHTML;
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'polarArea',
+            legend: {
+                display: true,
+                position: 'top',
+                maxWidth: 400,
+            },
+            data: {
+                labels: ['Body Composition', 'Balance', 'Cardiopulmonary Fitness', 'Muscular Fitness', 'Range of Motion', 'Composite'],
+
+                datasets: [{
+                    label: 'AVERAGE',
+                    // borderColor: 'rgb(255, 99, 132)',
+                    data: [d1, d2, d3, d4, d5, d6],
+                    backgroundColor: [
+                        "rgba(0, 100, 255, 0.5)",
+                        "rgba(255, 0, 255, 0.5)",
+                        "rgba(255, 0, 0, 0.5)",
+                        "rgba(255, 255, 0, 0.5)",
+                        "rgba(100, 255, 0, 0.5)",
+                        "rgba(50, 50, 50, 0.5)",
+                    ]
+                }]
+            },
+
+            options: {
+
+                startAngle: Math.PI * 1.0 / 6 - Math.PI * 0.5,
+
+                'onClick': function (evt, item) {
+                    var target = item[0]['_model'].label
+                    if (target == "Range of Motion") {
+                        window.location.href = "/result_rom?name=" + test_id;
+                    } else if (target == "Muscular Fitness") {
+                        window.location.href = "/result_mf?name=" + test_id;
+                    } else if (target == "Cardiopulmonary Fitness") {
+                        window.location.href = "/result_cf?name=" + test_id;
+                    } else if (target == "Balance") {
+                        window.location.href = "/result_balance?name=" + test_id;
+                    } else if (target == "Body Composition") {
+                        window.location.href = "/result_bc?name=" + test_id;
+                    }
+                },
+
+
+                legend: {
+                    display: false
+                },
+                scale: {
+                    ticks: {
+                        suggestedMin: 0.1,
+                        suggestedMax: 10
+                    }
+                }
+
+            }
+        });
+    }
+
+
+    gen();
+
+    $("#myChart").click(
+        function (evt) {
+            var activePoints = myNewChart.getSegmentsAtEvent(evt);
+            /* do something */
+            alert(activePoints)
+        }
+    );
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>User List</title>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+    <!--    表格样式-->
+    <link rel="stylesheet" href="http://cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css">
+    <script type="text/javascript" src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="../static/css/base.css">
+    <style type="text/css">
+        a{
+            font-size: 18px;
+            color: white;
+        }
+        html body {
+            width: 100%;
+            height: 100%;
+        }
+
+        h1, legend {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        h1 {
+            margin-top: 40px;
+        }
+
+        /*label, input, select {*/
+        /*   float: left;*/
+        /*}*/
+
+        /*input, select {*/
+        /*    margin-bottom: 1em;*/
+        /*}*/
+
+        fieldset {
+            margin-bottom: 2em;
+            padding: 1em;
+        }
+
+        fieldset fieldset {
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+
+        /*input[type="checkbox"] {*/
+        /*    display: inline;*/
+        /*}*/
+
+        .range {
+            margin-bottom: 1em;
+        }
+
+        /*.card-type input, .card-type label {*/
+        /*    display: inline-block;*/
+        /*}*/
+
+        ul li {
+            list-style: none;
+        }
+
+        #graph_list li {
+            float: left;
+        }
+
+        table {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            text-align: center;
+            /*border-collapse: collapse;*/
+            /*width: 100%;*/
+        }
+
+        td, th {
+            /*border: 1px solid #ddd;*/
+            /*padding: 6px;*/
+            /*font-size: 20px;*/
+        }
+
+        thead {
+            background-color: #99D8F5;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        /*tr:hover {background-color: #ddd;}*/
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        table.dataTable tbody td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .topnav {
+            overflow: hidden;
+            background-color: #333;
+            position: fixed;
+            width: 100%;
+            min-width: 1000px;
+            z-index: 100;
+            /*opacity: 0.9;*/
+        }
+
+        .topnav a {
+            float: left;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        .topnav a:hover {
+            background-color: #ccc;
+            color: black;
+        }
+
+        .topnav a.active {
+            background-color: #ddd;
+            color: black;
+        }
+
+        #add-user {
+            width: 170px;
+            font-size: 18px;
+            float: right;
+            margin-top: 20px;
+            margin-right: 5%;
+            margin-bottom: 20px;
+            z-index: 10;
+        }
+
+        .nav-a {
+            margin-right: 10px;
+            margin-left: 10px;
+        }
+
+        /*表格长度*/
+        #table_length {
+            display: none;
+        }
+
+        /*表格搜索*/
+        #table_filter {
+            display: none;
+        }
+
+        .bb {
+            width: 80px;
+        }
+        .boo{
+            width: 100%;
+            height: 20px;
+        }
+        #out{
+            height: 60px;
+            line-height: 60px;
+            width: 100%;
+            background-color: #4e555b;
+        }
+        #lef{
+            float: left;
+        }
+        #righ{
+            float: right;
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+        #table_info{
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body>
+<!--导航栏-->
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <!-- Brand -->
+    <div class=".visible-lg-*">
+        <a class="navbar-brand" style="color: white">Hi <span style="color: yellow">{{username}}</span> </a>
+    </div>
+    <!-- Toggler/collapsibe Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar links -->
+    <!--    靠左显示-->
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+
+        </ul>
+        <!--        靠右显示-->
+        <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item">
+                <a class="nav-link" href="/logout" style="float:right;color: red">Logout</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/addUser" style="float:right;color: green">Enroll a New User</a>
+            </li>
+            <!--            <li class="nav-item">-->
+            <!--                <a class="nav-link" href="/report_list" style="float:right">Back to Report List</a>-->
+            <!--            </li>-->
+        </ul>
+
+
+        <!--        navbar-nav flex-row ml-md-auto d-none d-md-flex-->
+
+    </div>
+</nav>
+
+<!--表格-->
+<!--小屏幕-->
+
+<!--小屏幕结束-->
+<!--大屏幕-->
+<!--大屏幕结束-->
+<div class="table-responsive">
+    <!--    style="padding:40px;width: 1400px;margin: auto;padding-top:88px;"-->
+    <!--    <a class='btn btn-sm btn-success' href="/addUser" style="width: 170px; font-size: 18px; float: right; right: 230px; position: relative; top: 50px; z-index: 10;">Enroll a New User</a>-->
+    <!-- 	    	<div style="clear:both; margin-bottom:30px;"></div>
+     -->
+    <table id="table" class="table table-striped table-bordered table-sm" style="margin-top:0px;">
+        <!--
+                    <table style="margin-top:30px;"> -->
+        <thead>
+
+        <th class="d-none d-sm-table-cell">Patient id</th>
+        <th style="width: 100px">Name</th>
+        <th class="d-none d-sm-table-cell">Email</th>
+        <th class="d-none d-sm-table-cell">Date of Birth</th>
+        <th class="d-none d-sm-table-cell">Gender</th>
+        <th style="width: 290px;">Test List</th>
+        <!-- <th>Action</th> -->
+
+        </thead>
+        <!-- <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><a class='btn btn-sm btn-success' href="/addUser" style="width:140px;">NEW USER</a></td> -->
+
+        <tbody>
+        {% for patient in patients %}
+        <tr>
+            <td class="d-none d-sm-table-cell">{{patient.id}}</td>
+            <td>{{patient.rname}}</td>
+            <td class="d-none d-sm-table-cell">{{patient.email}}</td>
+            <td class="d-none d-sm-table-cell">{{patient.dob}}</td>
+            <td class="d-none d-sm-table-cell">{{patient.mf}}</td>
+            <td>
+                {% for test in patient.test_list %}
+                <div style="margin-bottom: 4px; margin-right: 40px; float: right">
+                    <p><span>test_{{test[0]}} ({{test[2]}})</span></p>
+
+                    <a class='btn btn-sm btn-primary bb' href="/result_m?name={{test[1]}}"
+                       style="margin-left:0px;">REPORT</a>
+                    <a class='btn btn-sm btn-warning bb' href="/general_form?name={{test[1]}}">EDIT</a>
+                    <!--                    <a class='btn btn-sm btn-danger' href="/delete?name={{test[1]}}">DELETE</a>-->
+                </div>
+                {% endfor %}
+                <div>
+                    <span style="opacity: 0">test_0 (0000-00-00)</span>
+                    <a class='btn btn-sm btn-success' href="/addReport?name={{patient.id}}"
+                       style="margin-right: 40px; float: right; width:165px;">ADD A NEW INSTANCE</a>
+                </div>
+            </td>
+            <!-- <td>
+                <a class='btn btn-sm btn-danger' href="/delete_user?name={{patient.id}}" style="width:140px;">DELETE USER</a>
+            </td> -->
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="boo">
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#table').DataTable();
+    });
+</script>
+</body>
+</html>
